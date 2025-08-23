@@ -1,0 +1,86 @@
+{
+    "sidebar":{
+        "home": "Ana Sayfa",
+        "about": "Hakkımda",
+        "portfolio": "Portföyüm",
+        "hireme": "Benimle Çalış"
+    },
+
+    "home":{
+        "about-text-1": "API ve veritabanı konularında uzman bir backend geliştiricisiyim.",
+        "about-text-2": "Yeni nesil frontend araçlarıyla sade ve kusursuz tasarımlar kurarım.",
+        "copy-email": "E-postayı Kopyala",
+        "hireme": "Beni Tut"
+    },
+    "about":{
+        "title": "Hakkımda",
+        "paragraphs": [
+            {
+                "title": "Merhaba !",
+                "text": "Ben Eren. Bilgisayar ve yazılıma çocukluğumdan beri tutkuyla bağlıyım. Bu yolculuğa lisede başladım, nesneye yönelik programlama becerilerimi geliştirdim ve yazılımın derinliklerini keşfettim."
+            },
+            {
+                "title": "Kariyer Gelişimi",
+                "text": "Kariyerime freelancer olarak başladım, staj yaptığım şirkette işe alındım. Zamanla güçlü backend sistemleri ve Swift ile iOS uygulamaları geliştirerek uzmanlaştım. Ölçeklenebilir ve etkili yazılım çözümleri üretmeye odaklandım."
+            },
+            {
+                "title": "Deneyimim",
+                "text": "Türkiye'nin önde gelen teknoloji firmalarından Teknosa İç ve Dış Ticaret A.Ş. için bir iç dosya aktarım sistemi geliştirdim. Ayrıca Play Store'da bir uygulama yayımladım ve çalıştığım firmaya özel bir araç sıfırdan yaptım. Mobil uygulamalarda gelir artıran bir abonelik sistemi de kurdum."
+            }
+        ]
+    },
+    "hireme":{
+        "title": "Benimle Çalış",
+        "name": "İsim",
+        "email": "E-posta",
+        "message": "Mesaj",
+        "send": "Gönder",
+        "open-work": "İş'e Açık "
+    },
+    "general": {
+        "download-cv": "CV İndir"
+    },
+
+
+    "portfolio": {
+        "title": "Portföyüm",
+        "visit": "Projeye git",
+        "projects": [
+            {
+                "id": 1,
+                "title": "Teknosa Transfer Tool",
+                "desc": "Teknosa şirketi tarafından üçüncü taraf yazılım kullanmadan dosya aktarımlarını güvenli bir şekilde gerçekleştirmek için kullanılan uygulama."
+            },
+            {
+                "id": 2,
+                "title": "Manas BI Tool",
+                "desc": "Manas şirketinin uygulamalarına ait bilgileri ve ödeme duvarı ödeme ekranlarının yönetimini gerçekleştiren şirket yönetim web sitesi."
+            },
+            {
+                "id": 3,
+                "title": "Gappze BI Tool",
+                "desc": "Gappze şirketinin uygulamalarına ait bilgileri ve ödeme duvarı ödeme ekranlarının yönetimini gerçekleştiren şirket yönetim web sitesi."
+            },
+            {
+                "id": 4,
+                "title": "ArDraw Api & Admin panel",
+                "desc": "App Store'da şu anda mevcut olan ArDraw iOS uygulaması için içerik analizi ve yönetici paneli."
+            },
+            {
+                "id": 5,
+                "title": "Speedometer iOS App",
+                "desc": "Swift kullanarak, şu anda App Store'da bulunan Speedometer iOS mobil uygulamasının ilk sürümünü geliştirdim. Hem kullanıcı arayüzü tasarımından hem de genel işlevsellikten sorumluydum."
+            },
+            {
+                "id": 6,
+                "title": "Fortunely iOS App Backend",
+                "desc": "Kişiselleştirilmiş günlük burç yorumları sunan Fortunely mobil uygulamasının arka ucu, güvenli ve ölçeklenebilir teknolojiler kullanılarak tamamen tarafımdan geliştirilmiştir."
+            },
+            {
+                "id": 7,
+                "title": "TEMSA Transfer Tool",
+                "desc": "Temsa şirketi tarafından üçüncü taraf yazılım kullanmadan dosya aktarımlarını güvenli bir şekilde gerçekleştirmek için kullanılan uygulama."
+            }
+        ]
+    }
+}

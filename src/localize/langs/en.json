@@ -1,0 +1,91 @@
+
+{
+    "sidebar":{
+        "home": "Home",
+        "about": "About",
+        "portfolio": "Portfolio",
+        "hireme": "Hire Me"
+    },
+
+    "home":{
+        "about-text-1": "I specialize in backend development with expertise in APIs and databases.",
+        "about-text-2": "Skilled in modern frontend tools, I create seamless and minimal designs.",
+        "copy-email": "Copy Email",
+        "hireme": "Hire Me"
+    },
+    "about":{
+        "title": "About Me",
+        "paragraphs": [
+            {
+                "title": "Hi there !",
+                "text": "I'm Eren, a passionate software developer with a deep interest in computers and programming since childhood. My journey began in high school, where I honed my object-oriented programming skills and explored the intricacies of software development."
+            },
+            {
+                "title": "Career Growth",
+                "text": "I started my career as a freelancer and was later hired by the company where I completed my internship. Over time, I expanded my expertise by developing robust backend systems and an iOS application using Swift. My focus has been on building scalable and efficient software solutions."
+            },
+            {
+                "title": "My Experience",
+                "text": "I developed an internal file transfer cloud application for Teknosa İç ve Dış Ticaret A.Ş., one of Turkey's leading technology companies. Additionally, I published an application on the Play Store and built a custom tool from scratch for the company I work for. I also designed and implemented a paywall management system for mobile applications, optimizing monetization strategies."
+            }
+        ]
+    },
+    "hireme":{
+        "title": "Hire Me",
+        "name": "Name",
+        "email": "Email",
+        "message": "Message",
+        "send": "Send",
+        "open-work": "Open Work"
+    },
+    "general": {
+        "download-cv": "Download CV",
+        "downloaded": "CV Downloaded."
+    },
+    "social":{
+        "linkedin":"https://www.linkedin.com/in/erenboluk/",
+        "github":"https://github.com/ErenBoluk"
+    },
+
+  "portfolio": {
+    "title": "Portfolio",
+    "visit": "Visit Project",
+    "projects": [
+      {
+        "id": 1,
+        "title": "Teknosa Transfer Tool",
+        "desc": "The application used by Teknosa company to securely perform file transfers without using third-party software."
+      },
+      {
+        "id": 2,
+        "title": "Manas BI Tool",
+        "desc": "The company management website that handles the information of Manas company's applications and the management of paywall payment screens."
+      },
+      {
+        "id": 3,
+        "title": "Gappze BI Tool",
+        "desc": "The company management website that handles the information of Manas company's applications and the management of paywall payment screens."
+      },
+      {
+        "id": 4,
+        "title": "ArDraw Api & Admin panel",
+        "desc": "Content analysis and admin panel for the ArDraw iOS app currently available on the App Store."
+      },
+      {
+        "id": 5,
+        "title": "Speedometer iOS App",
+        "desc": "I developed the first version of the Speedometer iOS mobile application, currently live on the App Store, using Swift. I was responsible for both the UI design and the overall functionality."
+      },
+      {
+        "id": 6,
+        "title": "Fortunely iOS App Backend",
+        "desc": "The backend of the Fortunely mobile application, which enables personalized daily horoscopes, was fully developed by me using secure and scalable technologies."
+      },
+      {
+        "id": 7,
+        "title": "TEMSA Transfer Tool",
+        "desc": "The application used by Temsa company to securely perform file transfers without using third-party software."
+      }
+    ]
+  }
+}
