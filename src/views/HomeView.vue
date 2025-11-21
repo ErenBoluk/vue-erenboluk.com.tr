@@ -196,7 +196,7 @@ const copyEmail = () => {
         <div class="flex justify-center">
           <div class="relative">
             <img
-              src="/assets/img/me.png"
+              src="/assets/img/me-min.jpg"
               alt="Eren Bölük"
               class="w-75 md:w-100 p-2 rounded-full ring-2 ring-purple-400 aspect-square"
             />
