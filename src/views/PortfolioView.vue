@@ -8,7 +8,7 @@
 
     <div class="max-w-7xl mx-auto relative z-10">
       <!-- Header -->
-      <div class="header-section mb-16 md:mb-24">
+      <div class="header-section mb-16 md:mb-24 will-change-transform">
         <h1 class="inline-block text-white py-3 px-5 rounded-2xl mb-6 text-2xl md:text-3xl font-medium shadow-2xl border border-white/10 bg-neutral-900/50 backdrop-blur-md">
           {{ $t('portfolio.title') }}
         </h1>
@@ -22,14 +22,14 @@
         <article
           v-for="project in projects"
           :key="project.id"
-          class="group relative bg-neutral-900/60 backdrop-blur-sm rounded-3xl border border-white/5 hover:border-white/20 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-purple-900/20 z-0 hover:z-20"
+          class="group relative bg-neutral-900/60 backdrop-blur-sm rounded-3xl border border-white/5 hover:border-white/20 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-purple-900/20 z-0 hover:z-20 will-change-transform"
         >
           <!-- Image Thumbnail -->
           <div class="h-56 w-full relative overflow-hidden rounded-t-3xl transform-gpu" style="-webkit-mask-image: -webkit-radial-gradient(white, black);">
             <img 
               :src="project.img" 
               :alt="project.title"
-              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 will-change-transform"
             />
             <div class="absolute inset-0 bg-gradient-to-t from-neutral-900 via-neutral-900/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-500"></div>
             
@@ -180,14 +180,14 @@ onMounted(() => {
   // Grid Animation
   if (gridRef.value) {
     gsap.fromTo(gridRef.value.children,
-      { opacity: 0, y: 50 },
+      { opacity: 0, y: 30 }, // Reduced movement distance
       {
         opacity: 1,
         y: 0,
-        duration: 0.8,
-        stagger: 0.1,
-        ease: 'power3.out',
-        delay: 0.2
+        duration: 0.6, // Slightly faster
+        stagger: 0.08, // Reduced stagger
+        ease: 'power2.out', // Simpler easing
+        delay: 0.1
       }
     )
   }
@@ -197,6 +197,7 @@ onMounted(() => {
 <style scoped>
 .animate-blob {
   animation: blob 10s infinite;
+  will-change: transform; /* Optimize blob animation */
 }
 
 .animation-delay-2000 {
@@ -204,9 +205,9 @@ onMounted(() => {
 }
 
 @keyframes blob {
-  0% { transform: translate(0px, 0px) scale(1); }
-  33% { transform: translate(30px, -50px) scale(1.1); }
-  66% { transform: translate(-20px, 20px) scale(0.9); }
-  100% { transform: translate(0px, 0px) scale(1); }
+  0% { transform: translate3d(0px, 0px, 0) scale(1); }
+  33% { transform: translate3d(30px, -50px, 0) scale(1.1); }
+  66% { transform: translate3d(-20px, 20px, 0) scale(0.9); }
+  100% { transform: translate3d(0px, 0px, 0) scale(1); }
 }
 </style>
