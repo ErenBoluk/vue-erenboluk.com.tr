@@ -1,18 +1,17 @@
 {
-    "sidebar":{
+    "sidebar": {
         "home": "Ana Sayfa",
         "about": "Hakkımda",
         "portfolio": "Portföyüm",
         "hireme": "Benimle Çalış"
     },
-
-    "home":{
+    "home": {
         "about-text-1": "API ve veritabanı konularında uzman bir backend geliştiricisiyim.",
         "about-text-2": "Yeni nesil frontend araçlarıyla sade ve kusursuz tasarımlar kurarım.",
         "copy-email": "E-postayı Kopyala",
         "hireme": "Beni Tut"
     },
-    "about":{
+    "about": {
         "title": "Hakkımda",
         "paragraphs": [
             {
@@ -29,19 +28,21 @@
             }
         ]
     },
-    "hireme":{
+    "hireme": {
         "title": "Benimle Çalış",
+        "headline": "Birlikte harika bir şeyler yapalım.",
         "name": "İsim",
         "email": "E-posta",
         "message": "Mesaj",
         "send": "Gönder",
-        "open-work": "İş'e Açık "
+        "sending": "Gönderiliyor...",
+        "open-work": "İş'e Açık ",
+        "success_title": "Mesaj Gönderildi!",
+        "success_message": "En kısa sürede size dönüş yapacağım."
     },
     "general": {
         "download-cv": "CV İndir"
     },
-
-
     "portfolio": {
         "title": "Portföyüm",
         "visit": "Projeye git",

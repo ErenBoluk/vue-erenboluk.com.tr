@@ -1,52 +1,53 @@
-
 {
-    "sidebar":{
-        "home": "Home",
-        "about": "About",
-        "portfolio": "Portfolio",
-        "hireme": "Hire Me"
-    },
-
-    "home":{
-        "about-text-1": "I specialize in backend development with expertise in APIs and databases.",
-        "about-text-2": "Skilled in modern frontend tools, I create seamless and minimal designs.",
-        "copy-email": "Copy Email",
-        "hireme": "Hire Me"
-    },
-    "about":{
-        "title": "About Me",
-        "paragraphs": [
-            {
-                "title": "Hi there !",
-                "text": "I'm Eren, a passionate software developer with a deep interest in computers and programming since childhood. My journey began in high school, where I honed my object-oriented programming skills and explored the intricacies of software development."
-            },
-            {
-                "title": "Career Growth",
-                "text": "I started my career as a freelancer and was later hired by the company where I completed my internship. Over time, I expanded my expertise by developing robust backend systems and an iOS application using Swift. My focus has been on building scalable and efficient software solutions."
-            },
-            {
-                "title": "My Experience",
-                "text": "I developed an internal file transfer cloud application for Teknosa İç ve Dış Ticaret A.Ş., one of Turkey's leading technology companies. Additionally, I published an application on the Play Store and built a custom tool from scratch for the company I work for. I also designed and implemented a paywall management system for mobile applications, optimizing monetization strategies."
-            }
-        ]
-    },
-    "hireme":{
-        "title": "Hire Me",
-        "name": "Name",
-        "email": "Email",
-        "message": "Message",
-        "send": "Send",
-        "open-work": "Open Work"
-    },
-    "general": {
-        "download-cv": "Download CV",
-        "downloaded": "CV Downloaded."
-    },
-    "social":{
-        "linkedin":"https://www.linkedin.com/in/erenboluk/",
-        "github":"https://github.com/ErenBoluk"
-    },
-
+  "sidebar": {
+    "home": "Home",
+    "about": "About",
+    "portfolio": "Portfolio",
+    "hireme": "Hire Me"
+  },
+  "home": {
+    "about-text-1": "I specialize in backend development with expertise in APIs and databases.",
+    "about-text-2": "Skilled in modern frontend tools, I create seamless and minimal designs.",
+    "copy-email": "Copy Email",
+    "hireme": "Hire Me"
+  },
+  "about": {
+    "title": "About Me",
+    "paragraphs": [
+      {
+        "title": "Hi there !",
+        "text": "I'm Eren, a passionate software developer with a deep interest in computers and programming since childhood. My journey began in high school, where I honed my object-oriented programming skills and explored the intricacies of software development."
+      },
+      {
+        "title": "Career Growth",
+        "text": "I started my career as a freelancer and was later hired by the company where I completed my internship. Over time, I expanded my expertise by developing robust backend systems and an iOS application using Swift. My focus has been on building scalable and efficient software solutions."
+      },
+      {
+        "title": "My Experience",
+        "text": "I developed an internal file transfer cloud application for Teknosa İç ve Dış Ticaret A.Ş., one of Turkey's leading technology companies. Additionally, I published an application on the Play Store and built a custom tool from scratch for the company I work for. I also designed and implemented a paywall management system for mobile applications, optimizing monetization strategies."
+      }
+    ]
+  },
+  "hireme": {
+    "title": "Hire Me",
+    "headline": "Let's make something amazing together.",
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "send": "Send",
+    "sending": "Sending...",
+    "open-work": "Open Work",
+    "success_title": "Message Sent!",
+    "success_message": "I'll get back to you as soon as possible."
+  },
+  "general": {
+    "download-cv": "Download CV",
+    "downloaded": "CV Downloaded."
+  },
+  "social": {
+    "linkedin": "https://www.linkedin.com/in/erenboluk/",
+    "github": "https://github.com/ErenBoluk"
+  },
   "portfolio": {
     "title": "Portfolio",
     "visit": "Visit Project",
