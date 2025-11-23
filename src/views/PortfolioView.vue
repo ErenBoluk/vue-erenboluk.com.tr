@@ -1,96 +1,91 @@
 <template>
-  <main ref="root" class="hireme grid content-center min-h-screen px-4 overflow-hidden">
-    <div class="portfolio px-4 sm:px-6 lg:px-8">
+  <main class="portfolio min-h-screen p-6 md:p-12 relative overflow-hidden">
+    <!-- Background Elements -->
+    <div class="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
+      <div class="absolute top-0 left-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl animate-blob"></div>
+      <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl animate-blob animation-delay-2000"></div>
+    </div>
+
+    <div class="max-w-7xl mx-auto relative z-10">
       <!-- Header -->
-      <div class="header-section mb-16">
-        <h1
-            class="portfolio-title inline-block text-white py-3 px-4 rounded-2xl mb-8 text-xl md:text-2xl font-medium shadow-2xl border border-white/10"
-        >
+      <div class="header-section mb-16 md:mb-24">
+        <h1 class="inline-block text-white py-3 px-5 rounded-2xl mb-6 text-2xl md:text-3xl font-medium shadow-2xl border border-white/10 bg-neutral-900/50 backdrop-blur-md">
           {{ $t('portfolio.title') }}
         </h1>
-
-        <p class="text-slate-300 text-lg max-w-2xl leading-relaxed opacity-90">
-          Crafting exceptional digital experiences with modern technology and innovative design solutions.
+        <p class="text-neutral-400 text-lg max-w-2xl leading-relaxed">
+          Selected works showcasing expertise in backend systems, mobile applications, and secure data solutions.
         </p>
       </div>
 
       <!-- Grid -->
-      <div ref="grid" class="portfolio-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div ref="gridRef" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
         <article
-            v-for="project in projects"
-            :key="project.id"
-            class="project-card group relative bg-neutral-900/60 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden cursor-pointer border border-white/5 hover:border-white/10 transition-all duration-300"
+          v-for="project in projects"
+          :key="project.id"
+          class="group relative bg-neutral-900/60 backdrop-blur-sm rounded-3xl border border-white/5 hover:border-white/20 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-purple-900/20 z-0 hover:z-20"
         >
-          <!-- Image -->
-          <div class="image-container aspect-video overflow-hidden relative">
-            <img
-                :src="project.img"
-                :alt="project.title"
-                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          <!-- Image Thumbnail -->
+          <div class="h-56 w-full relative overflow-hidden rounded-t-3xl transform-gpu" style="-webkit-mask-image: -webkit-radial-gradient(white, black);">
+            <img 
+              :src="project.img" 
+              :alt="project.title"
+              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
             />
-            <div
-                class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-            ></div>
-            <div
-                class="absolute top-4 left-4 px-3 py-1 bg-purple-600/90 rounded-full text-xs font-semibold text-white border border-purple-400/50 opacity-0 group-hover:opacity-100 transition-all duration-300"
-            >
-              Premium
+            <div class="absolute inset-0 bg-gradient-to-t from-neutral-900 via-neutral-900/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-500"></div>
+            
+            <!-- Icon/Badge -->
+            <div class="absolute top-4 right-4 p-2 bg-black/40 backdrop-blur-md rounded-xl border border-white/10 z-10">
+              <component :is="project.icon" class="w-6 h-6 text-white/90" />
             </div>
           </div>
 
-          <!-- Body -->
-          <div class="card-content p-6 flex flex-col gap-4">
-            <h3
-                class="card-title text-2xl font-bold text-white group-hover:text-purple-300 transition-colors duration-300"
-            >
+          <!-- Content -->
+          <div class="p-6 md:p-8 relative rounded-b-3xl">
+            <div class="flex flex-wrap gap-2 mb-4">
+              <span 
+                v-for="tag in project.tags" 
+                :key="tag"
+                class="text-xs font-medium px-2.5 py-1 rounded-lg bg-white/5 text-neutral-300 border border-white/5"
+              >
+                {{ tag }}
+              </span>
+            </div>
+
+            <h3 class="text-2xl font-bold text-white mb-3 group-hover:text-purple-400 transition-colors">
               {{ project.title }}
             </h3>
 
-            <p class="card-description text-neutral-300 leading-relaxed text-sm line-clamp-3">
-              {{ project.desc }}
-            </p>
-
-            <!-- Tech badges -->
-            <div class="tech-stack flex flex-wrap gap-2 mt-2">
-              <span
-                  class="tech-badge px-2 py-1 bg-purple-500/20 text-purple-300 text-xs rounded-lg border border-purple-500/30"
-              >
-                Modern
-              </span>
-<!--              <span-->
-<!--                  class="tech-badge px-2 py-1 bg-blue-500/20 text-blue-300 text-xs rounded-lg border border-blue-500/30"-->
-<!--              >-->
-<!--                Php-->
-<!--              </span>-->
+            <!-- Description with Popover -->
+            <div class="relative group/desc">
+              <p class="text-neutral-400 text-sm leading-relaxed mb-6 line-clamp-3">
+                {{ project.desc }}
+              </p>
+              
+              <!-- Popover -->
+              <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 bg-neutral-900 border border-white/10 p-4 rounded-xl shadow-2xl opacity-0 translate-y-2 pointer-events-none group-hover/desc:opacity-100 group-hover/desc:translate-y-0 transition-all duration-300 z-50">
+                <p class="text-neutral-200 text-sm leading-relaxed">
+                  {{ project.desc }}
+                </p>
+                <!-- Arrow -->
+                <div class="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-neutral-900 border-b border-r border-white/10 rotate-45"></div>
+              </div>
             </div>
 
-            <!-- Link / Coming Soon -->
-            <a
+            <!-- Action -->
+            <div class="pt-6 border-t border-white/5 flex items-center justify-between">
+              <a
                 v-if="project.url"
                 :href="project.url"
                 target="_blank"
-                rel="noopener"
-                class="project-link self-start flex items-center gap-2 text-purple-400 hover:text-purple-300 font-semibold mt-4 pt-4 border-t border-white/10"
-            >
-              <span class="underline decoration-2 underline-offset-4">
-                {{ $t('portfolio.visit') }}
-              </span>
-              <svg
-                  ref="arrow"
-                  class="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2.5"
-                  viewBox="0 0 24 24"
+                class="inline-flex items-center gap-2 text-sm font-medium text-white hover:text-purple-400 transition-colors"
               >
-                <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </a>
-            <div
-                v-else
-                class="coming-soon self-start flex items-center gap-2 text-slate-500 font-medium mt-4 pt-4 border-t border-white/10"
-            >
-              <span>Not open to the public</span>
+                {{ $t('portfolio.visit') }}
+                <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+              </a>
+              <span v-else class="text-sm font-medium text-neutral-600 cursor-not-allowed flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-neutral-600"></span>
+                Internal Tool
+              </span>
             </div>
           </div>
         </article>
@@ -102,140 +97,116 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
-import gsap from 'gsap'
+import { gsap } from 'gsap'
+import { 
+  CommandLineIcon, 
+  DevicePhoneMobileIcon, 
+  GlobeAltIcon, 
+  ShieldCheckIcon,
+  ChartBarIcon
+} from '@heroicons/vue/24/outline'
 
 const { t } = useI18n()
-const root = ref(null)
-const grid = ref(null)
+const gridRef = ref(null)
 
-const projects = [
+const projects = computed(() => [
   {
     id: 1,
-    title: computed(() => t('portfolio.projects.0.title')),
-    desc: computed(() => t('portfolio.projects.0.desc')),
-    img: new URL('/assets/img/portfolio/teknosa.png', import.meta.url).href,
+    title: t('portfolio.projects.0.title'),
+    desc: t('portfolio.projects.0.desc'),
+    img: '/assets/img/portfolio/teknosa.png',
+    icon: ShieldCheckIcon,
+    tags: ['Backend', 'Security', 'File Transfer']
   },
   {
     id: 2,
-    title: computed(() => t('portfolio.projects.1.title')),
-    desc: computed(() => t('portfolio.projects.1.desc')),
-    img: new URL('/assets/img/portfolio/manas.png', import.meta.url).href,
+    title: t('portfolio.projects.1.title'),
+    desc: t('portfolio.projects.1.desc'),
+    img: '/assets/img/portfolio/manas.png',
+    icon: ChartBarIcon,
+    tags: ['BI Tool', 'Management', 'Web']
   },
   {
     id: 3,
-    title: computed(() => t('portfolio.projects.2.title')),
-    desc: computed(() => t('portfolio.projects.2.desc')),
-    img: new URL('/assets/img/portfolio/gappze.png', import.meta.url).href,
+    title: t('portfolio.projects.2.title'),
+    desc: t('portfolio.projects.2.desc'),
+    img: '/assets/img/portfolio/gappze.png',
+    icon: ChartBarIcon,
+    tags: ['Analytics', 'Dashboard', 'Vue.js']
   },
   {
     id: 4,
-    title: computed(() => t('portfolio.projects.3.title')),
-    desc: computed(() => t('portfolio.projects.3.desc')),
-    img: new URL('/assets/img/portfolio/ardraw.png', import.meta.url).href,
+    title: t('portfolio.projects.3.title'),
+    desc: t('portfolio.projects.3.desc'),
+    img: '/assets/img/portfolio/ardraw.png',
+    icon: DevicePhoneMobileIcon,
+    tags: ['iOS', 'Admin Panel', 'API']
   },
   {
     id: 5,
-    title: computed(() => t('portfolio.projects.4.title')),
-    desc: computed(() => t('portfolio.projects.4.desc')),
-    img: new URL('/assets/img/portfolio/speedometer.png', import.meta.url).href,
-    url: 'https://apps.apple.com/us/app/speedometer-gps-tracker-mph/id6478858110',
+    title: t('portfolio.projects.4.title'),
+    desc: t('portfolio.projects.4.desc'),
+    img: '/assets/img/portfolio/speedometer.png',
+    icon: DevicePhoneMobileIcon,
+    tags: ['Swift', 'iOS', 'GPS'],
+    url: 'https://apps.apple.com/us/app/speedometer-gps-tracker-mph/id6478858110'
   },
   {
     id: 6,
-    title: computed(() => t('portfolio.projects.5.title')),
-    desc: computed(() => t('portfolio.projects.5.desc')),
-    img: new URL('/assets/img/portfolio/fortunely.png', import.meta.url).href,
-    url: 'https://apps.apple.com/us/app/ar-drawing-draw-projector-app/id6473737662',
+    title: t('portfolio.projects.5.title'),
+    desc: t('portfolio.projects.5.desc'),
+    img: '/assets/img/portfolio/fortunely.png',
+    icon: CommandLineIcon,
+    tags: ['Backend', 'Node.js', 'Scalable'],
+    url: 'https://apps.apple.com/us/app/ar-drawing-draw-projector-app/id6473737662'
   },
   {
     id: 7,
-    title: computed(() => t('portfolio.projects.6.title')),
-    desc: computed(() => t('portfolio.projects.6.desc')),
-    img: new URL('/assets/img/portfolio/temsa.png', import.meta.url).href,
-  },
-]
+    title: t('portfolio.projects.6.title'),
+    desc: t('portfolio.projects.6.desc'),
+    img: '/assets/img/portfolio/temsa.png',
+    icon: GlobeAltIcon,
+    tags: ['Enterprise', 'Transfer Tool', 'Security']
+  }
+])
 
 onMounted(() => {
-  // Header fade-in
-  gsap.fromTo(
-      '.header-section',
-      { y: -20, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.6, ease: 'power2.out' }
+  // Header Animation
+  gsap.fromTo('.header-section',
+    { opacity: 0, y: -30 },
+    { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }
   )
 
-  // Grid stagger
-  gsap.fromTo(
-      grid.value.children,
-      { y: 20, opacity: 0, scale: 1 },
+  // Grid Animation
+  if (gridRef.value) {
+    gsap.fromTo(gridRef.value.children,
+      { opacity: 0, y: 50 },
       {
-        y: 0,
         opacity: 1,
-        scale: 1,
-        duration: 0.5,
-        stagger: 0.08,
-        ease: 'power2.out',
+        y: 0,
+        duration: 0.8,
+        stagger: 0.1,
+        ease: 'power3.out',
         delay: 0.2
       }
-  )
-
-  // Gentle hover
-  const cards = grid.value.querySelectorAll('article')
-  cards.forEach(card => {
-    const img = card.querySelector('img')
-    const arrow = card.querySelector('.link-arrow')
-
-    card.addEventListener('mouseenter', () => {
-      gsap.to(card, { y: -4, scale: 1.01, boxShadow: '0 12px 24px -4px rgba(0,0,0,.25)', duration: 0.35, ease: 'power1.out' })
-      gsap.to(img, { scale: 1.05, duration: 0.5, ease: 'power1.out' })
-      arrow && gsap.to(arrow, { x: 4, duration: 0.25, ease: 'power1.out' })
-    })
-
-    card.addEventListener('mouseleave', () => {
-      gsap.to(card, { y: 0, scale: 1, boxShadow: '0 4px 12px rgba(0,0,0,.15)', duration: 0.35, ease: 'power1.out' })
-      gsap.to(img, { scale: 1, duration: 0.5, ease: 'power1.out' })
-      arrow && gsap.to(arrow, { x: 0, duration: 0.25, ease: 'power1.out' })
-    })
-  })
+    )
+  }
 })
 </script>
 
 <style scoped>
-.portfolio {
-  min-height: calc(100vh - 80px);
+.animate-blob {
+  animation: blob 10s infinite;
 }
 
-.portfolio-grid {
-  gap: 1.5rem;
+.animation-delay-2000 {
+  animation-delay: 2s;
 }
 
-.project-card {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  will-change: transform;
-  transition: box-shadow 0.35s ease, border-color 0.35s ease;
-}
-
-.project-card:hover {
-  border-color: rgba(255, 255, 255, 0.1);
-}
-
-.portfolio-title {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(20px);
-}
-
-.tech-badge {
-  transition: transform 0.2s ease;
-}
-.tech-badge:hover {
-  transform: scale(1.05);
-}
-
-.line-clamp-3 {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+@keyframes blob {
+  0% { transform: translate(0px, 0px) scale(1); }
+  33% { transform: translate(30px, -50px) scale(1.1); }
+  66% { transform: translate(-20px, 20px) scale(0.9); }
+  100% { transform: translate(0px, 0px) scale(1); }
 }
 </style>
