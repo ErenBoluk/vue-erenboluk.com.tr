@@ -27,61 +27,85 @@ const closeSidebar = () => {
 </script>
 
 <template>
-    <div class="fixed top-10 right-5 flex items-center gap-x-2 z-20">
-        <DownloadCvBtn class="transition duration-500 hover:scale-105"/>
+    <!-- Top Right Controls -->
+    <div class="fixed top-6 right-6 flex items-center gap-x-3 z-50">
+        <DownloadCvBtn class="transition-transform duration-300 hover:scale-105 shadow-lg shadow-purple-900/20"/>
         <LocalizeBtn />
     </div>
 
-    <!-- Sidebar Aç/Kapat Butonu -->
+    <!-- Mobile Toggle Button -->
     <button
-        class="fixed top-10 left-5 p-4 bg-secondary rounded-lg shadow-lg md:hidden z-40"
+        class="fixed top-6 left-6 p-2.5 bg-neutral-900/50 backdrop-blur-md border border-white/10 rounded-xl text-white shadow-lg md:hidden z-50 transition-transform active:scale-95"
         @click="toggleSidebar">
-        <Bars3Icon class="size-6" />
+        <Bars3Icon class="size-5" />
     </button>
 
+    <!-- Sidebar Overlay (Mobile) -->
+    <div 
+        v-if="sidebarShow"
+        class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden"
+        @click="closeSidebar"
+    ></div>
+
     <!-- Sidebar -->
-    <header 
-        class="
-        bg-secondary p-6 flex flex-col justify-center 
-        items-center
-        inset-y-0 
-        absolute 
-        w-full 
-        z-40 
-        inset-x-0
-        transition-all duration-300 ease-in-out md:relative md:w-1/5 md:translate-x-0"
-        :class="{ '-translate-x-full': !sidebarShow, 'translate-x-0': sidebarShow }">
-        
-        <!-- Kapatma Butonu -->
-        <button
-            class="absolute top-10 right-5 p-4 bg-main rounded-lg shadow-lg md:hidden"
-            @click="closeSidebar"
-            v-show="sidebarShow"> 
-            <XMarkIcon class="size-6" />
-        </button>
+    <aside 
+        class="fixed inset-y-0 left-0 w-64 bg-neutral-900/80 backdrop-blur-xl border-r border-white/5 transform transition-transform duration-500 ease-out z-50 md:translate-x-0 md:static md:w-56 md:bg-transparent md:border-r-0 md:block"
+        :class="sidebarShow ? 'translate-x-0' : '-translate-x-full'"
+    >
+        <div class="h-full flex flex-col p-4">
+            <!-- Mobile Close Button -->
+            <div class="flex justify-end md:hidden mb-6">
+                <button
+                    class="p-2 text-neutral-400 hover:text-white transition-colors"
+                    @click="closeSidebar"> 
+                    <XMarkIcon class="size-5" />
+                </button>
+            </div>
 
-        <!-- Menü -->
-        <nav class="flex flex-col space-y-3 px-5 text-neutral-300 w-fit text-2xl md:text-lg font-light">
-            <RouterLink 
-                v-for="item in menuItems"
-                :key="item.route"
-                :to="{ name: item.route }"
-                class="inline-flex items-center gap-x-2.5 transition-colors duration-700"
-                active-class="text-purple-400"
-                @click="closeSidebar">
-                <component :is="item.icon" class="size-5" />
-                {{ item.name }}
-            </RouterLink>
-        </nav>
+            <!-- Logo / Brand -->
+            <div class="hidden md:flex justify-center mb-8">
+                <img src="@/assets/logo.svg" alt="Logo" class="w-8 h-8" />
+            </div>
 
-        <!-- Sosyal Medya Butonları -->
-        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex gap-x-3">
-            <a :href="$t('social.github')" class="bg-main p-2 rounded-md">
-                <img src="@/assets/brands/github.svg" alt="Github Icon" class="w-8 md:w-6">
-            </a>
-            <a :href="$t('social.linkedin')" class="bg-main p-2 rounded-md">
-                <img src="@/assets/brands/linkedin.svg" alt="LinkedIn Icon" class="w-8 md:w-6">
-            </a>
+            <!-- Navigation -->
+            <nav class="flex-1 flex flex-col justify-center items-center space-y-2">
+                <RouterLink 
+                    v-for="item in menuItems"
+                    :key="item.route"
+                    :to="{ name: item.route }"
+                    class="flex w-40 items-center justify-start gap-x-3 px-3 py-2.5 rounded-lg text-sm font-light text-neutral-400 transition-all duration-300 group hover:bg-white/5 hover:text-white border border-transparent"
+                    active-class="!bg-purple-500/10 !text-purple-400 !border-purple-500/20 shadow-lg shadow-purple-900/10"
+                    @click="closeSidebar">
+                    <component 
+                        :is="item.icon" 
+                        class="size-5 transition-transform duration-300 group-hover:scale-110 group-active:scale-95" 
+                    />
+                    <span>{{ item.name }}</span>
+                </RouterLink>
+            </nav>
+
+            <!-- Social Links -->
+            <div class="mt-auto pt-6 border-t border-white/5">
+                <div class="flex gap-x-3 justify-center">
+                    <a 
+                        :href="$t('social.github')" 
+                        target="_blank"
+                        class="p-2 rounded-lg bg-white/5 text-neutral-400 hover:bg-white/10 hover:text-white hover:-translate-y-1 transition-all duration-300 border border-white/5"
+                    >
+                        <img src="@/assets/brands/github.svg" alt="Github" class="w-4 h-4 opacity-70 group-hover:opacity-100 invert">
+                    </a>
+                    <a 
+                        :href="$t('social.linkedin')" 
+                        target="_blank"
+                        class="p-2 rounded-lg bg-white/5 text-neutral-400 hover:bg-white/10 hover:text-white hover:-translate-y-1 transition-all duration-300 border border-white/5"
+                    >
+                        <img src="@/assets/brands/linkedin.svg" alt="LinkedIn" class="w-4 h-4 opacity-70 group-hover:opacity-100">
+                    </a>
+                </div>
+                <p class="text-[10px] text-center text-neutral-600 mt-4">
+                    © {{ new Date().getFullYear() }} Eren Bölük
+                </p>
+            </div>
         </div>
-    </header>
+    </aside>
 </template>
