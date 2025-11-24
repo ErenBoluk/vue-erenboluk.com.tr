@@ -14,23 +14,25 @@ onMounted(() => {
   const textTimeline = gsap.timeline()
   const imageTimeline = gsap.timeline()
   
-  // Resim animasyonu - daha dramatik entrance
+  // Resim animasyonu - daha dramatik ve akıcı entrance
   imageTimeline
     .fromTo(
       ".personal-photo img",
       { 
         opacity: 0, 
-        scale: 0.3, 
-        rotation: -10,
-        filter: "blur(10px)"
+        scale: 0.5, 
+        rotation: -15,
+        filter: "blur(15px)",
+        y: 50
       },
       { 
         opacity: 1, 
         scale: 1, 
         rotation: 0,
         filter: "blur(0px)",
+        y: 0,
         duration: 1.8, 
-        ease: "back.out(1.7)" 
+        ease: "elastic.out(1, 0.75)" 
       }
     )
     .to(
@@ -49,30 +51,30 @@ onMounted(() => {
       ".account-infos h1",
       { 
         opacity: 0, 
-        y: 50,
-        filter: "blur(5px)"
+        y: 40,
+        filter: "blur(10px)"
       },
       { 
         opacity: 1, 
         y: 0,
         filter: "blur(0px)",
         duration: 1.2, 
-        ease: "power3.out" 
+        ease: "power4.out" 
       }
     )
     .fromTo(
       ".account-infos .job-title",
       { 
         opacity: 0, 
-        x: -50,
-        scale: 0.8
+        x: -30,
+        filter: "blur(5px)"
       },
       { 
         opacity: 1, 
         x: 0,
-        scale: 1,
+        filter: "blur(0px)",
         duration: 1, 
-        ease: "power2.out" 
+        ease: "power3.out" 
       },
       "-=0.8"
     )
@@ -80,34 +82,32 @@ onMounted(() => {
       ".account-infos .short-about-text p",
       { 
         opacity: 0, 
-        y: 30,
-        filter: "blur(3px)"
+        y: 20
       },
       { 
         opacity: 1, 
         y: 0,
-        filter: "blur(0px)",
         duration: 0.8, 
         ease: "power2.out",
-        stagger: 0.2
+        stagger: 0.15
       },
-      "-=0.5"
+      "-=0.6"
     )
     .fromTo(
       ".account-infos .button-container",
       { 
         opacity: 0, 
-        y: 40,
-        scale: 0.9
+        y: 20,
+        scale: 0.95
       },
       { 
         opacity: 1, 
         y: 0,
         scale: 1,
-        duration: 1, 
-        ease: "back.out(1.7)" 
+        duration: 0.8, 
+        ease: "back.out(1.5)" 
       },
-      "-=0.3"
+      "-=0.4"
     )
     .fromTo(
       ".account-infos button",
@@ -118,7 +118,7 @@ onMounted(() => {
       },
       { 
         opacity: 1, 
-        scale: 1,
+        scale: 1, 
         rotationY: 0,
         duration: 0.6, 
         ease: "power2.out",
@@ -198,7 +198,7 @@ const copyEmail = () => {
             <img
               src="/assets/img/me-min.jpg"
               alt="Eren Bölük"
-              class="w-75 md:w-100 p-2 rounded-full ring-2 ring-purple-400 aspect-square"
+              class="w-75 md:w-100 p-2 rounded-full  aspect-square"
             />
           </div>
         </div>
