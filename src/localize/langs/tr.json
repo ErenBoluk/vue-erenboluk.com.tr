@@ -41,7 +41,11 @@
         "success_message": "En kısa sürede size dönüş yapacağım."
     },
     "general": {
-        "download-cv": "CV İndir"
+        "download-cv": "CV İndir",
+        "cv-modal-title": "Dil Seçiniz",
+        "download-tr": "Türkçe CV İndir",
+        "download-en": "İngilizce CV İndir",
+        "cancel": "İptal"
     },
     "portfolio": {
         "title": "Portföyüm",

@@ -2,10 +2,12 @@
 import { ref } from 'vue'
 import { ArrowDownTrayIcon, CheckIcon } from '@heroicons/vue/24/outline'
 import { useI18n } from 'vue-i18n'
+import CvDownloadModal from './CvDownloadModal.vue'
 
 // State management
 const isDownloading = ref(false)
 const isDownloaded = ref(false)
+const showModal = ref(false)
 const { locale: siteLang } = useI18n()
 
 const cvFiles = {
@@ -19,18 +21,20 @@ const cvFiles = {
   }
 }
 
-const getCvFile = () => {
-  const lang = siteLang.value
+const getCvFile = (lang) => {
   return cvFiles[lang] || cvFiles['tr']
 }
 
-const downloadCV = async () => {
+const downloadCV = async (lang = 'tr') => {
   if (isDownloading.value || isDownloaded.value) return
+  
+  // Close modal if open
+  showModal.value = false
 
   try {
     isDownloading.value = true
 
-    const { path, name } = getCvFile()
+    const { path, name } = getCvFile(lang)
     const response = await fetch(path)
 
     if (!response.ok) {
@@ -61,24 +65,13 @@ const downloadCV = async () => {
     isDownloading.value = false
   }
 }
-
-// const downloadCVDirect = () => {
-//   const { path, name } = getCvFile()
-//   const link = document.createElement('a')
-//   link.href = path
-//   link.download = name
-//   link.target = '_blank'
-//   document.body.appendChild(link)
-//   link.click()
-//   document.body.removeChild(link)
-// }
 </script>
 
 <template>
   <div class="relative flex items-center justify-center">
     <!-- Buton -->
     <button 
-      @click="downloadCV"
+      @click="showModal = true"
       :disabled="isDownloading"
       class="relative p-[2px] overflow-hidden rounded-lg cursor-pointer transition-all duration-300 hover:scale-105 active:scale-95"
       :class="{ 'cursor-not-allowed': isDownloading }"
@@ -120,6 +113,12 @@ const downloadCV = async () => {
         </span>
       </div>
     </button>
+
+    <CvDownloadModal 
+      :is-visible="showModal"
+      @close="showModal = false"
+      @download="downloadCV"
+    />
   </div>
 </template>
 

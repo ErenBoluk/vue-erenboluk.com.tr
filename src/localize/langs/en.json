@@ -42,7 +42,11 @@
   },
   "general": {
     "download-cv": "Download CV",
-    "downloaded": "CV Downloaded."
+    "downloaded": "CV Downloaded.",
+    "cv-modal-title": "Select Language",
+    "download-tr": "Download Turkish CV",
+    "download-en": "Download English CV",
+    "cancel": "Cancel"
   },
   "social": {
     "linkedin": "https://www.linkedin.com/in/erenboluk/",
