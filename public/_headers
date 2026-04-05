@@ -1,0 +1,11 @@
+/*
+  # Default cache configuration
+  Cache-Control: public, max-age=0, must-revalidate
+
+/assets/*
+  # Cache assets for 1 year
+  Cache-Control: public, max-age=31536000, immutable
+  
+/favicon.ico
+  # Cache favicon for 1 year
+  Cache-Control: public, max-age=31536000, immutable
