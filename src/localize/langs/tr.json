@@ -73,8 +73,12 @@
         "github": "https://github.com/ErenBoluk"
     },
     "portfolio": {
-        "title": "Portföyüm",
+        "title": "Portfolyo",
+        "headline_1": "Seçilmiş",
+        "headline_2": "Projeler",
+        "subtitle": "Backend sistemleri, yüksek performanslı mobil uygulamalar ve kurumsal güvenlik çözümlerinden oluşan bir sergi.",
         "visit": "Projeye git",
+        "internal_tool": "Kurumsal İç Proje",
         "projects": [
             {
                 "id": 1,

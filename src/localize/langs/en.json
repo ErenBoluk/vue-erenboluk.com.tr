@@ -74,7 +74,11 @@
   },
   "portfolio": {
     "title": "Portfolio",
+    "headline_1": "Selected",
+    "headline_2": "Projects",
+    "subtitle": "A showcase of architectural excellence in backend systems, high-performance mobile applications, and enterprise security solutions.",
     "visit": "Visit Project",
+    "internal_tool": "Internal Enterprise",
     "projects": [
       {
         "id": 1,

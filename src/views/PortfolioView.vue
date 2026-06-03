@@ -1,91 +1,108 @@
 <template>
-  <main class="portfolio min-h-screen p-6 md:p-12 relative overflow-hidden">
-    <!-- Background Elements -->
+  <main class="portfolio min-h-screen p-6 md:p-12 relative overflow-hidden isolate">
+    <!-- Background Elements (Same as HireMe) -->
     <div class="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
-      <div class="absolute top-0 left-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl animate-blob"></div>
-      <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl animate-blob animation-delay-2000"></div>
+      <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl animate-blob"></div>
+      <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl animate-blob animation-delay-2000"></div>
     </div>
 
     <div class="max-w-7xl mx-auto relative z-10">
-      <!-- Header -->
-      <div class="header-section mb-16 md:mb-24 will-change-transform">
-        <h1 class="inline-block text-white py-3 px-5 rounded-2xl mb-6 text-2xl md:text-3xl font-medium shadow-2xl border border-white/10 bg-neutral-900/50 backdrop-blur-md">
-          {{ $t('portfolio.title') }}
+      <!-- Header Section -->
+      <div ref="headerRef" class="header-section mb-16 md:mb-24 space-y-6">
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-purple-500"></span>
+          </span>
+          <span class="text-[10px] font-bold text-neutral-400 uppercase tracking-[0.2em]">{{ $t('portfolio.title') }}</span>
+        </div>
+        
+        <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-tight">
+          {{ $t('portfolio.headline_1') }} <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-indigo-400 to-purple-400 bg-[length:200%_auto] animate-gradient">{{ $t('portfolio.headline_2') }}</span>
         </h1>
-        <p class="text-neutral-400 text-lg max-w-2xl leading-relaxed">
-          Selected works showcasing expertise in backend systems, mobile applications, and secure data solutions.
+        
+        <p class="text-neutral-400 text-lg md:text-xl max-w-2xl leading-relaxed font-light">
+          {{ $t('portfolio.subtitle') }}
         </p>
       </div>
 
-      <!-- Grid -->
-      <div ref="gridRef" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+      <!-- Grid: High-End Card Design -->
+      <div ref="gridRef" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
         <article
-          v-for="project in projects"
+          v-for="(project, index) in projects"
           :key="project.id"
-          class="group relative bg-neutral-900/60 backdrop-blur-sm rounded-3xl border border-white/5 hover:border-white/20 transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-purple-900/20 z-0 hover:z-20 will-change-transform"
+          class="project-card group relative bg-neutral-900/40 backdrop-blur-xl border border-white/10 rounded-[2.5rem] overflow-hidden hover:border-purple-500/40 transition-all duration-700 hover:shadow-[0_0_50px_-12px_rgba(168,85,247,0.3)]"
         >
-          <!-- Image Thumbnail -->
-          <div class="h-56 w-full relative overflow-hidden rounded-t-3xl transform-gpu" style="-webkit-mask-image: -webkit-radial-gradient(white, black);">
+          <!-- Card Index (e.g., 01) -->
+          <div class="absolute top-8 left-8 z-20 opacity-20 group-hover:opacity-40 transition-opacity">
+            <span class="text-4xl font-black text-white italic tracking-tighter">0{{ index + 1 }}</span>
+          </div>
+
+          <!-- Image Container with Shine Effect -->
+          <div class="h-64 w-full relative overflow-hidden">
             <img 
               :src="project.img" 
               :alt="project.title"
-              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 will-change-transform"
+              class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
             />
-            <div class="absolute inset-0 bg-gradient-to-t from-neutral-900 via-neutral-900/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-500"></div>
             
-            <!-- Icon/Badge -->
-            <div class="absolute top-4 right-4 p-2 bg-black/40 backdrop-blur-md rounded-xl border border-white/10 z-10">
-              <component :is="project.icon" class="w-6 h-6 text-white/90" />
+            <!-- Shine Overlay -->
+            <div class="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
+            
+            <!-- Gradient Overlay -->
+            <div class="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/40 to-transparent opacity-90"></div>
+            
+            <!-- Floating Icon Badge -->
+            <div class="absolute top-8 right-8 p-3.5 bg-neutral-900/80 backdrop-blur-2xl rounded-2xl border border-white/10 shadow-2xl transform transition-all duration-500 group-hover:scale-110 group-hover:bg-purple-600/20 group-hover:border-purple-500/50">
+              <component :is="project.icon" class="w-6 h-6 text-purple-400 group-hover:text-white transition-colors" />
             </div>
-          </div>
 
-          <!-- Content -->
-          <div class="p-6 md:p-8 relative rounded-b-3xl">
-            <div class="flex flex-wrap gap-2 mb-4">
+            <!-- Tags -->
+            <div class="absolute bottom-8 left-8 flex flex-wrap gap-2">
               <span 
                 v-for="tag in project.tags" 
                 :key="tag"
-                class="text-xs font-medium px-2.5 py-1 rounded-lg bg-white/5 text-neutral-300 border border-white/5"
+                class="text-[10px] font-bold uppercase tracking-wider px-4 py-2 rounded-xl bg-white/5 text-neutral-300 border border-white/10 backdrop-blur-xl shadow-lg"
               >
                 {{ tag }}
               </span>
             </div>
+          </div>
 
-            <h3 class="text-2xl font-bold text-white mb-3 group-hover:text-purple-400 transition-colors">
-              {{ project.title }}
-            </h3>
-
-            <!-- Description with Popover -->
-            <div class="relative group/desc">
-              <p class="text-neutral-400 text-sm leading-relaxed mb-6 line-clamp-3">
+          <!-- Content Section -->
+          <div class="p-10 space-y-6">
+            <div class="space-y-3">
+              <h3 class="text-2xl md:text-3xl font-bold text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-purple-400 group-hover:to-indigo-400 transition-all duration-500">
+                {{ project.title }}
+              </h3>
+              <p class="text-neutral-400 text-sm md:text-base leading-relaxed font-light opacity-80 group-hover:opacity-100 transition-all duration-500 line-clamp-3 group-hover:line-clamp-none">
                 {{ project.desc }}
               </p>
-              
-              <!-- Popover -->
-              <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 bg-neutral-900 border border-white/10 p-4 rounded-xl shadow-2xl opacity-0 translate-y-2 pointer-events-none group-hover/desc:opacity-100 group-hover/desc:translate-y-0 transition-all duration-300 z-50">
-                <p class="text-neutral-200 text-sm leading-relaxed">
-                  {{ project.desc }}
-                </p>
-                <!-- Arrow -->
-                <div class="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-3 h-3 bg-neutral-900 border-b border-r border-white/10 rotate-45"></div>
-              </div>
             </div>
 
-            <!-- Action -->
-            <div class="pt-6 border-t border-white/5 flex items-center justify-between">
+            <!-- Action Section -->
+            <div class="pt-8 border-t border-white/5 flex items-center justify-between">
               <a
                 v-if="project.url"
                 :href="project.url"
                 target="_blank"
-                class="inline-flex items-center gap-2 text-sm font-medium text-white hover:text-purple-400 transition-colors"
+                class="inline-flex items-center gap-3 text-sm font-bold text-white hover:text-purple-400 transition-all group/link"
               >
-                {{ $t('portfolio.visit') }}
-                <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                <span class="relative">
+                  {{ $t('portfolio.visit') }}
+                  <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-purple-500 transition-all duration-300 group-hover/link:w-full"></span>
+                </span>
+                <div class="p-2 rounded-full bg-white/5 group-hover/link:bg-purple-500/20 group-hover/link:rotate-[-45deg] transition-all duration-500">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                </div>
               </a>
-              <span v-else class="text-sm font-medium text-neutral-600 cursor-not-allowed flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-neutral-600"></span>
-                Internal Tool
-              </span>
+              <div v-else class="flex items-center gap-2.5 px-4 py-2 rounded-xl bg-white/5 border border-white/5 backdrop-blur-sm">
+                <span class="relative flex h-1.5 w-1.5">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-neutral-600 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-1.5 w-1.5 bg-neutral-600"></span>
+                </span>
+                <span class="text-[10px] font-black uppercase tracking-widest text-neutral-500">{{ $t('portfolio.internal_tool') }}</span>
+              </div>
             </div>
           </div>
         </article>
@@ -109,6 +126,7 @@ import {
 
 const { t } = useI18n()
 const gridRef = ref(null)
+const headerRef = ref(null)
 
 useHead({
   title: () => t('seo.portfolio.title'),
@@ -183,33 +201,31 @@ const projects = computed(() => [
 ])
 
 onMounted(() => {
-  // Header Animation
-  gsap.fromTo('.header-section',
-    { opacity: 0, y: -30 },
-    { opacity: 1, y: 0, duration: 1, ease: 'power3.out' }
-  )
+  gsap.set('.header-section > *', { opacity: 0, y: 30 })
+  gsap.set('.project-card', { opacity: 0, y: 60 })
 
-  // Grid Animation
-  if (gridRef.value) {
-    gsap.fromTo(gridRef.value.children,
-      { opacity: 0, y: 30 }, // Reduced movement distance
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.6, // Slightly faster
-        stagger: 0.08, // Reduced stagger
-        ease: 'power2.out', // Simpler easing
-        delay: 0.1
-      }
-    )
-  }
+  const tl = gsap.timeline({ defaults: { ease: 'expo.out' } })
+
+  tl.to('.header-section > *', {
+    opacity: 1,
+    y: 0,
+    duration: 1.5,
+    stagger: 0.15
+  })
+
+  tl.to('.project-card', {
+    opacity: 1,
+    y: 0,
+    duration: 1.2,
+    stagger: 0.1,
+    clearProps: 'all'
+  }, '-=1')
 })
 </script>
 
 <style scoped>
 .animate-blob {
-  animation: blob 10s infinite;
-  will-change: transform; /* Optimize blob animation */
+  animation: blob 7s infinite;
 }
 
 .animation-delay-2000 {
@@ -217,9 +233,28 @@ onMounted(() => {
 }
 
 @keyframes blob {
-  0% { transform: translate3d(0px, 0px, 0) scale(1); }
-  33% { transform: translate3d(30px, -50px, 0) scale(1.1); }
-  66% { transform: translate3d(-20px, 20px, 0) scale(0.9); }
-  100% { transform: translate3d(0px, 0px, 0) scale(1); }
+  0% { transform: translate(0px, 0px) scale(1); }
+  33% { transform: translate(30px, -50px) scale(1.1); }
+  66% { transform: translate(-20px, 20px) scale(0.9); }
+  100% { transform: translate(0px, 0px) scale(1); }
+}
+
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-gradient {
+  animation: gradient 5s ease infinite;
+}
+
+.project-card {
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.project-card:hover {
+  transform: translateY(-12px) scale(1.02);
+  background-color: rgba(23, 23, 23, 0.6);
 }
 </style>

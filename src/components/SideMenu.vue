@@ -86,26 +86,37 @@ const closeSidebar = () => {
 
             <!-- Social Links -->
             <div class="mt-auto pt-6 border-t border-white/5">
-                <div class="flex gap-x-3 justify-center">
+                <div class="flex gap-x-4 justify-center">
                     <a 
                         :href="$t('social.github')" 
                         target="_blank"
-                        class="p-2 rounded-lg bg-white/5 text-neutral-400 hover:bg-white/10 hover:text-white hover:-translate-y-1 transition-all duration-300 border border-white/5"
+                        class="p-2.5 rounded-xl bg-white/5 text-neutral-400 hover:bg-white/10 hover:text-white hover:-translate-y-1 transition-all duration-300 border border-white/5 hover:border-white/20 group shadow-lg shadow-black/20"
                     >
-                        <img src="@/assets/brands/github.svg" alt="Github" class="w-4 h-4 opacity-70 group-hover:opacity-100 invert">
+                        <img src="@/assets/brands/github.svg" alt="Github" class="w-5 h-5 opacity-60 group-hover:opacity-100 transition-opacity">
                     </a>
                     <a 
                         :href="$t('social.linkedin')" 
                         target="_blank"
-                        class="p-2 rounded-lg bg-white/5 text-neutral-400 hover:bg-white/10 hover:text-white hover:-translate-y-1 transition-all duration-300 border border-white/5"
+                        class="p-2.5 rounded-xl bg-white/5 text-neutral-400 hover:bg-[#0077b5]/10 hover:text-[#0077b5] hover:-translate-y-1 transition-all duration-300 border border-white/5 hover:border-[#0077b5]/30 group shadow-lg shadow-black/20"
                     >
-                        <img src="@/assets/brands/linkedin.svg" alt="LinkedIn" class="w-4 h-4 opacity-70 group-hover:opacity-100">
+                        <img src="@/assets/brands/linkedin.svg" alt="LinkedIn" class="w-5 h-5 opacity-60 group-hover:opacity-100 transition-all duration-300 linkedin-icon">
                     </a>
                 </div>
-                <p class="text-[10px] text-center text-neutral-600 mt-4">
+                <p class="text-[10px] text-center text-neutral-600 mt-4 font-medium uppercase tracking-widest">
                     © {{ new Date().getFullYear() }} Eren Bölük
                 </p>
             </div>
         </div>
     </aside>
 </template>
+
+<style scoped>
+.linkedin-icon {
+  filter: brightness(0) invert(1); /* Ensure it's white initially if not already */
+}
+
+a:hover .linkedin-icon {
+  /* LinkedIn Blue: #0077b5 */
+  filter: invert(31%) sepia(98%) saturate(1908%) hue-rotate(174deg) brightness(91%) contrast(101%);
+}
+</style>
