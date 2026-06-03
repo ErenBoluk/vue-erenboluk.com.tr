@@ -2,6 +2,21 @@
 import { ref, onMounted, reactive } from 'vue'
 import { BriefcaseIcon, CheckCircleIcon } from '@heroicons/vue/24/outline'
 import { gsap } from 'gsap'
+import { useHead } from '@unhead/vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
+
+useHead({
+  title: () => t('seo.hireme.title'),
+  meta: [
+    { name: 'description', content: () => t('seo.hireme.description') },
+    { property: 'og:title', content: () => t('seo.hireme.title') },
+    { property: 'og:description', content: () => t('seo.hireme.description') },
+    { name: 'twitter:title', content: () => t('seo.hireme.title') },
+    { name: 'twitter:description', content: () => t('seo.hireme.description') }
+  ]
+})
 
 const formRef = ref(null)
 const leftColRef = ref(null)

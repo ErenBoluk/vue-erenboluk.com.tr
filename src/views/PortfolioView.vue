@@ -98,6 +98,7 @@
 import { ref, onMounted, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { gsap } from 'gsap'
+import { useHead } from '@unhead/vue'
 import { 
   CommandLineIcon, 
   DevicePhoneMobileIcon, 
@@ -108,6 +109,17 @@ import {
 
 const { t } = useI18n()
 const gridRef = ref(null)
+
+useHead({
+  title: () => t('seo.portfolio.title'),
+  meta: [
+    { name: 'description', content: () => t('seo.portfolio.description') },
+    { property: 'og:title', content: () => t('seo.portfolio.title') },
+    { property: 'og:description', content: () => t('seo.portfolio.description') },
+    { name: 'twitter:title', content: () => t('seo.portfolio.title') },
+    { name: 'twitter:description', content: () => t('seo.portfolio.description') }
+  ]
+})
 
 const projects = computed(() => [
   {

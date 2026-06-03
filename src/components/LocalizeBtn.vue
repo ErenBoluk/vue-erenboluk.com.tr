@@ -1,10 +1,13 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useI18n } from 'vue-i18n' 
+import { useRoute, useRouter } from 'vue-router'
 import { LanguageIcon } from '@heroicons/vue/24/outline'
 import { CheckIcon } from '@heroicons/vue/24/solid'
 
 const { locale, t } = useI18n()
+const route = useRoute()
+const router = useRouter()
 
 const showLocalizeModal = ref(false)
 const modalRef = ref(null)
@@ -29,9 +32,12 @@ const changeLanguage = (langCode) => {
     console.log(`Dil değiştiriliyor: ${locale.value} -> ${langCode}`);
     locale.value = langCode // vue-i18n locale'ini güncelle
     localStorage.setItem('user-locale', langCode) // Seçimi tarayıcı hafızasına kaydet
-    console.log(`Dil değiştirildi. Yeni locale: ${locale.value}`);
     
-    
+    // URL'yi yeni dile göre güncelle
+    router.push({
+      name: route.name || 'home',
+      params: { ...route.params, lang: langCode }
+    })
   }
   showLocalizeModal.value = false // Modalı kapat
 }

@@ -1,4 +1,22 @@
 {
+  "seo": {
+    "home": {
+      "title": "Eren Bölük - Web Developer Portfolio",
+      "description": "Eren Bölük is a passionate Web Developer specializing in Vue.js, modern frontend development, and secure backend systems."
+    },
+    "about": {
+      "title": "About Me - Eren Bölük",
+      "description": "Learn more about Eren Bölük's career journey, experience, and passion for technology."
+    },
+    "portfolio": {
+      "title": "Portfolio - Eren Bölük",
+      "description": "Explore selected works by Eren Bölük, showcasing expertise in backend systems, mobile apps, and enterprise solutions."
+    },
+    "hireme": {
+      "title": "Hire Me - Eren Bölük",
+      "description": "Get in touch with Eren Bölük for your next project. Let's build something amazing together."
+    }
+  },
   "sidebar": {
     "home": "Home",
     "about": "About",
@@ -8,11 +26,13 @@
   "home": {
     "about-text-1": "I specialize in backend development with expertise in APIs and databases.",
     "about-text-2": "Skilled in modern frontend tools, I create seamless and minimal designs.",
+    "alt-profile": "Eren Bölük - Web Developer Profile Photo",
     "copy-email": "Copy Email",
     "hireme": "Hire Me"
   },
   "about": {
     "title": "About Me",
+    "alt-profile": "Eren Bölük - Career Journey and Experience",
     "paragraphs": [
       {
         "title": "Hi there !",

@@ -72,7 +72,7 @@ const closeSidebar = () => {
                 <RouterLink 
                     v-for="item in menuItems"
                     :key="item.route"
-                    :to="{ name: item.route }"
+                    :to="{ name: item.route, params: { lang: $i18n.locale } }"
                     class="flex w-40 items-center justify-start gap-x-3 px-3 py-2.5 rounded-lg text-sm font-light text-neutral-400 transition-all duration-300 group hover:bg-white/5 hover:text-white border border-transparent"
                     active-class="!bg-purple-500/10 !text-purple-400 !border-purple-500/20 shadow-lg shadow-purple-900/10"
                     @click="closeSidebar">

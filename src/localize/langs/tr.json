@@ -1,4 +1,22 @@
 {
+    "seo": {
+        "home": {
+            "title": "Eren Bölük - Web Geliştirici Portfolyosu",
+            "description": "Eren Bölük; Vue.js, modern ön yüz geliştirme ve güvenli arka uç sistemleri konusunda uzmanlaşmış tutkulu bir Web Geliştiricisidir."
+        },
+        "about": {
+            "title": "Hakkımda - Eren Bölük",
+            "description": "Eren Bölük'ün kariyer yolculuğu, deneyimleri ve teknoloji tutkusu hakkında daha fazla bilgi edinin."
+        },
+        "portfolio": {
+            "title": "Portfolyo - Eren Bölük",
+            "description": "Eren Bölük tarafından geliştirilen backend sistemleri, mobil uygulamalar ve kurumsal çözümlerden oluşan seçkin projeleri inceleyin."
+        },
+        "hireme": {
+            "title": "İletişim - Eren Bölük",
+            "description": "Yeni bir proje için Eren Bölük ile iletişime geçin. Birlikte harika bir şeyler inşa edelim."
+        }
+    },
     "sidebar": {
         "home": "Ana Sayfa",
         "about": "Hakkımda",
@@ -8,11 +26,13 @@
     "home": {
         "about-text-1": "API ve veritabanı konularında uzman bir backend geliştiricisiyim.",
         "about-text-2": "Yeni nesil frontend araçlarıyla sade ve kusursuz tasarımlar kurarım.",
+        "alt-profile": "Eren Bölük - Web Geliştirici Profil Fotoğrafı",
         "copy-email": "E-postayı Kopyala",
-        "hireme": "Beni Tut"
+        "hireme": "Benimle Çalış"
     },
     "about": {
         "title": "Hakkımda",
+        "alt-profile": "Eren Bölük - Kariyer Yolculuğu ve Deneyimler",
         "paragraphs": [
             {
                 "title": "Merhaba !",
@@ -42,10 +62,15 @@
     },
     "general": {
         "download-cv": "CV İndir",
+        "downloaded": "CV İndirildi.",
         "cv-modal-title": "Dil Seçiniz",
         "download-tr": "Türkçe CV İndir",
         "download-en": "İngilizce CV İndir",
         "cancel": "İptal"
+    },
+    "social": {
+        "linkedin": "https://www.linkedin.com/in/erenboluk/",
+        "github": "https://github.com/ErenBoluk"
     },
     "portfolio": {
         "title": "Portföyüm",

@@ -2,6 +2,21 @@
 import {PlusCircleIcon,DocumentDuplicateIcon} from '@heroicons/vue/24/outline'
 import { gsap } from "gsap"
 import { onMounted, ref } from 'vue'
+import { useHead } from '@unhead/vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
+
+useHead({
+  title: () => t('seo.home.title'),
+  meta: [
+    { name: 'description', content: () => t('seo.home.description') },
+    { property: 'og:title', content: () => t('seo.home.title') },
+    { property: 'og:description', content: () => t('seo.home.description') },
+    { name: 'twitter:title', content: () => t('seo.home.title') },
+    { name: 'twitter:description', content: () => t('seo.home.description') }
+  ]
+})
 
 const isHovered = ref(false)
 const emailCopied = ref(false)
@@ -197,7 +212,7 @@ const copyEmail = () => {
           <div class="relative">
             <img
               src="/assets/img/me-min.jpg"
-              alt="Eren Bölük"
+              :alt="$t('home.alt-profile')"
               class="w-75 md:w-100 p-2 rounded-full  aspect-square"
             />
           </div>
@@ -222,7 +237,7 @@ const copyEmail = () => {
         <div class="flex gap-x-2 mt-1 button-container">
           <button
             class="hover-button rounded-lg border-1 bg-white text-black cursor-pointer mt-3 py-1 px-3 inline-block w-fit fs-sm ml-auto me-auto md:ml-0 md:me-0 hover:underline"
-            @click="$router.push({ name: 'hireme' })"
+            @click="$router.push({ name: 'hireme', params: { lang: locale } })"
             id="hire-me-button"
           >
             <div class="flex justify-center items-center gap-1">

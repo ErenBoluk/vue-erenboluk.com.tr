@@ -17,7 +17,7 @@
           <div class="absolute inset-0 bg-neutral-900 rounded-3xl border-2 border-white/10 overflow-hidden shadow-2xl transform transition-transform duration-500 group-hover:-translate-y-1">
             <img 
               src="/assets/img/me.png" 
-              alt="Eren Boluk" 
+              :alt="$t('about.alt-profile')" 
               class="w-full h-full object-cover object-top opacity-90 group-hover:opacity-100 transition-opacity duration-500"
             />
           </div>
@@ -96,6 +96,21 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { gsap } from 'gsap'
+import { useHead } from '@unhead/vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
+
+useHead({
+  title: () => t('seo.about.title'),
+  meta: [
+    { name: 'description', content: () => t('seo.about.description') },
+    { property: 'og:title', content: () => t('seo.about.title') },
+    { property: 'og:description', content: () => t('seo.about.description') },
+    { name: 'twitter:title', content: () => t('seo.about.title') },
+    { name: 'twitter:description', content: () => t('seo.about.description') }
+  ]
+})
 
 const card1 = ref(null)
 const card2 = ref(null)

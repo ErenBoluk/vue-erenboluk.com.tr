@@ -1,8 +1,53 @@
 <script setup>
+import { watch, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useHead } from '@unhead/vue'
+import { useRoute } from 'vue-router'
 import { RouterLink, RouterView } from 'vue-router'
 import SideMenu from '@/components/SideMenu.vue'
 import Cursor from '@/components/Cursor.vue'
 import {LanguageIcon} from '@heroicons/vue/24/outline'
+
+const { locale } = useI18n()
+const route = useRoute()
+
+// Update html lang attribute
+watch(locale, (newLocale) => {
+  document.documentElement.lang = newLocale
+}, { immediate: true })
+
+useHead({
+  link: [
+    {
+      rel: 'alternate',
+      hreflang: 'en',
+      href: () => {
+        const path = route.path.replace(/^\/(tr|en)/, '') || '/'
+        return `https://erenboluk.com.tr/en${path}`
+      }
+    },
+    {
+      rel: 'alternate',
+      hreflang: 'tr',
+      href: () => {
+        const path = route.path.replace(/^\/(tr|en)/, '') || '/'
+        return `https://erenboluk.com.tr/tr${path}`
+      }
+    },
+    {
+      rel: 'alternate',
+      hreflang: 'x-default',
+      href: () => {
+        const path = route.path.replace(/^\/(tr|en)/, '') || '/'
+        return `https://erenboluk.com.tr/en${path}`
+      }
+    }
+  ]
+})
+
+onMounted(() => {
+  document.documentElement.lang = locale.value
+})
 </script>
 
 <template>
