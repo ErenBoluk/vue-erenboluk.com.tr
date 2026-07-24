@@ -4,6 +4,13 @@ import { ArrowDownTrayIcon, CheckIcon } from '@heroicons/vue/24/outline'
 import { useI18n } from 'vue-i18n'
 import CvDownloadModal from './CvDownloadModal.vue'
 
+defineProps({
+  variant: {
+    type: String,
+    default: 'default' // 'default' | 'glass'
+  }
+})
+
 // State management
 const isDownloading = ref(false)
 const isDownloaded = ref(false)
@@ -69,8 +76,32 @@ const downloadCV = async (lang = 'tr') => {
 
 <template>
   <div class="relative flex items-center justify-center">
-    <!-- Buton -->
+    <!-- Glass Variant Button (for About page & modern sections) -->
     <button 
+      v-if="variant === 'glass'"
+      @click="showModal = true"
+      :disabled="isDownloading"
+      class="px-6 py-3 rounded-xl bg-white/5 border border-indigo-500/30 hover:bg-indigo-600/20 hover:border-indigo-500/60 text-white font-semibold text-sm shadow-[0_0_20px_rgba(99,102,241,0.15)] hover:shadow-[0_0_30px_rgba(99,102,241,0.35)] transition-all duration-300 backdrop-blur-xl cursor-pointer flex items-center gap-2.5 group active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+    >
+      <template v-if="isDownloading">
+        <div class="size-4 border-2 border-neutral-400 border-t-indigo-400 rounded-full animate-spin"></div>
+        <span>{{ $t('general.downloading') || 'İndiriliyor...' }}</span>
+      </template>
+
+      <template v-else-if="isDownloaded">
+        <CheckIcon class="size-4 text-emerald-400" />
+        <span class="text-emerald-400">{{ $t('general.downloaded') || 'İndirildi!' }}</span>
+      </template>
+
+      <template v-else>
+        <ArrowDownTrayIcon class="size-4 text-indigo-400 group-hover:translate-y-0.5 transition-transform" />
+        <span>{{ $t('general.download-cv') }}</span>
+      </template>
+    </button>
+
+    <!-- Default Spinning Border Button (for Sidebar / Nav) -->
+    <button 
+      v-else
       @click="showModal = true"
       :disabled="isDownloading"
       class="relative p-[2px] overflow-hidden rounded-lg cursor-pointer transition-all duration-300 hover:scale-105 active:scale-95"

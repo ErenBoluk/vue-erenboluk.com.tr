@@ -63,7 +63,7 @@
               <span>{{ $t('about.contact_me') }}</span>
             </button>
 
-            <DownloadCvBtn />
+            <DownloadCvBtn variant="glass" />
           </div>
         </div>
       </section>
