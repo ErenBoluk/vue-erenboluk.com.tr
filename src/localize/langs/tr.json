@@ -76,44 +76,103 @@
         "title": "Portfolyo",
         "headline_1": "Seçilmiş",
         "headline_2": "Projeler",
-        "subtitle": "Backend sistemleri, yüksek performanslı mobil uygulamalar ve kurumsal güvenlik çözümlerinden oluşan bir sergi.",
-        "visit": "Projeye git",
+        "subtitle": "Backend sistemleri, yüksek performanslı mobil uygulamalar ve kurumsal güvenlik çözümlerinden oluşan lansman sergisi.",
+        "visit": "Projeye Git",
         "internal_tool": "Kurumsal İç Proje",
+        "view_details": "Detayları İncele",
+        "filters": {
+            "all": "Tümü",
+            "backend": "Backend & Güvenlik",
+            "mobile": "Mobil & iOS",
+            "web": "Web & Analiz"
+        },
+        "view_modes": {
+            "showcase": "Yatay Vitrin",
+            "list": "Liste Görünümü"
+        },
+        "modal": {
+            "title": "Proje Detayları",
+            "tech_stack": "Kullanılan Teknolojiler",
+            "highlights": "Öne Çıkan Özellikler",
+            "close": "Kapat"
+        },
         "projects": [
             {
                 "id": 1,
                 "title": "Teknosa Transfer Tool",
-                "desc": "Teknosa şirketi tarafından üçüncü taraf yazılım kullanmadan dosya aktarımlarını güvenli bir şekilde gerçekleştirmek için kullanılan uygulama."
+                "category": "backend",
+                "desc": "Teknosa bünyesinde 3. taraf bağımlılıkları ortadan kaldıran, yüksek güvenlikli özel dosya transfer sistemi.",
+                "highlights": [
+                    "Sıfır 3. taraf bağımlılığı ile tam veri gizliliği",
+                    "Yüksek boyutlu kurumsal dosya aktarım mimarisi",
+                    "Gelişmiş yetkilendirme ve log denetimi"
+                ]
             },
             {
                 "id": 2,
                 "title": "Manas BI Tool",
-                "desc": "Manas şirketinin uygulamalarına ait bilgileri ve ödeme duvarı ödeme ekranlarının yönetimini gerçekleştiren şirket yönetim web sitesi."
+                "category": "web",
+                "desc": "Manas şirketinin mobil uygulamalarına ait analitik verilerin ve paywall ödeme ekranlarının canlı yönetildiği iş zekası paneli.",
+                "highlights": [
+                    "Dinamik Paywall & aboneksiyon yönetimi",
+                    "Gerçek zamanlı gelir ve kullanıcı analitiği",
+                    "Kapsamlı rol tabanlı yetki kontrolü"
+                ]
             },
             {
                 "id": 3,
                 "title": "Gappze BI Tool",
-                "desc": "Gappze şirketinin uygulamalarına ait bilgileri ve ödeme duvarı ödeme ekranlarının yönetimini gerçekleştiren şirket yönetim web sitesi."
+                "category": "web",
+                "desc": "Gappze ekosistemindeki uygulamaların performans metriklerini, abonelik akışlarını ve ödeme duvarlarını yöneten web platformu.",
+                "highlights": [
+                    "Vue.js tabanlı yüksek hızlı reaktif arayüz",
+                    "Uygulama bazlı detaylı raporlama ve grafikler",
+                    "Ödeme duvarı A/B test yapılandırması"
+                ]
             },
             {
                 "id": 4,
                 "title": "ArDraw Api & Admin panel",
-                "desc": "App Store'da şu anda mevcut olan ArDraw iOS uygulaması için içerik analizi ve yönetici paneli."
+                "category": "mobile",
+                "desc": "App Store'da yayında olan ArDraw iOS uygulaması için geliştirilmiş yüksek performanslı REST API ve içerik yönetim paneli.",
+                "highlights": [
+                    "iOS istemcisi için düşük gecikmeli API mimarisi",
+                    "Çizim şablonları ve içerik dağıtım yönetimi",
+                    "Kullanıcı etkileşimi analitik altyapısı"
+                ]
             },
             {
                 "id": 5,
                 "title": "Speedometer iOS App",
-                "desc": "Swift kullanarak, şu anda App Store'da bulunan Speedometer iOS mobil uygulamasının ilk sürümünü geliştirdim. Hem kullanıcı arayüzü tasarımından hem de genel işlevsellikten sorumluydum."
+                "category": "mobile",
+                "desc": "App Store'da canlıda bulunan, Swift ve CoreLocation altyapısıyla geliştirilmiş yüksek hassasiyetli GPS hız ölçüm uygulaması.",
+                "highlights": [
+                    "Swift & Native iOS mimarisi ile maksimum performans",
+                    "Gerçek zamanlı GPS konum ve hız takibi",
+                    "Özel arayüz ve kullanıcı dostu HUD göstergesi"
+                ]
             },
             {
                 "id": 6,
                 "title": "Fortunely iOS App Backend",
-                "desc": "Kişiselleştirilmiş günlük burç yorumları sunan Fortunely mobil uygulamasının arka ucu, güvenli ve ölçeklenebilir teknolojiler kullanılarak tamamen tarafımdan geliştirilmiştir."
+                "category": "backend",
+                "desc": "Kişiselleştirilmiş günlük içerikler sunan Fortunely mobil uygulamasının Node.js ve veritabanı altyapısına sahip mikroservis arka ucu.",
+                "highlights": [
+                    "Yüksek eşzamanlı istek kapasitesine sahip Node.js altyapısı",
+                    "Güvenli ve ölçeklenebilir veritabanı mimarisi",
+                    "Otomatik bildirim ve içerik dağıtım servisleri"
+                ]
             },
             {
                 "id": 7,
                 "title": "TEMSA Transfer Tool",
-                "desc": "Temsa şirketi tarafından üçüncü taraf yazılım kullanmadan dosya aktarımlarını güvenli bir şekilde gerçekleştirmek için kullanılan uygulama."
+                "category": "backend",
+                "desc": "TEMSA kurumsal yapısı için geliştirilen, hassas verilerin şifreli ve direkt sunucular arası aktarımını sağlayan özel sistem.",
+                "highlights": [
+                    "Uçtan uca şifreli güvenli dosya iletimi",
+                    "Kurumsal sunucu entegrasyonu ve yüksek izlenebilirlik",
+                    "Ağ optimizasyonlu hızlı aktarım protokolü"
+                ]
             }
         ]
     }

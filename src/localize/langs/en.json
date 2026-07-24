@@ -79,41 +79,100 @@
     "subtitle": "A showcase of architectural excellence in backend systems, high-performance mobile applications, and enterprise security solutions.",
     "visit": "Visit Project",
     "internal_tool": "Internal Enterprise",
+    "view_details": "View Details",
+    "filters": {
+      "all": "All",
+      "backend": "Backend & Security",
+      "mobile": "Mobile & iOS",
+      "web": "Web & Analytics"
+    },
+    "view_modes": {
+      "showcase": "Showcase View",
+      "list": "List View"
+    },
+    "modal": {
+      "title": "Project Details",
+      "tech_stack": "Technologies Used",
+      "highlights": "Key Highlights",
+      "close": "Close"
+    },
     "projects": [
       {
         "id": 1,
         "title": "Teknosa Transfer Tool",
-        "desc": "The application used by Teknosa company to securely perform file transfers without using third-party software."
+        "category": "backend",
+        "desc": "Custom secure file transfer system engineered for Teknosa to eliminate 3rd party software vulnerabilities and guarantee data sovereignty.",
+        "highlights": [
+          "Zero third-party dependency for complete privacy",
+          "High-capacity enterprise file transfer architecture",
+          "Advanced authorization and detailed audit logging"
+        ]
       },
       {
         "id": 2,
         "title": "Manas BI Tool",
-        "desc": "The company management website that handles the information of Manas company's applications and the management of paywall payment screens."
+        "category": "web",
+        "desc": "Enterprise Business Intelligence web platform managing application metrics, revenue analytics, and paywall configurations for Manas apps.",
+        "highlights": [
+          "Dynamic Paywall & subscription management",
+          "Real-time revenue and user behavior analytics",
+          "Comprehensive role-based access control (RBAC)"
+        ]
       },
       {
         "id": 3,
         "title": "Gappze BI Tool",
-        "desc": "The company management website that handles the information of Manas company's applications and the management of paywall payment screens."
+        "category": "web",
+        "desc": "Management web suite handling application analytics, user engagement, and paywall revenue operations across the Gappze ecosystem.",
+        "highlights": [
+          "Vue.js powered ultra-responsive UI dashboard",
+          "App-level detailed metrics and visual charts",
+          "Paywall A/B testing & configuration panel"
+        ]
       },
       {
         "id": 4,
         "title": "ArDraw Api & Admin panel",
-        "desc": "Content analysis and admin panel for the ArDraw iOS app currently available on the App Store."
+        "category": "mobile",
+        "desc": "High-performance REST API backend and administrative content management suite for the live ArDraw iOS application on the App Store.",
+        "highlights": [
+          "Low-latency API architecture for mobile clients",
+          "Drawing templates and content distribution suite",
+          "User engagement analytics infrastructure"
+        ]
       },
       {
         "id": 5,
         "title": "Speedometer iOS App",
-        "desc": "I developed the first version of the Speedometer iOS mobile application, currently live on the App Store, using Swift. I was responsible for both the UI design and the overall functionality."
+        "category": "mobile",
+        "desc": "High-precision native iOS speedometer application built with Swift and CoreLocation, live on the App Store with custom UI/UX.",
+        "highlights": [
+          "Swift & Native iOS architecture for maximum performance",
+          "Real-time GPS location tracking & speed telemetry",
+          "Custom dashboard interface and HUD display mode"
+        ]
       },
       {
         "id": 6,
         "title": "Fortunely iOS App Backend",
-        "desc": "The backend of the Fortunely mobile application, which enables personalized daily horoscopes, was fully developed by me using secure and scalable technologies."
+        "category": "backend",
+        "desc": "Scalable Node.js microservice backend powering the Fortunely iOS app with automated daily content generation and secure user auth.",
+        "highlights": [
+          "High-concurrency Node.js backend architecture",
+          "Secure and scalable database infrastructure",
+          "Automated push notifications & content scheduling"
+        ]
       },
       {
         "id": 7,
         "title": "TEMSA Transfer Tool",
-        "desc": "The application used by Temsa company to securely perform file transfers without using third-party software."
+        "category": "backend",
+        "desc": "Secure enterprise file transfer system developed for TEMSA, providing encrypted peer-to-server data exchange without external services.",
+        "highlights": [
+          "End-to-end encrypted secure file transmission",
+          "Enterprise server integration & audit traceability",
+          "Network-optimized high-speed transfer protocol"
+        ]
       }
     ]
   }
