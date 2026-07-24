@@ -32,19 +32,36 @@
     },
     "about": {
         "title": "Hakkımda",
+        "subtitle": "Kod, mimari ve yaratıcılıkla yüksek performanslı dijital deneyimler tasarlayan tutkulu yazılım geliştiricisi.",
         "alt-profile": "Eren Bölük - Kariyer Yolculuğu ve Deneyimler",
+        "status": "İş'e Açık & Yeni Projeler",
+        "location": "İstanbul, Türkiye",
+        "role": "Web & Backend Developer",
+        "stats": {
+            "exp": "5+ Yıl",
+            "exp_label": "Yazılım Deneyimi",
+            "projects": "7+ Proje",
+            "projects_label": "Canlı Sistem & Lansman",
+            "enterprise": "2 Kurumsal Sistem",
+            "enterprise_label": "Teknosa & TEMSA",
+            "tech": "Full-Stack",
+            "tech_label": "Vue, Swift, Node.js"
+        },
+        "skills_title": "Yetkinlikler & Teknoloji Yığını",
+        "skills_subtitle": "Ölçeklenebilir sistemlerden modern kullanıcı arayüzlerine uzanan teknolojik araçlar.",
+        "timeline_title": "Kariyer Yolculuğum & Kilometre Taşları",
         "paragraphs": [
             {
-                "title": "Merhaba !",
+                "title": "Tutku ve Başlangıç",
                 "text": "Ben Eren. Bilgisayar ve yazılıma çocukluğumdan beri tutkuyla bağlıyım. Bu yolculuğa lisede başladım, nesneye yönelik programlama becerilerimi geliştirdim ve yazılımın derinliklerini keşfettim."
             },
             {
-                "title": "Kariyer Gelişimi",
-                "text": "Kariyerime freelancer olarak başladım, staj yaptığım şirkette işe alındım. Zamanla güçlü backend sistemleri ve Swift ile iOS uygulamaları geliştirerek uzmanlaştım. Ölçeklenebilir ve etkili yazılım çözümleri üretmeye odaklandım."
+                "title": "Kariyer & Uzmanlaşma",
+                "text": "Kariyerime freelancer olarak başladım, staj yaptığım şirkette tam zamanlı yazılımcı olarak işe alındım. Zamanla güçlü backend sistemleri ve Swift ile yüksek performanslı iOS uygulamaları geliştirerek uzmanlaştım."
             },
             {
-                "title": "Deneyimim",
-                "text": "Türkiye'nin önde gelen teknoloji firmalarından Teknosa İç ve Dış Ticaret A.Ş. için bir iç dosya aktarım sistemi geliştirdim. Ayrıca Play Store'da bir uygulama yayımladım ve çalıştığım firmaya özel bir araç sıfırdan yaptım. Mobil uygulamalarda gelir artıran bir abonelik sistemi de kurdum."
+                "title": "Kurumsal Etki & Lansmanlar",
+                "text": "Teknosa ve TEMSA şirketleri için uçtan uca güvenli dosya aktarım sistemleri tasarladım. Ayrıca App Store'da canlı uygulamalar yayınladım, iş zekası panelleri ve mobil abonelik yönetim altyapıları kurdum."
             }
         ]
     },
