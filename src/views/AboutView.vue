@@ -57,10 +57,10 @@
           <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
             <button
               @click="$router.push({ name: 'hireme', params: { lang: locale } })"
-              class="px-6 py-3 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold text-sm shadow-[0_0_25px_rgba(168,85,247,0.4)] hover:scale-105 transition-all duration-300 cursor-pointer flex items-center gap-2"
+              class="px-6 py-3 rounded-xl bg-white/5 border border-purple-500/30 hover:bg-purple-600/20 hover:border-purple-500/60 text-white font-semibold text-sm shadow-[0_0_20px_rgba(168,85,247,0.15)] hover:shadow-[0_0_30px_rgba(168,85,247,0.35)] transition-all duration-300 backdrop-blur-xl cursor-pointer flex items-center gap-2.5 group"
             >
-              <span>{{ $t('home.hireme') }}</span>
-              <ArrowRightIcon class="w-4 h-4" />
+              <ChatBubbleLeftRightIcon class="w-4 h-4 text-purple-400 group-hover:scale-110 transition-transform" />
+              <span>{{ $t('about.contact_me') }}</span>
             </button>
 
             <DownloadCvBtn />
@@ -179,6 +179,7 @@ import DownloadCvBtn from '@/components/DownloadCvBtn.vue'
 import {
   MapPinIcon,
   ArrowRightIcon,
+  ChatBubbleLeftRightIcon,
   BriefcaseIcon,
   SparklesIcon,
   ShieldCheckIcon,
