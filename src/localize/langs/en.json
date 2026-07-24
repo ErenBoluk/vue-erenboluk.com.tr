@@ -28,6 +28,8 @@
     "about-text-2": "Skilled in modern frontend tools, I create seamless and minimal designs.",
     "alt-profile": "Eren Bölük - Web Developer Profile Photo",
     "copy-email": "Copy Email",
+    "copied": "Copied!",
+    "email_copied": "Email address copied!",
     "hireme": "Hire Me"
   },
   "about": {
@@ -50,6 +52,12 @@
     },
     "skills_title": "Skills & Tech Stack",
     "skills_subtitle": "Technological toolkit spanning scalable backend systems, mobile apps, and modern frontend interfaces.",
+    "skills": {
+      "backend": "Backend & API Architecture",
+      "frontend": "Frontend & Web Stack",
+      "mobile": "Mobile & Native iOS",
+      "enterprise": "Enterprise & Security Systems"
+    },
     "timeline_title": "Career Journey & Milestones",
     "paragraphs": [
       {
@@ -72,15 +80,19 @@
     "name": "Name",
     "email": "Email",
     "message": "Message",
+    "message_placeholder": "Tell me about your project...",
     "send": "Send",
     "sending": "Sending...",
+    "send_another": "Send another message",
     "open-work": "Open Work",
     "success_title": "Message Sent!",
     "success_message": "I'll get back to you as soon as possible."
   },
   "general": {
     "download-cv": "Download CV",
+    "downloading": "Downloading...",
     "downloaded": "CV Downloaded.",
+    "error_cv_not_found": "CV file not found. Please try again later.",
     "cv-modal-title": "Select Language",
     "download-tr": "Download Turkish CV",
     "download-en": "Download English CV",

@@ -251,7 +251,7 @@ const copyEmail = () => {
           >
             <div class="flex justify-center items-center gap-1">
               <DocumentDuplicateIcon class="size-5" />
-              <span>{{ emailCopied ? 'Kopyalandı!' : $t('home.copy-email') }}</span>
+              <span>{{ emailCopied ? $t('home.copied') : $t('home.copy-email') }}</span>
             </div>
           </button>
         </div>
@@ -261,7 +261,7 @@ const copyEmail = () => {
     <!-- Başarı bildirimi -->
     <Transition name="notification">
       <div v-if="emailCopied" class="fixed bottom-6 right-6 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50">
-        E-posta adresi kopyalandı!
+        {{ $t('home.email_copied') }}
       </div>
     </Transition>
   </main>

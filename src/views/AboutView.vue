@@ -253,22 +253,22 @@ const timelineIcons = [RocketLaunchIcon, ChartBarIcon, ShieldCheckIcon]
 // Skills Categories Grid
 const skillCategories = computed(() => [
   {
-    title: locale.value === 'tr' ? 'Backend & API Mimarı' : 'Backend & API Architecture',
+    title: t('about.skills.backend'),
     icon: CommandLineIcon,
     items: ['Node.js', 'Express.js', 'REST APIs', 'Security Protocols', 'PostgreSQL', 'MongoDB', 'Scalable Microservices']
   },
   {
-    title: locale.value === 'tr' ? 'Ön Yüz & Web Teknolojileri' : 'Frontend & Web Stack',
+    title: t('about.skills.frontend'),
     icon: CodeBracketIcon,
     items: ['Vue.js 3', 'JavaScript (ES6+)', 'Vite', 'Tailwind CSS', 'GSAP Motion', 'HTML5 & CSS3', 'Responsive UI']
   },
   {
-    title: locale.value === 'tr' ? 'Mobil & Native iOS' : 'Mobile & Native iOS',
+    title: t('about.skills.mobile'),
     icon: DevicePhoneMobileIcon,
     items: ['Swift', 'Native iOS Architecture', 'CoreLocation', 'Paywalls & Subscriptions', 'App Store Deployment']
   },
   {
-    title: locale.value === 'tr' ? 'Kurumsal & Güvenlik Sistemleri' : 'Enterprise & Security Systems',
+    title: t('about.skills.enterprise'),
     icon: CpuChipIcon,
     items: ['Private File Transfer Systems', 'Data Encryption Protocols', 'BI Analytics Dashboards', 'Git Workflow', 'Docker']
   }

@@ -183,7 +183,7 @@ const handleSubmit = async () => {
             <h3 class="text-2xl font-bold text-white mb-2">{{ $t('hireme.success_title') }}</h3>
             <p class="text-neutral-400">{{ $t('hireme.success_message') }}</p>
             <button @click="isSuccess = false" class="mt-8 text-purple-400 hover:text-purple-300 font-medium transition-colors">
-              Send another message
+              {{ $t('hireme.send_another') }}
             </button>
           </div>
 
@@ -226,7 +226,7 @@ const handleSubmit = async () => {
                   rows="4"
                   required
                   class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder-neutral-600 focus:outline-none focus:border-purple-500/50 focus:bg-white/10 transition-all duration-300 resize-none"
-                  placeholder="Tell me about your project..."
+                  :placeholder="$t('hireme.message_placeholder')"
                 ></textarea>
               </div>
             </div>

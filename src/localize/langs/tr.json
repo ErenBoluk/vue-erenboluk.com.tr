@@ -28,6 +28,8 @@
         "about-text-2": "Yeni nesil frontend araçlarıyla sade ve kusursuz tasarımlar kurarım.",
         "alt-profile": "Eren Bölük - Web Geliştirici Profil Fotoğrafı",
         "copy-email": "E-postayı Kopyala",
+        "copied": "Kopyalandı!",
+        "email_copied": "E-posta adresi kopyalandı!",
         "hireme": "Benimle Çalış"
     },
     "about": {
@@ -50,6 +52,12 @@
         },
         "skills_title": "Yetkinlikler & Teknoloji Yığını",
         "skills_subtitle": "Ölçeklenebilir sistemlerden modern kullanıcı arayüzlerine uzanan teknolojik araçlar.",
+        "skills": {
+            "backend": "Backend & API Mimarı",
+            "frontend": "Ön Yüz & Web Teknolojileri",
+            "mobile": "Mobil & Native iOS",
+            "enterprise": "Kurumsal & Güvenlik Sistemleri"
+        },
         "timeline_title": "Kariyer Yolculuğum & Kilometre Taşları",
         "paragraphs": [
             {
@@ -72,15 +80,19 @@
         "name": "İsim",
         "email": "E-posta",
         "message": "Mesaj",
+        "message_placeholder": "Projenizden bahsedin...",
         "send": "Gönder",
         "sending": "Gönderiliyor...",
+        "send_another": "Başka bir mesaj gönder",
         "open-work": "İş'e Açık ",
         "success_title": "Mesaj Gönderildi!",
         "success_message": "En kısa sürede size dönüş yapacağım."
     },
     "general": {
         "download-cv": "CV İndir",
+        "downloading": "İndiriliyor...",
         "downloaded": "CV İndirildi.",
+        "error_cv_not_found": "CV dosyası bulunamadı. Lütfen daha sonra tekrar deneyin.",
         "cv-modal-title": "Dil Seçiniz",
         "download-tr": "Türkçe CV İndir",
         "download-en": "İngilizce CV İndir",

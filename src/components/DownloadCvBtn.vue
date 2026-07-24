@@ -15,7 +15,7 @@ defineProps({
 const isDownloading = ref(false)
 const isDownloaded = ref(false)
 const showModal = ref(false)
-const { locale: siteLang } = useI18n()
+const { locale: siteLang, t } = useI18n()
 
 const cvFiles = {
   tr: {
@@ -67,7 +67,7 @@ const downloadCV = async (lang = 'tr') => {
 
   } catch (error) {
     console.error('Download failed:', error)
-    alert('CV dosyası bulunamadı. Lütfen daha sonra tekrar deneyin.')
+    alert(t('general.error_cv_not_found'))
   } finally {
     isDownloading.value = false
   }
@@ -85,12 +85,12 @@ const downloadCV = async (lang = 'tr') => {
     >
       <template v-if="isDownloading">
         <div class="size-4 border-2 border-neutral-400 border-t-indigo-400 rounded-full animate-spin"></div>
-        <span>{{ $t('general.downloading') || 'İndiriliyor...' }}</span>
+        <span>{{ $t('general.downloading') }}</span>
       </template>
 
       <template v-else-if="isDownloaded">
         <CheckIcon class="size-4 text-emerald-400" />
-        <span class="text-emerald-400">{{ $t('general.downloaded') || 'İndirildi!' }}</span>
+        <span class="text-emerald-400">{{ $t('general.downloaded') }}</span>
       </template>
 
       <template v-else>
@@ -126,13 +126,13 @@ const downloadCV = async (lang = 'tr') => {
         <span class="flex justify-center items-center gap-x-1">
           <!-- Loading State -->
           <template v-if="isDownloading">
-            <span class="text-sm">{{ $t('general.downloading') || 'İndiriliyor...' }}</span>
+            <span class="text-sm">{{ $t('general.downloading') }}</span>
             <div class="size-4 border-2 border-neutral-500 border-t-purple-400 rounded-full animate-spin"></div>
           </template>
           
           <!-- Success State -->
           <template v-else-if="isDownloaded">
-            <span class="text-sm text-green-400">{{ $t('general.downloaded') || 'İndirildi!' }}</span>
+            <span class="text-sm text-green-400">{{ $t('general.downloaded') }}</span>
             <CheckIcon class="size-4 text-green-400" />
           </template>
           

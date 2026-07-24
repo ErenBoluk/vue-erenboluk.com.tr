@@ -455,7 +455,7 @@ import {
   XMarkIcon
 } from '@heroicons/vue/24/outline'
 
-const { t, locale } = useI18n()
+const { t, tm, locale } = useI18n()
 
 // Page Meta & SEO
 useHead({
@@ -477,83 +477,35 @@ const scrollContainerRef = ref(null)
 const headerRef = ref(null)
 const activeModalProject = ref(null)
 
-// Raw Projects Data with explicit structured highlights arrays per language
+// Raw Projects Metadata
 const rawProjects = [
   {
     id: 1,
     img: '/assets/img/portfolio/teknosa.png',
     icon: ShieldCheckIcon,
     tags: ['Backend', 'Security', 'File Transfer'],
-    category: 'backend',
-    highlights: {
-      tr: [
-        'Sıfır 3. taraf bağımlılığı ile tam veri gizliliği',
-        'Yüksek boyutlu kurumsal dosya aktarım mimarisi',
-        'Gelişmiş yetkilendirme ve log denetimi'
-      ],
-      en: [
-        'Zero 3rd-party dependency for complete privacy',
-        'High-capacity enterprise file transfer architecture',
-        'Advanced authorization and detailed audit logging'
-      ]
-    }
+    category: 'backend'
   },
   {
     id: 2,
     img: '/assets/img/portfolio/manas.png',
     icon: ChartBarIcon,
     tags: ['BI Tool', 'Paywall Management', 'Web'],
-    category: 'web',
-    highlights: {
-      tr: [
-        'Dinamik Paywall & abonelik yönetimi',
-        'Gerçek zamanlı gelir ve kullanıcı analitiği',
-        'Kapsamlı rol tabanlı yetki kontrolü'
-      ],
-      en: [
-        'Dynamic Paywall & subscription management',
-        'Real-time revenue and user behavior analytics',
-        'Comprehensive role-based access control (RBAC)'
-      ]
-    }
+    category: 'web'
   },
   {
     id: 3,
     img: '/assets/img/portfolio/gappze.png',
     icon: ChartBarIcon,
     tags: ['Analytics', 'Dashboard', 'Vue.js'],
-    category: 'web',
-    highlights: {
-      tr: [
-        'Vue.js tabanlı yüksek hızlı reaktif arayüz',
-        'Uygulama bazlı detaylı raporlama ve grafikler',
-        'Ödeme duvarı A/B test yapılandırması'
-      ],
-      en: [
-        'Vue.js powered ultra-responsive UI dashboard',
-        'App-level detailed metrics and visual charts',
-        'Paywall A/B testing & configuration panel'
-      ]
-    }
+    category: 'web'
   },
   {
     id: 4,
     img: '/assets/img/portfolio/ardraw.png',
     icon: DevicePhoneMobileIcon,
     tags: ['iOS', 'Admin Panel', 'REST API'],
-    category: 'mobile',
-    highlights: {
-      tr: [
-        'iOS istemcisi için düşük gecikmeli API mimarisi',
-        'Çizim şablonları ve içerik dağıtım yönetimi',
-        'Kullanıcı etkileşimi analitik altyapısı'
-      ],
-      en: [
-        'Low-latency API architecture for mobile clients',
-        'Drawing templates and content distribution suite',
-        'User engagement analytics infrastructure'
-      ]
-    }
+    category: 'mobile'
   },
   {
     id: 5,
@@ -561,19 +513,7 @@ const rawProjects = [
     icon: DevicePhoneMobileIcon,
     tags: ['Swift', 'iOS', 'GPS Telemetry'],
     category: 'mobile',
-    url: 'https://apps.apple.com/us/app/speedometer-gps-tracker-mph/id6478858110',
-    highlights: {
-      tr: [
-        'Swift & Native iOS mimarisi ile maksimum performans',
-        'Gerçek zamanlı GPS konum ve hız takibi',
-        'Özel arayüz ve kullanıcı dostu HUD göstergesi'
-      ],
-      en: [
-        'Swift & Native iOS architecture for maximum performance',
-        'Real-time GPS location tracking & speed telemetry',
-        'Custom dashboard interface and HUD display mode'
-      ]
-    }
+    url: 'https://apps.apple.com/us/app/speedometer-gps-tracker-mph/id6478858110'
   },
   {
     id: 6,
@@ -581,46 +521,21 @@ const rawProjects = [
     icon: CommandLineIcon,
     tags: ['Backend', 'Node.js', 'Scalable'],
     category: 'backend',
-    url: 'https://apps.apple.com/us/app/ar-drawing-draw-projector-app/id6473737662',
-    highlights: {
-      tr: [
-        'Yüksek eşzamanlı istek kapasiteli Node.js altyapısı',
-        'Güvenli ve ölçeklenebilir veritabanı mimarisi',
-        'Otomatik bildirim ve içerik dağıtım servisleri'
-      ],
-      en: [
-        'High-concurrency Node.js backend architecture',
-        'Secure and scalable database infrastructure',
-        'Automated push notifications & content scheduling'
-      ]
-    }
+    url: 'https://apps.apple.com/us/app/ar-drawing-draw-projector-app/id6473737662'
   },
   {
     id: 7,
     img: '/assets/img/portfolio/temsa.png',
     icon: GlobeAltIcon,
     tags: ['Enterprise', 'Transfer Tool', 'Encryption'],
-    category: 'backend',
-    highlights: {
-      tr: [
-        'Uçtan uca şifreli güvenli dosya iletimi',
-        'Kurumsal sunucu entegrasyonu ve izlenebilirlik',
-        'Ağ optimizasyonlu hızlı aktarım protokolü'
-      ],
-      en: [
-        'End-to-end encrypted secure file transmission',
-        'Enterprise server integration & audit traceability',
-        'Network-optimized high-speed transfer protocol'
-      ]
-    }
+    category: 'backend'
   }
 ]
 
 // Computed Projects with localized title, desc & guaranteed array highlights
 const projects = computed(() => {
-  const currentLang = locale.value === 'tr' ? 'tr' : 'en'
   return rawProjects.map((p, idx) => {
-    const hlList = p.highlights && p.highlights[currentLang] ? p.highlights[currentLang] : []
+    const hlList = tm(`portfolio.projects.${idx}.highlights`)
     return {
       ...p,
       title: t(`portfolio.projects.${idx}.title`),
