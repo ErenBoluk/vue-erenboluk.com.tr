@@ -4,6 +4,7 @@ import { gsap } from "gsap"
 import { onMounted, ref } from 'vue'
 import { useHead } from '@unhead/vue'
 import { useI18n } from 'vue-i18n'
+import BackgroundOrbs from '@/components/BackgroundOrbs.vue'
 
 const { t } = useI18n()
 
@@ -204,7 +205,11 @@ const copyEmail = () => {
 </script>
 
 <template>
-  <main class="flex flex-col items-center justify-center">
+  <div class="relative w-full h-full min-h-[calc(100vh-5rem)] flex flex-col items-center justify-center overflow-hidden">
+    <!-- Arkaplan Gezinen Mor Küreler (Figma Layer Blur Background Orbs) -->
+    <BackgroundOrbs />
+    
+    <main class="relative z-10 flex flex-col items-center justify-center w-full">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-y-10 md:gap-y-0 md:gap-x-10">
       <!-- Profil Fotoğrafı -->
       <div class="personal-photo">
@@ -267,6 +272,7 @@ const copyEmail = () => {
       </div>
     </Transition>
   </main>
+</div>
 </template>
 
 <style scoped>
