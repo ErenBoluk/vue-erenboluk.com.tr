@@ -32,7 +32,7 @@
               @click="$emit('download', 'tr')"
               class="w-full flex items-center justify-center gap-2 p-3 rounded-xl bg-neutral-800 text-neutral-200 hover:bg-neutral-700 hover:text-white transition-all border border-white/5 group cursor-pointer"
             >
-              <span>🇹🇷</span>
+              <span class="text-xs font-mono font-bold px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/30">TR</span>
               <span class="font-medium">{{ $t('general.download-tr') }}</span>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
@@ -43,7 +43,7 @@
               @click="$emit('download', 'en')"
               class="w-full flex items-center justify-center gap-2 p-3 rounded-xl bg-neutral-800 text-neutral-200 hover:bg-neutral-700 hover:text-white transition-all border border-white/5 group cursor-pointer"
             >
-              <span>🇺🇸</span>
+              <span class="text-xs font-mono font-bold px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/30">EN</span>
               <span class="font-medium">{{ $t('general.download-en') }}</span>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />

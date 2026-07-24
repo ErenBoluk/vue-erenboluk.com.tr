@@ -115,7 +115,9 @@
 
             <div class="space-y-3">
               <h3 class="text-xl sm:text-2xl font-bold text-white flex items-center gap-3 group-hover:text-purple-300 transition-colors">
-                <span>{{ timelineIcons[index] }}</span>
+                <div class="p-1.5 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center shrink-0">
+                  <component :is="timelineIcons[index]" class="w-5 h-5 text-purple-400" />
+                </div>
                 <span>{{ para.title }}</span>
               </h3>
 
@@ -186,7 +188,9 @@ import {
   CodeBracketIcon,
   CommandLineIcon,
   DevicePhoneMobileIcon,
-  CpuChipIcon
+  CpuChipIcon,
+  RocketLaunchIcon,
+  ChartBarIcon
 } from '@heroicons/vue/24/outline'
 
 const { t, locale } = useI18n()
@@ -244,7 +248,7 @@ const paragraphs = computed(() => {
   ]
 })
 
-const timelineIcons = ['🚀', '📈', '🔒']
+const timelineIcons = [RocketLaunchIcon, ChartBarIcon, ShieldCheckIcon]
 
 // Skills Categories Grid
 const skillCategories = computed(() => [
