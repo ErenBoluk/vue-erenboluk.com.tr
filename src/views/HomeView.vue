@@ -30,10 +30,10 @@ onMounted(() => {
   const textTimeline = gsap.timeline()
   const imageTimeline = gsap.timeline()
   
-  // Resim animasyonu - daha dramatik ve akıcı entrance
+  // Resim animasyonu - şık dönen halka ve cam çerçeve girişi
   imageTimeline
     .fromTo(
-      ".personal-photo img",
+      ".profile-frame-wrapper",
       { 
         opacity: 0, 
         scale: 0.5, 
@@ -50,15 +50,6 @@ onMounted(() => {
         duration: 1.8, 
         ease: "elastic.out(1, 0.75)" 
       }
-    )
-    .to(
-      ".personal-photo img",
-      {
-        boxShadow: "0 20px 50px rgba(168, 85, 247, 0.4)",
-        duration: 0.8,
-        ease: "power2.out"
-      },
-      "-=0.5"
     )
   
   // Metin animasyonları - staggered ve smooth
@@ -148,23 +139,21 @@ onMounted(() => {
     .add(textTimeline, 0.3)
   
   // Hover efektleri
-  const profileImage = document.querySelector('.personal-photo img')
+  const profileWrapper = document.querySelector('.profile-frame-wrapper')
   const buttons = document.querySelectorAll('.hover-button')
   
-  if (profileImage) {
-    profileImage.addEventListener('mouseenter', () => {
-      gsap.to(profileImage, {
+  if (profileWrapper) {
+    profileWrapper.addEventListener('mouseenter', () => {
+      gsap.to(profileWrapper, {
         scale: 1.05,
-        rotation: 2,
         duration: 0.3,
         ease: "power2.out"
       })
     })
     
-    profileImage.addEventListener('mouseleave', () => {
-      gsap.to(profileImage, {
+    profileWrapper.addEventListener('mouseleave', () => {
+      gsap.to(profileWrapper, {
         scale: 1,
-        rotation: 0,
         duration: 0.3,
         ease: "power2.out"
       })
@@ -211,14 +200,18 @@ const copyEmail = () => {
     
     <main class="relative z-10 flex flex-col items-center justify-center w-full">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-y-10 md:gap-y-0 md:gap-x-10">
-      <!-- Profil Fotoğrafı -->
-      <div class="personal-photo">
-        <div class="flex justify-center">
-          <div class="relative">
+      <!-- Profil Fotoğrafı (İnce Derin Mor Dönen Halka & Cam Çerçeve) -->
+      <div class="personal-photo flex justify-center items-center">
+        <div class="profile-frame-wrapper relative p-[2px] rounded-full flex items-center justify-center cursor-pointer">
+          <!-- Dönen Neon Gradient Halka (İnce 2 Koyu Mor Ton) -->
+          <div class="rotating-gradient-ring"></div>
+          
+          <!-- İç Cam Çerçeve -->
+          <div class="relative z-10 p-1 md:p-1.5 rounded-full bg-neutral-950/90 backdrop-blur-xl border border-white/10 flex items-center justify-center">
             <img
               src="/assets/img/me-min.jpg"
               :alt="$t('home.alt-profile')"
-              class="w-75 md:w-100 p-2 rounded-full  aspect-square"
+              class="w-72 md:w-96 rounded-full aspect-square object-cover"
             />
           </div>
         </div>
@@ -276,6 +269,47 @@ const copyEmail = () => {
 </template>
 
 <style scoped>
+/* Profil Çerçevesi ve Dönen Neon Halka */
+.profile-frame-wrapper {
+  position: relative;
+  display: inline-flex;
+  will-change: transform;
+}
+
+.rotating-gradient-ring {
+  position: absolute;
+  inset: -1.5px;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 0deg,
+    #7e22ce,
+    #3b0764,
+    #6b21a8,
+    #3b0764,
+    #7e22ce
+  );
+  animation: spinGradient 14s linear infinite;
+  filter: drop-shadow(0 0 5px rgba(126, 34, 206, 0.35));
+  opacity: 0.85;
+  transition: opacity 0.4s ease, filter 0.4s ease;
+  will-change: transform;
+}
+
+.profile-frame-wrapper:hover .rotating-gradient-ring {
+  opacity: 1;
+  filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.6));
+  animation-duration: 7s;
+}
+
+@keyframes spinGradient {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* Notification animasyonu */
 .notification-enter-active,
 .notification-leave-active {

@@ -28,39 +28,39 @@
   transform: translate3d(0, 0, 0);
 }
 
-/* Büyük Mor Küre (Çok Koyu Derin Gece Moru) */
+/* Büyük Mor/İndigo Küre (Yumuşak İndigo-Viyole Işıltı) */
 .orb-large {
   top: 5%;
-  left: 10%;
-  width: 580px;
-  height: 580px;
+  left: 8%;
+  width: 560px;
+  height: 560px;
   background: radial-gradient(
     circle at center,
-    rgba(76, 29, 149, 0.6) 0%,
-    rgba(58, 12, 100, 0.45) 45%,
-    rgba(35, 8, 65, 0.25) 70%,
-    rgba(15, 3, 30, 0) 100%
+    rgba(124, 58, 237, 0.45) 0%,
+    rgba(79, 70, 229, 0.3) 45%,
+    rgba(49, 46, 129, 0.12) 70%,
+    rgba(15, 23, 42, 0) 100%
   );
-  filter: blur(105px);
-  opacity: 0.55;
+  filter: blur(95px);
+  opacity: 0.4;
   animation: floatLarge 22s ease-in-out infinite alternate;
 }
 
-/* Küçük Mor Küre (Çok Koyu Derin Viyole) */
+/* Küçük Ametist/Eflatun Küre (Yumuşak Ametist Işıltı) */
 .orb-small {
-  bottom: 10%;
-  right: 12%;
-  width: 380px;
-  height: 380px;
+  bottom: 8%;
+  right: 10%;
+  width: 360px;
+  height: 360px;
   background: radial-gradient(
     circle at center,
-    rgba(88, 28, 135, 0.65) 0%,
-    rgba(67, 20, 110, 0.45) 45%,
-    rgba(40, 10, 70, 0.25) 70%,
-    rgba(18, 4, 32, 0) 100%
+    rgba(168, 85, 247, 0.5) 0%,
+    rgba(147, 51, 234, 0.3) 45%,
+    rgba(88, 28, 135, 0.12) 70%,
+    rgba(24, 9, 38, 0) 100%
   );
-  filter: blur(90px);
-  opacity: 0.5;
+  filter: blur(80px);
+  opacity: 0.38;
   animation: floatSmall 16s ease-in-out infinite alternate;
 }
 
