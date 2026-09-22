@@ -26,6 +26,9 @@ app.post('/api/hire', async (c) => {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
       },
+      connectionTimeout: 10000, // 10 seconds timeout
+      greetingTimeout: 10000,
+      socketTimeout: 10000,
     })
 
     const mailOptions = {
@@ -36,12 +39,14 @@ app.post('/api/hire', async (c) => {
       text: `İsim: ${name}\nE-posta: ${email}\n\nMesaj:\n${message}`,
     }
 
+    console.log('Sending email to:', mailOptions.to, 'from:', mailOptions.from);
     await transporter.sendMail(mailOptions)
+    console.log('Email sent successfully');
     
     return c.json({ success: true, message: 'Mesaj başarıyla gönderildi' })
   } catch (error) {
     console.error('Email gönderim hatası:', error)
-    return c.json({ error: 'Mesaj gönderilirken bir hata oluştu' }, 500)
+    return c.json({ error: 'Mesaj gönderilirken bir hata oluştu: ' + (error as Error).message }, 500)
   }
 })
 
