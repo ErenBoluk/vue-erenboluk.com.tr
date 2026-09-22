@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, reactive } from 'vue'
+import { ref, onMounted, reactive, onUnmounted } from 'vue'
 import { BriefcaseIcon, CheckCircleIcon } from '@heroicons/vue/24/outline'
 import { gsap } from 'gsap'
 import { useHead } from '@unhead/vue'
@@ -35,7 +35,55 @@ const formData = reactive({
   message: ''
 })
 
+const spamTimeoutUntil = ref(0)
+const spamRemainingFormatted = ref('')
+let timerInterval = null
+
+const formatRemainingTime = (ms) => {
+  if (ms <= 0) return ''
+  const totalSeconds = Math.ceil(ms / 1000)
+  const minutes = Math.floor(totalSeconds / 60)
+  const seconds = totalSeconds % 60
+  if (minutes > 0) {
+    return `${minutes}m ${seconds}s`
+  }
+  return `${seconds}s`
+}
+
+const updateTimer = () => {
+  const now = Date.now()
+  if (spamTimeoutUntil.value > now) {
+    spamRemainingFormatted.value = formatRemainingTime(spamTimeoutUntil.value - now)
+  } else {
+    spamTimeoutUntil.value = 0
+    if (timerInterval) {
+      clearInterval(timerInterval)
+      timerInterval = null
+    }
+    localStorage.removeItem('hireMeTimeoutUntil')
+  }
+}
+
+onUnmounted(() => {
+  if (timerInterval) {
+    clearInterval(timerInterval)
+  }
+})
+
 onMounted(() => {
+  // Check local storage for spam timeout
+  const storedTimeout = localStorage.getItem('hireMeTimeoutUntil')
+  if (storedTimeout) {
+    const timeout = parseInt(storedTimeout, 10)
+    if (timeout > Date.now()) {
+      spamTimeoutUntil.value = timeout
+      updateTimer()
+      timerInterval = setInterval(updateTimer, 1000)
+    } else {
+      localStorage.removeItem('hireMeTimeoutUntil')
+    }
+  }
+
   // Initial setup
   const tl = gsap.timeline()
   
@@ -110,6 +158,17 @@ const handleSubmit = async () => {
         message: formData.message
       })
     })
+
+    if (response.status === 429) {
+      const errorData = await response.json().catch(() => ({}))
+      const retryAfterMs = errorData.retryAfterMs || 300000 // default 5 mins
+      spamTimeoutUntil.value = Date.now() + retryAfterMs
+      localStorage.setItem('hireMeTimeoutUntil', spamTimeoutUntil.value.toString())
+      updateTimer()
+      timerInterval = setInterval(updateTimer, 1000)
+      isSubmitting.value = false
+      return
+    }
 
     if (!response.ok) {
       throw new Error('Network response was not ok')
@@ -209,6 +268,19 @@ const handleSubmit = async () => {
             <button @click="isSuccess = false" class="mt-8 text-purple-400 hover:text-purple-300 font-medium transition-colors">
               {{ $t('hireme.send_another') }}
             </button>
+          </div>
+
+          <!-- Spam Overlay -->
+          <div v-if="spamTimeoutUntil > 0" class="absolute inset-0 flex flex-col items-center justify-center text-center p-8 z-30 bg-neutral-900/80 backdrop-blur-sm rounded-2xl transition-all duration-300">
+            <div class="w-16 h-16 border border-purple-500/30 bg-purple-500/10 rounded-full flex items-center justify-center mb-6 shadow-[0_0_15px_rgba(168,85,247,0.2)]">
+              <svg class="w-8 h-8 text-purple-400 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">{{ $t('hireme.spam_title') }}</h3>
+            <p class="text-neutral-400">
+              {{ $t('hireme.spam_message', { time: spamRemainingFormatted }) }}
+            </p>
           </div>
 
           <!-- Form -->

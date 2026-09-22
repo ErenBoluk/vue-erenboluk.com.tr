@@ -86,7 +86,9 @@
         "send_another": "Başka bir mesaj gönder",
         "open-work": "İş'e Açık ",
         "success_title": "Mesaj Gönderildi!",
-        "success_message": "En kısa sürede size dönüş yapacağım."
+        "success_message": "En kısa sürede size dönüş yapacağım.",
+        "spam_title": "Lütfen Bekleyin",
+        "spam_message": "Yeni bir mesaj göndermek için {time} beklemelisiniz."
     },
     "general": {
         "download-cv": "CV İndir",

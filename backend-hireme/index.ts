@@ -3,6 +3,13 @@ import { cors } from 'hono/cors'
 
 const app = new Hono()
 
+// Rate limiting state (in-memory)
+interface RateLimitData {
+  count: number;
+  firstRequestTime: number;
+}
+const rateLimitMap = new Map<string, RateLimitData>();
+
 // Tüm domainlerden gelen isteklere izin ver (Production'da sadece kendi siteni yazabilirsin)
 app.use('*', cors())
 
@@ -12,6 +19,29 @@ app.get('/', (c) => {
 
 app.post('/api/hire', async (c) => {
   try {
+    const ip = c.req.header('x-forwarded-for') || 'unknown_ip'
+    const now = Date.now()
+    const rateLimitMax = parseInt(process.env.RATE_LIMIT_MAX || '2', 10)
+    const rateLimitWindowMs = parseInt(process.env.RATE_LIMIT_WINDOW_MS || '300000', 10)
+
+    const limitData = rateLimitMap.get(ip)
+    if (limitData) {
+      if (now - limitData.firstRequestTime < rateLimitWindowMs) {
+        if (limitData.count >= rateLimitMax) {
+          const retryAfterMs = rateLimitWindowMs - (now - limitData.firstRequestTime)
+          return c.json({ 
+            error: 'Çok fazla istek gönderdiniz. Lütfen daha sonra tekrar deneyin.',
+            retryAfterMs
+          }, 429)
+        }
+        limitData.count++
+      } else {
+        rateLimitMap.set(ip, { count: 1, firstRequestTime: now })
+      }
+    } else {
+      rateLimitMap.set(ip, { count: 1, firstRequestTime: now })
+    }
+
     const body = await c.req.json()
     const { name, email, message } = body
 

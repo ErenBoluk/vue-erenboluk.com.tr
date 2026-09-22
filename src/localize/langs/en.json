@@ -86,7 +86,9 @@
     "send_another": "Send another message",
     "open-work": "Open Work",
     "success_title": "Message Sent!",
-    "success_message": "I'll get back to you as soon as possible."
+    "success_message": "I'll get back to you as soon as possible.",
+    "spam_title": "Please Wait",
+    "spam_message": "You can send another message in {time}."
   },
   "general": {
     "download-cv": "Download CV",
