@@ -94,8 +94,29 @@ const handleSubmit = async () => {
     repeat: 1
   })
   
-  // Simulate API call
-  await new Promise(resolve => setTimeout(resolve, 2000))
+  try {
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000/api/hire'
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: formData.name,
+        email: formData.email,
+        message: formData.message
+      })
+    })
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok')
+    }
+  } catch (error) {
+    console.error('Error sending message:', error)
+    alert('Mesaj gönderilirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.')
+    isSubmitting.value = false
+    return
+  }
   
   // Success transition
   const tl = gsap.timeline()
