@@ -21,10 +21,15 @@ app.post('/api/hire', async (c) => {
     }
 
     const transporter = nodemailer.createTransport({
-      service: 'gmail', // Kendi e-posta servisini yazabilirsin, Gmail için App Password gerekir
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true, // true for 465, false for other ports
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
+      },
+      tls: {
+        rejectUnauthorized: false
       },
       connectionTimeout: 10000, // 10 seconds timeout
       greetingTimeout: 10000,
