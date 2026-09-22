@@ -1,6 +1,5 @@
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
-import * as nodemailer from 'nodemailer'
 
 const app = new Hono()
 
@@ -20,34 +19,38 @@ app.post('/api/hire', async (c) => {
       return c.json({ error: 'Lütfen tüm alanları doldurun' }, 400)
     }
 
-    const transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 465,
-      secure: true, // true for 465, false for other ports
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-      tls: {
-        rejectUnauthorized: false
-      },
-      connectionTimeout: 10000, // 10 seconds timeout
-      greetingTimeout: 10000,
-      socketTimeout: 10000,
-    })
-
-    const mailOptions = {
-      from: `"${name}" <${process.env.EMAIL_USER}>`,
-      replyTo: email,
-      to: process.env.RECEIVER_EMAIL || process.env.EMAIL_USER,
-      subject: `Yeni İş Teklifi: ${name} (Portfolio)`,
-      text: `İsim: ${name}\nE-posta: ${email}\n\nMesaj:\n${message}`,
+    const resendApiKey = process.env.RESEND_API_KEY
+    if (!resendApiKey) {
+      console.error('RESEND_API_KEY eksik!')
+      return c.json({ error: 'Sunucu yapılandırma hatası (API Key eksik)' }, 500)
     }
 
-    console.log('Sending email to:', mailOptions.to, 'from:', mailOptions.from);
-    await transporter.sendMail(mailOptions)
-    console.log('Email sent successfully');
+    const receiverEmail = process.env.RECEIVER_EMAIL || 'erenboluk.dev@gmail.com'
+
+    // Resend HTTP API üzerinden mail gönderme
+    const response = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${resendApiKey}`
+      },
+      body: JSON.stringify({
+        // Resend'de domain onaylanana kadar gönderici adresi onboarding@resend.dev olmak zorundadır.
+        from: 'Portfolio Form <onboarding@resend.dev>',
+        to: receiverEmail,
+        reply_to: email,
+        subject: `Yeni İş Teklifi: ${name} (Portfolio)`,
+        text: `İsim: ${name}\nE-posta: ${email}\n\nMesaj:\n${message}`,
+      })
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json()
+      console.error('Resend API Hatası:', errorData)
+      throw new Error(errorData.message || 'Resend API error')
+    }
     
+    console.log('Email sent successfully via Resend');
     return c.json({ success: true, message: 'Mesaj başarıyla gönderildi' })
   } catch (error) {
     console.error('Email gönderim hatası:', error)
