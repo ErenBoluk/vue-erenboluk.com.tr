@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, reactive, onUnmounted } from 'vue'
+import { ref, onMounted, reactive, onUnmounted, nextTick } from 'vue'
 import { BriefcaseIcon, CheckCircleIcon } from '@heroicons/vue/24/outline'
 import { gsap } from 'gsap'
 import { useHead } from '@unhead/vue'
@@ -34,6 +34,18 @@ const formData = reactive({
   email: '',
   message: ''
 })
+
+const resetForm = async () => {
+  formData.name = ''
+  formData.email = ''
+  formData.message = ''
+  isSuccess.value = false
+  
+  await nextTick()
+  if (formRef.value) {
+    gsap.set(formRef.value, { clearProps: "all" })
+  }
+}
 
 const spamTimeoutUntil = ref(0)
 const spamRemainingFormatted = ref('')
@@ -265,22 +277,9 @@ const handleSubmit = async () => {
             </div>
             <h3 class="text-2xl font-bold text-white mb-2">{{ $t('hireme.success_title') }}</h3>
             <p class="text-neutral-400">{{ $t('hireme.success_message') }}</p>
-            <button @click="isSuccess = false" class="mt-8 text-purple-400 hover:text-purple-300 font-medium transition-colors">
+            <button @click="resetForm" class="mt-8 text-purple-400 hover:text-purple-300 font-medium transition-colors">
               {{ $t('hireme.send_another') }}
             </button>
-          </div>
-
-          <!-- Spam Overlay -->
-          <div v-if="spamTimeoutUntil > 0" class="absolute inset-0 flex flex-col items-center justify-center text-center p-8 z-30 bg-neutral-900/80 backdrop-blur-sm rounded-2xl transition-all duration-300">
-            <div class="w-16 h-16 border border-purple-500/30 bg-purple-500/10 rounded-full flex items-center justify-center mb-6 shadow-[0_0_15px_rgba(168,85,247,0.2)]">
-              <svg class="w-8 h-8 text-purple-400 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <h3 class="text-xl font-bold text-white mb-2">{{ $t('hireme.spam_title') }}</h3>
-            <p class="text-neutral-400">
-              {{ $t('hireme.spam_message', { time: spamRemainingFormatted }) }}
-            </p>
           </div>
 
           <!-- Form -->
@@ -346,6 +345,19 @@ const handleSubmit = async () => {
               </span>
             </button>
           </form>
+
+          <!-- Spam Overlay -->
+          <div v-if="spamTimeoutUntil > 0" class="absolute inset-0 flex flex-col items-center justify-center text-center p-8 z-30 bg-neutral-900/80 backdrop-blur-sm rounded-2xl transition-all duration-300">
+            <div class="w-16 h-16 border border-purple-500/30 bg-purple-500/10 rounded-full flex items-center justify-center mb-6 shadow-[0_0_15px_rgba(168,85,247,0.2)]">
+              <svg class="w-8 h-8 text-purple-400 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">{{ $t('hireme.spam_title') }}</h3>
+            <p class="text-neutral-400">
+              {{ $t('hireme.spam_message', { time: spamRemainingFormatted }) }}
+            </p>
+          </div>
         </div>
       </div>
     </div>

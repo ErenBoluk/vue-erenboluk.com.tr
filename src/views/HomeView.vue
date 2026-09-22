@@ -209,7 +209,7 @@ const copyEmail = () => {
           <!-- İç Cam Çerçeve -->
           <div class="relative z-10 p-1 md:p-1.5 rounded-full bg-neutral-950/90 backdrop-blur-xl border border-white/10 flex items-center justify-center">
             <img
-              src="/assets/img/me-min.jpg"
+              src="https://erenboluk-com-tr.b-cdn.net/erenbolukcomtr/assets/me-min.jpg"
               :alt="$t('home.alt-profile')"
               class="w-72 md:w-96 rounded-full aspect-square object-cover"
             />

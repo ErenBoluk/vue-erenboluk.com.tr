@@ -13,7 +13,7 @@
             
             <div class="relative z-10 p-1.5 md:p-2 rounded-full bg-neutral-950/90 backdrop-blur-xl border border-white/10 flex items-center justify-center">
               <img
-                src="/assets/img/me-min.jpg"
+                src="https://erenboluk-com-tr.b-cdn.net/erenbolukcomtr/assets/me-min.jpg"
                 :alt="$t('about.alt-profile')"
                 class="w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 rounded-full object-cover object-top shadow-2xl"
               />

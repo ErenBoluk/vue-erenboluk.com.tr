@@ -481,35 +481,35 @@ const activeModalProject = ref(null)
 const rawProjects = [
   {
     id: 1,
-    img: '/assets/img/portfolio/teknosa.png',
+    img: 'https://erenboluk-com-tr.b-cdn.net/erenbolukcomtr/assets/img/teknosa.png',
     icon: ShieldCheckIcon,
     tags: ['Backend', 'Security', 'File Transfer'],
     category: 'backend'
   },
   {
     id: 2,
-    img: '/assets/img/portfolio/manas.png',
+    img: 'https://erenboluk-com-tr.b-cdn.net/erenbolukcomtr/assets/img/manas.png',
     icon: ChartBarIcon,
     tags: ['BI Tool', 'Paywall Management', 'Web'],
     category: 'web'
   },
   {
     id: 3,
-    img: '/assets/img/portfolio/gappze.png',
+    img: 'https://erenboluk-com-tr.b-cdn.net/erenbolukcomtr/assets/img/gappze.png',
     icon: ChartBarIcon,
     tags: ['Analytics', 'Dashboard', 'Vue.js'],
     category: 'web'
   },
   {
     id: 4,
-    img: '/assets/img/portfolio/ardraw.png',
+    img: 'https://erenboluk-com-tr.b-cdn.net/erenbolukcomtr/assets/img/ardraw.png',
     icon: DevicePhoneMobileIcon,
     tags: ['iOS', 'Admin Panel', 'REST API'],
     category: 'mobile'
   },
   {
     id: 5,
-    img: '/assets/img/portfolio/speedometer.png',
+    img: 'https://erenboluk-com-tr.b-cdn.net/erenbolukcomtr/assets/img/speedometer.png',
     icon: DevicePhoneMobileIcon,
     tags: ['Swift', 'iOS', 'GPS Telemetry'],
     category: 'mobile',
@@ -517,7 +517,7 @@ const rawProjects = [
   },
   {
     id: 6,
-    img: '/assets/img/portfolio/fortunely.png',
+    img: 'https://erenboluk-com-tr.b-cdn.net/erenbolukcomtr/assets/img/fortunely.png',
     icon: CommandLineIcon,
     tags: ['Backend', 'Node.js', 'Scalable'],
     category: 'backend',
@@ -525,7 +525,7 @@ const rawProjects = [
   },
   {
     id: 7,
-    img: '/assets/img/portfolio/temsa.png',
+    img: 'https://erenboluk-com-tr.b-cdn.net/erenbolukcomtr/assets/img/temsa.png',
     icon: GlobeAltIcon,
     tags: ['Enterprise', 'Transfer Tool', 'Encryption'],
     category: 'backend'
