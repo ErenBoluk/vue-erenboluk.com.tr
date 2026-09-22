@@ -95,7 +95,10 @@ const handleSubmit = async () => {
   })
   
   try {
-    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000/api/hire'
+    let apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000/api/hire'
+    if (apiUrl && !apiUrl.endsWith('/api/hire')) {
+      apiUrl = `${apiUrl.replace(/\/$/, '')}/api/hire`
+    }
     const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
