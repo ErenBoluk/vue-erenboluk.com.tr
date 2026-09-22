@@ -59,4 +59,11 @@ router.beforeEach((to, from, next) => {
   return next({ name: to.name || 'home', params: { ...to.params, lang: savedLang } })
 })
 
+// Handle dynamic import errors (e.g. after a new deployment)
+router.onError((error, to) => {
+  if (error.message.includes('Failed to fetch dynamically imported module') || error.message.includes('Importing a module script failed')) {
+    window.location.href = to.fullPath
+  }
+})
+
 export default router
