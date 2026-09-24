@@ -223,7 +223,7 @@ const handleSubmit = async () => {
 </script>
 
 <template>
-  <main class="hireme min-h-screen flex items-center justify-center p-6 md:p-12 overflow-hidden relative isolate">
+  <main class="hireme min-h-screen flex items-start md:items-center justify-center p-6 pt-32 pb-24 md:p-12 overflow-x-hidden relative isolate">
     <!-- Background Elements -->
     <div class="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
       <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl animate-blob"></div>
@@ -233,7 +233,7 @@ const handleSubmit = async () => {
     <div class="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center relative z-10">
       
       <!-- Left Column: Context & Info -->
-      <div ref="leftColRef" class="space-y-8 text-center lg:text-left">
+      <div ref="leftColRef" class="space-y-8 text-center lg:text-left mt-8 md:mt-0">
         <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
           <span class="relative flex h-3 w-3">
             <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
@@ -242,7 +242,7 @@ const handleSubmit = async () => {
           <span class="text-sm font-medium text-neutral-300">{{ $t('hireme.open-work') }}</span>
         </div>
 
-        <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-tight">
+        <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-tight">
           {{ $t('hireme.headline') }}
         </h1>
 

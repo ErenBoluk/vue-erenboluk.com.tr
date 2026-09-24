@@ -10,8 +10,15 @@ interface RateLimitData {
 }
 const rateLimitMap = new Map<string, RateLimitData>();
 
-// Tüm domainlerden gelen isteklere izin ver (Production'da sadece kendi siteni yazabilirsin)
-app.use('*', cors())
+// Production için sadece kendi sitenden (ve yerel geliştirmeden) gelen isteklere izin ver
+app.use('*', cors({
+  origin: (origin) => {
+    if (origin && (origin.endsWith('erenboluk.com.tr') || origin.startsWith('http://localhost:'))) {
+      return origin;
+    }
+    return 'https://erenboluk.com.tr';
+  }
+}))
 
 app.get('/', (c) => {
   return c.text('HireMe Form Backend is running on Bun + Hono!')
