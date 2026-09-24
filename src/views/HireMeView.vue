@@ -271,7 +271,7 @@ const handleSubmit = async () => {
         <div class="relative bg-neutral-900/60 backdrop-blur-md border border-neutral-800 rounded-2xl p-8 md:p-10 shadow-2xl">
           
           <!-- Success Message -->
-          <div v-if="isSuccess" ref="successRef" class="absolute inset-0 flex flex-col items-center justify-center text-center p-8 z-20 bg-neutral-900/95 rounded-2xl">
+          <div v-if="isSuccess" ref="successRef" class="flex flex-col items-center justify-center text-center py-12 z-20">
             <div class="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mb-6">
               <CheckCircleIcon class="w-10 h-10 text-green-500" />
             </div>
