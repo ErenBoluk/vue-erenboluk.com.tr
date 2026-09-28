@@ -205,6 +205,28 @@
                     "Kurumsal sunucu entegrasyonu ve yüksek izlenebilirlik",
                     "Ağ optimizasyonlu hızlı aktarım protokolü"
                 ]
+            },
+            {
+                "id": 8,
+                "title": "Pokemon TCG Backend Service",
+                "category": "backend",
+                "desc": "Görselden AI ile kart tanıma, çok katmanlı (L1/L2) önbellekleme ve detaylı fiyatlandırma motoruna sahip, yüksek performanslı Node.js/Fastify backend servisi.",
+                "highlights": [
+                    "Fastify, Drizzle ORM ve PostgreSQL ile Clean Architecture tabanlı sistem tasarımı",
+                    "Redis ve SWR (Stale-While-Revalidate) yaklaşımı ile milisaniye altı (sub-millisecond) yanıt süreleri",
+                    "Circuit Breaker ve Strategy patternleri ile dirençli 3. taraf API entegrasyonu"
+                ]
+            },
+            {
+                "id": 9,
+                "title": "Hepapp Service",
+                "category": "backend",
+                "desc": "Çoklu mobil uygulamanın (iOS/Android) tek bir merkezden yönetilmesini sağlayan; abonelik, paywall, reklam ve A/B testleri yönetimini içeren kapsamlı MBaaS platformu.",
+                "highlights": [
+                    "Koa.js, TypeScript ve MySQL ile yüksek trafikli abonelik & cihaz yönetim mimarisi",
+                    "Uygulama içi satın alma, reklam (Monetization) konfigürasyonları ve A/B testleri için dinamik uzaktan yönetim altyapısı",
+                    "Redis caching, Docker konteynerizasyonu ve Railway üzerinden entegre kesintisiz CI/CD (Push Notification) süreçleri"
+                ]
             }
         ]
     }

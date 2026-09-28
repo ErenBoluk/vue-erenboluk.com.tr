@@ -205,6 +205,28 @@
           "Enterprise server integration & audit traceability",
           "Network-optimized high-speed transfer protocol"
         ]
+      },
+      {
+        "id": 8,
+        "title": "Pokemon TCG Backend Service",
+        "category": "backend",
+        "desc": "High-performance Node.js backend for a Pokémon TCG platform with image-based AI card recognition, robust multi-layer caching, and advanced pricing engines.",
+        "highlights": [
+          "Built on Clean Architecture with Fastify, Drizzle ORM, and PostgreSQL",
+          "Sub-millisecond response using Redis L1/L2 caching & SWR strategy",
+          "Resilient 3rd-party API integrations with Circuit Breaker and Strategy patterns"
+        ]
+      },
+      {
+        "id": 9,
+        "title": "Hepapp Service",
+        "category": "backend",
+        "desc": "A comprehensive MBaaS (Mobile Backend as a Service) platform centralizing device management, in-app purchases, paywalls, ad monetization, and A/B testing across multiple iOS/Android apps.",
+        "highlights": [
+          "Engineered a high-traffic subscription & device management architecture using Koa.js, TypeScript and MySQL",
+          "Built a dynamic remote config system for paywalls, ad placements, and user A/B testing",
+          "Integrated Redis caching, Docker containerization, and automated CI/CD via Railway"
+        ]
       }
     ]
   }

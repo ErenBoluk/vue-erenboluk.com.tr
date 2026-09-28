@@ -255,22 +255,22 @@ const skillCategories = computed(() => [
   {
     title: t('about.skills.backend'),
     icon: CommandLineIcon,
-    items: ['Node.js', 'Express.js', 'REST APIs', 'Security Protocols', 'PostgreSQL', 'MongoDB', 'Scalable Microservices']
+    items: ['Node.js', 'Bun', 'Fastify', 'Koa.js', 'Express.js', 'Prisma ORM', 'REST APIs', 'Security Protocols', 'PostgreSQL', 'MySQL', 'MongoDB', 'Scalable Microservices']
   },
   {
     title: t('about.skills.frontend'),
     icon: CodeBracketIcon,
-    items: ['Vue.js 3', 'JavaScript (ES6+)', 'Vite', 'Tailwind CSS', 'GSAP Motion', 'HTML5 & CSS3', 'Responsive UI']
+    items: ['Vue.js 3', 'React', 'JavaScript (ES6+)', 'Vite', 'Tailwind CSS', 'GSAP Motion', 'HTML5 & CSS3', 'Responsive UI']
   },
   {
     title: t('about.skills.mobile'),
     icon: DevicePhoneMobileIcon,
-    items: ['Swift', 'Native iOS Architecture', 'CoreLocation', 'Paywalls & Subscriptions', 'App Store Deployment']
+    items: ['Swift', 'Flutter', 'Native iOS Architecture', 'CoreLocation', 'Paywalls & Subscriptions', 'App Store Deployment']
   },
   {
     title: t('about.skills.enterprise'),
     icon: CpuChipIcon,
-    items: ['Private File Transfer Systems', 'Data Encryption Protocols', 'BI Analytics Dashboards', 'Git Workflow', 'Docker']
+    items: ['Private File Transfer Systems', 'Data Encryption Protocols', 'BI Analytics Dashboards', 'Git Workflow', 'Docker', 'Cyber Security', 'System Architecture', 'Performance Optimization', 'Linux']
   }
 ])
 

@@ -505,7 +505,8 @@ const rawProjects = [
     img: 'https://erenboluk-com-tr.b-cdn.net/erenbolukcomtr/assets/img/ardraw.png',
     icon: DevicePhoneMobileIcon,
     tags: ['iOS', 'Admin Panel', 'REST API'],
-    category: 'mobile'
+    category: 'mobile',
+    url: 'https://apps.apple.com/us/app/ar-drawing-draw-projector-app/id6473737662'
   },
   {
     id: 5,
@@ -520,14 +521,27 @@ const rawProjects = [
     img: 'https://erenboluk-com-tr.b-cdn.net/erenbolukcomtr/assets/img/fortunely.png',
     icon: CommandLineIcon,
     tags: ['Backend', 'Node.js', 'Scalable'],
-    category: 'backend',
-    url: 'https://apps.apple.com/us/app/ar-drawing-draw-projector-app/id6473737662'
+    category: 'backend'
   },
   {
     id: 7,
     img: 'https://erenboluk-com-tr.b-cdn.net/erenbolukcomtr/assets/img/temsa.png',
     icon: GlobeAltIcon,
     tags: ['Enterprise', 'Transfer Tool', 'Encryption'],
+    category: 'backend'
+  },
+  {
+    id: 8,
+    img: 'https://erenboluk-com-tr.b-cdn.net/erenbolukcomtr/assets/img/pokemon.png',
+    icon: CommandLineIcon,
+    tags: ['Node.js', 'Fastify', 'Redis', 'Architecture'],
+    category: 'backend'
+  },
+  {
+    id: 9,
+    img: 'https://erenboluk-com-tr.b-cdn.net/erenbolukcomtr/assets/img/hepapp.png',
+    icon: CommandLineIcon,
+    tags: ['Koa.js', 'Prisma ORM', 'MySQL', 'Docker'],
     category: 'backend'
   }
 ]
