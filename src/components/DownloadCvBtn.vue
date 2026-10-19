@@ -1,180 +1,74 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onBeforeUnmount, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import { ArrowDownTrayIcon, CheckIcon } from '@heroicons/vue/24/outline'
 import { useI18n } from 'vue-i18n'
 import CvDownloadModal from './CvDownloadModal.vue'
-
-defineProps({
-  variant: {
-    type: String,
-    default: 'default' // 'default' | 'glass'
-  }
-})
-
-// State management
+defineProps({ variant: { type: String, default: 'default' } })
 const isDownloading = ref(false)
 const isDownloaded = ref(false)
+const errorMessage = ref('')
 const showModal = ref(false)
-const { locale: siteLang, t } = useI18n()
-
+const { t } = useI18n()
+const route = useRoute()
+let timer, controller, objectUrl, disposed = false
 const cvFiles = {
-  tr: {
-    path: 'assets/cv/cv-turkish.pdf',
-    name: 'Eren Bölük - CV (Turkish).pdf'
-  },
-  en: {
-    path: 'assets/cv/cv-english.pdf',
-    name: 'Eren Boluk - CV (English).pdf'
-  }
+  tr: { path: 'assets/cv/cv-turkish.pdf', name: 'Eren Bölük - CV (Turkish).pdf' },
+  en: { path: 'assets/cv/cv-english.pdf', name: 'Eren Boluk - CV (English).pdf' }
 }
-
-const getCvFile = (lang) => {
-  return cvFiles[lang] || cvFiles['tr']
+function openCvModal() {
+  if (!isDownloading.value && !isDownloaded.value) showModal.value = true
 }
-
-const downloadCV = async (lang = 'tr') => {
+async function downloadCV(lang = 'tr') {
   if (isDownloading.value || isDownloaded.value) return
-  
-  // Close modal if open
   showModal.value = false
-
+  errorMessage.value = ''
+  isDownloading.value = true
+  controller = new AbortController()
   try {
-    isDownloading.value = true
-
-    const { path, name } = getCvFile(lang)
-    const response = await fetch(path)
-
-    if (!response.ok) {
-      throw new Error('CV file not found')
-    }
-
+    const { path, name } = cvFiles[lang] || cvFiles.tr
+    const response = await fetch(`${import.meta.env.BASE_URL}${path}`, { signal: controller.signal })
+    if (!response.ok) throw new Error('CV file not found')
     const blob = await response.blob()
-    const url = window.URL.createObjectURL(blob)
+    if (disposed) return
+    objectUrl = URL.createObjectURL(blob)
     const link = document.createElement('a')
-    link.href = url
+    link.href = objectUrl
     link.download = name
-
     document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-    window.URL.revokeObjectURL(url)
-
+    try { link.click() } finally { link.remove() }
     isDownloaded.value = true
-
-    setTimeout(() => {
+    timer = window.setTimeout(() => {
       isDownloaded.value = false
+      URL.revokeObjectURL(objectUrl)
+      objectUrl = undefined
     }, 3000)
-
   } catch (error) {
-    console.error('Download failed:', error)
-    alert(t('general.error_cv_not_found'))
-  } finally {
-    isDownloading.value = false
-  }
+    if (error.name !== 'AbortError' && !disposed) errorMessage.value = t('general.error_cv_not_found')
+  } finally { if (!disposed) isDownloading.value = false }
 }
+watch(() => route.fullPath, () => { showModal.value = false })
+onBeforeUnmount(() => {
+  disposed = true
+  controller?.abort()
+  clearTimeout(timer)
+  if (objectUrl) URL.revokeObjectURL(objectUrl)
+})
 </script>
-
 <template>
-  <div class="relative flex items-center justify-center">
-    <!-- Glass Variant Button (for About page & modern sections) -->
-    <button 
-      v-if="variant === 'glass'"
-      @click="showModal = true"
-      :disabled="isDownloading"
-      class="px-6 py-3 rounded-xl bg-white/5 border border-indigo-500/30 hover:bg-indigo-600/20 hover:border-indigo-500/60 text-white font-semibold text-sm shadow-[0_0_20px_rgba(99,102,241,0.15)] hover:shadow-[0_0_30px_rgba(99,102,241,0.35)] transition-all duration-300 backdrop-blur-xl cursor-pointer flex items-center gap-2.5 group active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
-    >
-      <template v-if="isDownloading">
-        <div class="size-4 border-2 border-neutral-400 border-t-indigo-400 rounded-full animate-spin"></div>
-        <span>{{ $t('general.downloading') }}</span>
-      </template>
-
-      <template v-else-if="isDownloaded">
-        <CheckIcon class="size-4 text-emerald-400" />
-        <span class="text-emerald-400">{{ $t('general.downloaded') }}</span>
-      </template>
-
-      <template v-else>
-        <ArrowDownTrayIcon class="size-4 text-indigo-400 group-hover:translate-y-0.5 transition-transform" />
-        <span>{{ $t('general.download-cv') }}</span>
-      </template>
+  <div class="cv-control" :data-variant="variant">
+    <button type="button" class="aura-button" :aria-disabled="isDownloading || isDownloaded" :aria-busy="isDownloading" aria-haspopup="dialog" @click="openCvModal">
+      <CheckIcon v-if="isDownloaded" class="size-5 shrink-0" aria-hidden="true" />
+      <ArrowDownTrayIcon v-else class="size-5 shrink-0" aria-hidden="true" />
+      <span>{{ isDownloading ? t('general.downloading') : isDownloaded ? t('general.downloaded') : t('general.download-cv') }}</span>
     </button>
-
-    <!-- Default Spinning Border Button (for Sidebar / Nav) -->
-    <button 
-      v-else
-      @click="showModal = true"
-      :disabled="isDownloading"
-      class="relative p-[2px] overflow-hidden rounded-lg cursor-pointer transition-all duration-300 hover:scale-105 active:scale-95"
-      :class="{ 'cursor-not-allowed': isDownloading }"
-    >
-      <!-- Dönen Kenarlık -->
-      <div 
-        class="absolute top-1/2 left-1/2 w-[400%] h-[400%] transition-all duration-300"
-        :class="[
-          isDownloaded ? 'animate-pulse' : 'animate-spin-slow',
-          isDownloading ? 'opacity-50' : 'opacity-100'
-        ]"
-        :style="isDownloaded 
-          ? 'background: conic-gradient(rgba(34, 197, 94, 0.8) 0deg, rgba(34, 197, 94, 0.8) 60deg, transparent 150deg);' 
-          : 'background: conic-gradient(rgba(244, 114, 182, 0.8) 0deg, rgba(192, 132, 252, 0.8) 60deg, transparent 150deg);'
-        "
-      >
-      </div>
-
-      <!-- Buton İçeriği -->
-      <div class="relative flex items-center justify-center bg-secondary p-3 text-neutral-400 rounded-md shadow-lg transition-all duration-300 hover:bg-neutral-800">
-        <span class="flex justify-center items-center gap-x-1">
-          <!-- Loading State -->
-          <template v-if="isDownloading">
-            <span class="text-sm">{{ $t('general.downloading') }}</span>
-            <div class="size-4 border-2 border-neutral-500 border-t-purple-400 rounded-full animate-spin"></div>
-          </template>
-          
-          <!-- Success State -->
-          <template v-else-if="isDownloaded">
-            <span class="text-sm text-green-400">{{ $t('general.downloaded') }}</span>
-            <CheckIcon class="size-4 text-green-400" />
-          </template>
-          
-          <!-- Default State -->
-          <template v-else>
-            <span>{{ $t('general.download-cv') }}</span>
-            <ArrowDownTrayIcon class="size-4 inline-block ms-1 transition-transform duration-300 group-hover:translate-y-0.5" />
-          </template>
-        </span>
-      </div>
-    </button>
-
-    <CvDownloadModal 
-      :is-visible="showModal"
-      @close="showModal = false"
-      @download="downloadCV"
-    />
+    <span class="sr-only" role="status">{{ isDownloading ? t('general.downloading') : isDownloaded ? t('general.downloaded') : '' }}</span>
+    <p v-if="errorMessage" role="alert" class="cv-error aura-surface">{{ errorMessage }}</p>
+    <CvDownloadModal :is-visible="showModal" @close="showModal = false" @download="downloadCV" />
   </div>
 </template>
-
 <style scoped>
-@keyframes spinSlow {
-  0% { transform: translate(-50%, -50%) rotate(0deg); }
-  100% { transform: translate(-50%, -50%) rotate(360deg); }
-}
-
-.animate-spin-slow {
-  animation: spinSlow 5s linear infinite;
-}
-
-/* Hover effects */
-button:hover .group-hover\:translate-y-0\.5 {
-  transform: translateY(2px);
-}
-
-/* Pulse animation for success state */
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
-}
-
-.animate-pulse {
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
+.cv-control { position: relative; min-width: 0; }
+.cv-control > button[aria-disabled="true"] { opacity: .55; cursor: not-allowed; }
+.cv-error { position: absolute; right: 0; top: calc(100% + 8px); padding: 12px; width: min(280px, 80vw); color: var(--aura-text); font-size: 14px; z-index: 2; }
 </style>

@@ -21,7 +21,10 @@
     "home": "Home",
     "about": "About",
     "portfolio": "Portfolio",
-    "hireme": "Hire Me"
+    "hireme": "Hire Me",
+    "open-menu": "Open navigation",
+    "close-menu": "Close navigation",
+    "navigation": "Main navigation"
   },
   "home": {
     "about-text-1": "I specialize in backend development with expertise in APIs and databases.",
@@ -30,7 +33,11 @@
     "copy-email": "Copy Email",
     "copied": "Copied!",
     "email_copied": "Email address copied!",
-    "hireme": "Hire Me"
+    "hireme": "Hire Me",
+    "copy-error": "Could not copy the email address. Please use {email}.",
+    "section-about": "Biography, career and skills",
+    "section-portfolio": "Projects, filters and details",
+    "section-contact": "Contact and collaboration"
   },
   "about": {
     "title": "About Me",
@@ -88,7 +95,8 @@
     "success_title": "Message Sent!",
     "success_message": "I'll get back to you as soon as possible.",
     "spam_title": "Please Wait",
-    "spam_message": "You can send another message in {time}."
+    "spam_message": "You can send another message in {time}.",
+    "error": "Your message could not be sent. Please try again."
   },
   "general": {
     "download-cv": "Download CV",
@@ -98,7 +106,8 @@
     "cv-modal-title": "Select Language",
     "download-tr": "Download Turkish CV",
     "download-en": "Download English CV",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "close-dialog": "Close dialog"
   },
   "social": {
     "linkedin": "https://www.linkedin.com/in/erenboluk/",
@@ -228,6 +237,8 @@
           "Integrated Redis caching, Docker containerization, and automated CI/CD via Railway"
         ]
       }
-    ]
+    ],
+    "previous": "Previous project",
+    "next": "Next project"
   }
 }

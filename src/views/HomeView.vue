@@ -1,12 +1,20 @@
 <script setup>
-import {PlusCircleIcon,DocumentDuplicateIcon} from '@heroicons/vue/24/outline'
-import { gsap } from "gsap"
-import { onMounted, ref } from 'vue'
+import { onMounted, onBeforeUnmount, ref } from 'vue'
+import { RouterLink } from 'vue-router'
+import { ArrowUpRightIcon, DocumentDuplicateIcon, CheckIcon } from '@heroicons/vue/24/outline'
+import { gsap } from 'gsap'
 import { useHead } from '@unhead/vue'
 import { useI18n } from 'vue-i18n'
-import BackgroundOrbs from '@/components/BackgroundOrbs.vue'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
+const rootRef = ref(null)
+const portraitStageRef = ref(null)
+const portraitRef = ref(null)
+const emailCopied = ref(false)
+const copyFailed = ref(false)
+const isCopying = ref(false)
+let motionContext, media, feedbackTimer
+let disposed = false
 
 useHead({
   title: () => t('seo.home.title'),
@@ -19,310 +27,176 @@ useHead({
   ]
 })
 
-const isHovered = ref(false)
-const emailCopied = ref(false)
+async function copyEmail() {
+  if (isCopying.value) return
+  isCopying.value = true
+  emailCopied.value = false
+  copyFailed.value = false
+  clearTimeout(feedbackTimer)
+  try {
+    await navigator.clipboard.writeText('erenboluk.dev@gmail.com')
+    if (disposed) return
+    emailCopied.value = true
+    feedbackTimer = window.setTimeout(() => { emailCopied.value = false }, 2000)
+  } catch {
+    if (!disposed) copyFailed.value = true
+  } finally {
+    if (!disposed) isCopying.value = false
+  }
+}
 
 onMounted(() => {
-  // Ana timeline oluştur
-  const tl = gsap.timeline()
-  
-  // Paralel animasyonlar için ayrı timeline'lar
-  const textTimeline = gsap.timeline()
-  const imageTimeline = gsap.timeline()
-  
-  // Resim animasyonu - şık dönen halka ve cam çerçeve girişi
-  imageTimeline
-    .fromTo(
-      ".profile-frame-wrapper",
-      { 
-        opacity: 0, 
-        scale: 0.5, 
-        rotation: -15,
-        filter: "blur(15px)",
-        y: 50
-      },
-      { 
-        opacity: 1, 
-        scale: 1, 
-        rotation: 0,
-        filter: "blur(0px)",
-        y: 0,
-        duration: 1.8, 
-        ease: "elastic.out(1, 0.75)" 
+  const root = rootRef.value
+  const stage = portraitStageRef.value
+  const portrait = portraitRef.value
+  motionContext = gsap.context(() => {
+    media = gsap.matchMedia()
+    media.add({
+      motion: '(prefers-reduced-motion: no-preference)',
+      pointer: '(hover: hover) and (pointer: fine)'
+    }, ({ conditions }) => {
+      if (!conditions.motion) return
+      const entrance = gsap.fromTo(root.querySelectorAll('[data-hero-enter]'),
+        { opacity: 0, y: 12 },
+        { opacity: 1, y: 0, duration: 0.5, stagger: 0.05, ease: 'power2.out', clearProps: 'opacity,transform' }
+      )
+      const finishEntrance = () => entrance.progress(1)
+      root.addEventListener('focusin', finishEntrance)
+      let cleanPointer = () => {}
+      if (conditions.pointer) {
+        let bounds
+        const xTo = gsap.quickTo(portrait, 'x', { duration: 0.18, ease: 'power2.out' })
+        const yTo = gsap.quickTo(portrait, 'y', { duration: 0.18, ease: 'power2.out' })
+        const reset = () => { bounds = null; xTo(0); yTo(0) }
+        const enter = event => {
+          if (event.pointerType === 'mouse') bounds = stage.getBoundingClientRect()
+        }
+        const move = event => {
+          if (event.pointerType !== 'mouse' || !bounds || document.hidden) return
+          xTo(gsap.utils.clamp(-6, 6, ((event.clientX - bounds.left) / bounds.width - 0.5) * 12))
+          yTo(gsap.utils.clamp(-6, 6, ((event.clientY - bounds.top) / bounds.height - 0.5) * 12))
+        }
+        const visibility = () => {
+          if (document.hidden) {
+            entrance.progress(1)
+            bounds = null
+            xTo.tween.pause()
+            yTo.tween.pause()
+            gsap.set(portrait, { x: 0, y: 0 })
+          }
+        }
+        stage.addEventListener('pointerenter', enter, { passive: true })
+        stage.addEventListener('pointermove', move, { passive: true })
+        stage.addEventListener('pointerleave', reset, { passive: true })
+        window.addEventListener('resize', reset, { passive: true })
+        window.addEventListener('blur', reset)
+        document.addEventListener('visibilitychange', visibility)
+        cleanPointer = () => {
+          stage.removeEventListener('pointerenter', enter)
+          stage.removeEventListener('pointermove', move)
+          stage.removeEventListener('pointerleave', reset)
+          window.removeEventListener('resize', reset)
+          window.removeEventListener('blur', reset)
+          document.removeEventListener('visibilitychange', visibility)
+          xTo.tween.kill()
+          yTo.tween.kill()
+        }
       }
-    )
-  
-  // Metin animasyonları - staggered ve smooth
-  textTimeline
-    .fromTo(
-      ".account-infos h1",
-      { 
-        opacity: 0, 
-        y: 40,
-        filter: "blur(10px)"
-      },
-      { 
-        opacity: 1, 
-        y: 0,
-        filter: "blur(0px)",
-        duration: 1.2, 
-        ease: "power4.out" 
+      return () => {
+        root.removeEventListener('focusin', finishEntrance)
+        cleanPointer()
       }
-    )
-    .fromTo(
-      ".account-infos .job-title",
-      { 
-        opacity: 0, 
-        x: -30,
-        filter: "blur(5px)"
-      },
-      { 
-        opacity: 1, 
-        x: 0,
-        filter: "blur(0px)",
-        duration: 1, 
-        ease: "power3.out" 
-      },
-      "-=0.8"
-    )
-    .fromTo(
-      ".account-infos .short-about-text p",
-      { 
-        opacity: 0, 
-        y: 20
-      },
-      { 
-        opacity: 1, 
-        y: 0,
-        duration: 0.8, 
-        ease: "power2.out",
-        stagger: 0.15
-      },
-      "-=0.6"
-    )
-    .fromTo(
-      ".account-infos .button-container",
-      { 
-        opacity: 0, 
-        y: 20,
-        scale: 0.95
-      },
-      { 
-        opacity: 1, 
-        y: 0,
-        scale: 1,
-        duration: 0.8, 
-        ease: "back.out(1.5)" 
-      },
-      "-=0.4"
-    )
-    .fromTo(
-      ".account-infos button",
-      { 
-        opacity: 0, 
-        scale: 0.8,
-        rotationY: 90
-      },
-      { 
-        opacity: 1, 
-        scale: 1, 
-        rotationY: 0,
-        duration: 0.6, 
-        ease: "power2.out",
-        stagger: 0.1
-      },
-      "-=0.5"
-    )
-  
-  // Timeline'ları paralel çalıştır
-  tl.add(imageTimeline, 0)
-    .add(textTimeline, 0.3)
-  
-  // Hover efektleri
-  const profileWrapper = document.querySelector('.profile-frame-wrapper')
-  const buttons = document.querySelectorAll('.hover-button')
-  
-  if (profileWrapper) {
-    profileWrapper.addEventListener('mouseenter', () => {
-      gsap.to(profileWrapper, {
-        scale: 1.05,
-        duration: 0.3,
-        ease: "power2.out"
-      })
     })
-    
-    profileWrapper.addEventListener('mouseleave', () => {
-      gsap.to(profileWrapper, {
-        scale: 1,
-        duration: 0.3,
-        ease: "power2.out"
-      })
-    })
-  }
-  
-  // Buton hover efektleri
-  buttons.forEach(button => {
-    button.addEventListener('mouseenter', () => {
-      gsap.to(button, {
-        scale: 1.05,
-        y: -2,
-        duration: 0.2,
-        ease: "power2.out"
-      })
-    })
-    
-    button.addEventListener('mouseleave', () => {
-      gsap.to(button, {
-        scale: 1,
-        y: 0,
-        duration: 0.2,
-        ease: "power2.out"
-      })
-    })
-  })
-});
+  }, root)
+})
 
-// Email kopyalama fonksiyonu
-const copyEmail = () => {
-  navigator.clipboard.writeText('erenboluk.dev@gmail.com').then(() => {
-    emailCopied.value = true
-    setTimeout(() => {
-      emailCopied.value = false
-    }, 2000)
-  })
-}
+onBeforeUnmount(() => {
+  disposed = true
+  clearTimeout(feedbackTimer)
+  media?.revert()
+  motionContext?.revert()
+})
 </script>
 
 <template>
-  <div class="relative w-full h-full min-h-[calc(100vh-5rem)] flex flex-col items-center justify-center overflow-hidden">
-    <!-- Arkaplan Gezinen Mor Küreler (Figma Layer Blur Background Orbs) -->
-    <BackgroundOrbs />
-    
-    <main class="relative z-10 flex flex-col items-center justify-center w-full">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-y-10 md:gap-y-0 md:gap-x-10">
-      <!-- Profil Fotoğrafı (İnce Derin Mor Dönen Halka & Cam Çerçeve) -->
-      <div class="personal-photo flex justify-center items-center">
-        <div class="profile-frame-wrapper relative p-[2px] rounded-full flex items-center justify-center cursor-pointer">
-          <!-- Dönen Neon Gradient Halka (İnce 2 Koyu Mor Ton) -->
-          <div class="rotating-gradient-ring"></div>
-          
-          <!-- İç Cam Çerçeve -->
-          <div class="relative z-10 p-1 md:p-1.5 rounded-full bg-neutral-950/90 backdrop-blur-xl border border-white/10 flex items-center justify-center">
-            <img
-              src="https://erenboluk-com-tr.b-cdn.net/erenbolukcomtr/assets/me-min.jpg"
-              :alt="$t('home.alt-profile')"
-              class="w-72 md:w-96 rounded-full aspect-square object-cover"
-            />
-          </div>
+  <main ref="rootRef" class="graphite-hero" aria-labelledby="home-title">
+    <div class="hero-layout">
+      <div class="hero-copy">
+        <p class="hero-kicker" data-hero-enter>Eren Bölük · Web Developer</p>
+        <h1 id="home-title" class="hero-name" data-hero-enter>Eren <span>Bölük<span class="hero-period" aria-hidden="true">.</span></span></h1><p class="hero-role" data-hero-enter>Web Developer</p>
+        <div class="hero-introduction" data-hero-enter>
+          <p>{{ t('home.about-text-1') }}</p>
+          <p>{{ t('home.about-text-2') }}</p>
+        </div>
+        <div class="hero-actions aura-actions">
+          <RouterLink id="hire-me-button" class="aura-button aura-button-primary" :to="{ name: 'hireme', params: { lang: locale } }">
+            {{ t('home.hireme') }}<ArrowUpRightIcon class="size-5" aria-hidden="true" />
+          </RouterLink>
+          <button id="copy-email-button" type="button" class="aura-button hero-copy-button" :aria-busy="isCopying" @click="copyEmail">
+            <CheckIcon v-if="emailCopied" class="size-5" aria-hidden="true" />
+            <DocumentDuplicateIcon v-else class="size-5" aria-hidden="true" />
+            <span>{{ emailCopied ? t('home.copied') : t('home.copy-email') }}</span>
+          </button>
+        </div>
+        <div class="hero-feedback" role="status" aria-live="polite" aria-atomic="true">
+          <p v-if="emailCopied">{{ t('home.email_copied') }}</p>
+          <p v-else-if="copyFailed">{{ t('home.copy-error', { email: 'erenboluk.dev@gmail.com' }) }}</p>
         </div>
       </div>
-      
-      <!-- Hesap Bilgileri -->
-      <div class="text-center md:text-left flex flex-col justify-center account-infos">
-        <h1 class="text-5xl font-bold">EREN BÖLÜK</h1>
-        
-        <div class="text-purple-400 text-2xl my-3 job-title">Web Developer</div>
-        
-        <div class="space-y-5 short-about-text">
-          <p class="font-light text-lg">
-            {{ $t('home.about-text-1') }}
-          </p>
-          <p class="font-light text-lg">
-            {{ $t('home.about-text-2') }}
-          </p>
-        </div>
-        
-        <div class="flex gap-x-2 mt-1 button-container">
-          <button
-            class="hover-button rounded-lg border-1 bg-white text-black cursor-pointer mt-3 py-1 px-3 inline-block w-fit fs-sm ml-auto me-auto md:ml-0 md:me-0 hover:underline"
-            @click="$router.push({ name: 'hireme', params: { lang: locale } })"
-            id="hire-me-button"
-          >
-            <div class="flex justify-center items-center gap-1">
-              <PlusCircleIcon class="size-5" />
-              <span>{{ $t('home.hireme') }}</span>
-            </div>
-          </button>
-          
-          <button
-            class="hover-button border-neutral-700 rounded-lg border-1 cursor-pointer mt-3 py-1 px-3 inline-block w-fit fs-sm ml-auto me-auto md:ml-0 md:me-0 hover:underline"
-            @click="copyEmail"
-            id="copy-email-button"
-          >
-            <div class="flex justify-center items-center gap-1">
-              <DocumentDuplicateIcon class="size-5" />
-              <span>{{ emailCopied ? $t('home.copied') : $t('home.copy-email') }}</span>
-            </div>
-          </button>
+      <div ref="portraitStageRef" class="hero-portrait-stage">
+        <div class="hero-portrait-entrance" data-hero-enter>
+          <figure ref="portraitRef" class="hero-portrait-frame">
+            <img src="https://erenboluk-com-tr.b-cdn.net/erenbolukcomtr/assets/me-min.jpg" :alt="t('home.alt-profile')" width="640" height="640" fetchpriority="high" decoding="async" />
+            <figcaption aria-hidden="true">Eren Bölük / Web Developer</figcaption>
+          </figure>
         </div>
       </div>
     </div>
-    
-    <!-- Başarı bildirimi -->
-    <Transition name="notification">
-      <div v-if="emailCopied" class="fixed bottom-6 right-6 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50">
-        {{ $t('home.email_copied') }}
-      </div>
-    </Transition>
+    <nav class="hero-route-strip" :aria-label="t('sidebar.navigation')">
+      <RouterLink :to="{ name: 'about', params: { lang: locale } }"><span>{{ t('sidebar.about') }}<ArrowUpRightIcon aria-hidden="true" /></span><small>{{ t('home.section-about') }}</small></RouterLink>
+      <RouterLink :to="{ name: 'portfolio', params: { lang: locale } }"><span>{{ t('sidebar.portfolio') }}<ArrowUpRightIcon aria-hidden="true" /></span><small>{{ t('home.section-portfolio') }}</small></RouterLink>
+      <RouterLink :to="{ name: 'hireme', params: { lang: locale } }"><span>{{ t('sidebar.hireme') }}<ArrowUpRightIcon aria-hidden="true" /></span><small>{{ t('home.section-contact') }}</small></RouterLink>
+    </nav>
   </main>
-</div>
 </template>
 
 <style scoped>
-/* Profil Çerçevesi ve Dönen Neon Halka */
-.profile-frame-wrapper {
-  position: relative;
-  display: inline-flex;
-  will-change: transform;
+.graphite-hero { color: var(--aura-text); isolation: isolate; }
+.hero-layout { display: grid; align-items: center; gap: 40px; padding-block: 38px 48px; }
+.hero-copy { min-width: 0; }
+.hero-kicker { margin: 0 0 28px; color: var(--aura-accent); font-size: 11px; font-weight: 500; letter-spacing: .17em; text-transform: uppercase; }
+.hero-name { margin: 0 0 28px; font-size: clamp(3rem, 10vw, 3.625rem); font-weight: 600; line-height: .98; letter-spacing: -.065em; }
+.hero-name > span { display: block; }
+.hero-period { color: var(--aura-text); }
+.hero-role { margin-bottom: 20px; font-size: 20px; line-height: 1.4; }
+.hero-introduction { color: var(--aura-muted); max-width: 48ch; font-size: 16px; line-height: 1.8; }
+.hero-introduction p + p { margin-top: 16px; }
+.hero-actions { margin-top: 28px; }
+.hero-actions .aura-button { min-height: 44px; padding: 11px 18px; font-size: 14px; text-decoration: none; }
+.hero-copy-button { min-width: 142px; }
+.hero-feedback { min-height: 32px; max-width: 48ch; padding-top: 12px; color: var(--aura-accent); font-size: 13px; line-height: 1.6; }
+.hero-portrait-stage { position: relative; width: 100%; max-width: 220px; justify-self: start; }
+.hero-portrait-stage::before { content: ''; position: absolute; inset: -30px; z-index: -1; border-radius: 50%; background: radial-gradient(ellipse, rgb(196 181 253 / .06), transparent 68%); pointer-events: none; }
+.hero-portrait-frame { margin: 0; padding: 13px; background: var(--aura-canvas); border: 1px solid rgb(244 244 245 / .16); border-radius: 8px; }
+.hero-portrait-frame img { display: block; width: 100%; height: auto; aspect-ratio: 1 / 1.12; object-fit: cover; border-radius: 3px; filter: grayscale(30%); }
+figcaption { margin-top: 12px; color: var(--aura-muted); font-size: 10px; line-height: 1.5; letter-spacing: .06em; text-transform: uppercase; }
+.hero-route-strip { display: grid; gap: 0; border-top: 1px solid var(--aura-divider); }
+.hero-route-strip a { display: block; padding-block: 20px; text-decoration: none; border-bottom: 1px solid var(--aura-divider); }
+.hero-route-strip a > span { display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 500; }
+.hero-route-strip svg { width: 14px; height: 14px; color: var(--aura-muted); transition: transform 180ms ease, color 180ms ease; }
+.hero-route-strip small { display: block; margin-top: 7px; color: var(--aura-muted); font-size: 12px; line-height: 1.6; }
+.hero-route-strip a:hover svg { transform: translate(2px, -2px); color: var(--aura-accent); }
+@media (min-width: 768px) {
+  .hero-layout { padding-block: 56px 64px; }
+  .hero-name { font-size: clamp(4.5rem, 6.5vw, 5.5rem); }
+  .hero-route-strip { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
+  .hero-route-strip a { border-bottom: 0; padding-block: 24px 12px; }
 }
-
-.rotating-gradient-ring {
-  position: absolute;
-  inset: -1.5px;
-  border-radius: 50%;
-  background: conic-gradient(
-    from 0deg,
-    #7e22ce,
-    #3b0764,
-    #6b21a8,
-    #3b0764,
-    #7e22ce
-  );
-  animation: spinGradient 14s linear infinite;
-  filter: drop-shadow(0 0 5px rgba(126, 34, 206, 0.35));
-  opacity: 0.85;
-  transition: opacity 0.4s ease, filter 0.4s ease;
-  will-change: transform;
+@media (min-width: 1024px) {
+  .hero-layout { grid-template-columns: 1.25fr 1fr; gap: 60px; padding-block: 64px 56px; }
+  .hero-portrait-stage { max-width: 340px; justify-self: center; }
+  .hero-introduction { max-width: 48ch; font-size: 15px; }
 }
-
-.profile-frame-wrapper:hover .rotating-gradient-ring {
-  opacity: 1;
-  filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.6));
-  animation-duration: 7s;
-}
-
-@keyframes spinGradient {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Notification animasyonu */
-.notification-enter-active,
-.notification-leave-active {
-  transition: all 0.3s ease;
-}
-
-.notification-enter-from {
-  opacity: 0;
-  transform: translateX(100%);
-}
-
-.notification-leave-to {
-  opacity: 0;
-  transform: translateX(100%);
-}
+@media (max-width: 359px) { .hero-actions { flex-direction: column; align-items: stretch; } .hero-portrait-stage { max-width: 190px; } }
+@media (prefers-reduced-motion: reduce) { .hero-portrait-frame, [data-hero-enter] { transform: none !important; opacity: 1 !important; } .hero-route-strip svg { transition: none; } }
 </style>

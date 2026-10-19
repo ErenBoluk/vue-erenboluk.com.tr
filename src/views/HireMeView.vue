@@ -1,12 +1,10 @@
 <script setup>
-import { ref, onMounted, reactive, onUnmounted, nextTick } from 'vue'
-import { BriefcaseIcon, CheckCircleIcon } from '@heroicons/vue/24/outline'
-import { gsap } from 'gsap'
+import { ref, reactive, onMounted, onBeforeUnmount, nextTick } from 'vue'
+import { ArrowUpRightIcon, CheckCircleIcon } from '@heroicons/vue/24/outline'
 import { useHead } from '@unhead/vue'
 import { useI18n } from 'vue-i18n'
-
+import { useEditorialMotion } from '@/composables/useEditorialMotion'
 const { t } = useI18n()
-
 useHead({
   title: () => t('seo.hireme.title'),
   meta: [
@@ -18,365 +16,127 @@ useHead({
   ]
 })
 
-const formRef = ref(null)
-const leftColRef = ref(null)
-const rightColRef = ref(null)
+const rootRef = ref(null)
+const nameInputRef = ref(null)
 const successRef = ref(null)
-const inputsRef = ref([])
-const buttonRef = ref(null)
-
+useEditorialMotion(rootRef)
+const formData = reactive({ name: '', email: '', message: '' })
 const isSubmitting = ref(false)
 const isSuccess = ref(false)
-
-// Form data
-const formData = reactive({
-  name: '',
-  email: '',
-  message: ''
-})
-
-const resetForm = async () => {
-  formData.name = ''
-  formData.email = ''
-  formData.message = ''
-  isSuccess.value = false
-  
-  await nextTick()
-  if (formRef.value) {
-    gsap.set(formRef.value, { clearProps: "all" })
-  }
-}
-
+const errorMessage = ref('')
 const spamTimeoutUntil = ref(0)
 const spamRemainingFormatted = ref('')
-let timerInterval = null
-
-const formatRemainingTime = (ms) => {
-  if (ms <= 0) return ''
-  const totalSeconds = Math.ceil(ms / 1000)
-  const minutes = Math.floor(totalSeconds / 60)
-  const seconds = totalSeconds % 60
-  if (minutes > 0) {
-    return `${minutes}m ${seconds}s`
-  }
-  return `${seconds}s`
+let timerInterval, controller, disposed = false
+function formatRemainingTime(ms) {
+  const seconds = Math.ceil(Math.max(0, ms) / 1000)
+  return seconds >= 60 ? `${Math.floor(seconds / 60)}m ${seconds % 60}s` : `${seconds}s`
 }
-
-const updateTimer = () => {
-  const now = Date.now()
-  if (spamTimeoutUntil.value > now) {
-    spamRemainingFormatted.value = formatRemainingTime(spamTimeoutUntil.value - now)
-  } else {
+function updateTimer() {
+  const remaining = spamTimeoutUntil.value - Date.now()
+  if (remaining > 0) spamRemainingFormatted.value = formatRemainingTime(remaining)
+  else {
     spamTimeoutUntil.value = 0
-    if (timerInterval) {
-      clearInterval(timerInterval)
-      timerInterval = null
-    }
-    localStorage.removeItem('hireMeTimeoutUntil')
+    clearInterval(timerInterval)
+    timerInterval = undefined
+    try { localStorage.removeItem('hireMeTimeoutUntil') } catch { /* Keep form usable without storage. */ }
   }
 }
-
-onUnmounted(() => {
-  if (timerInterval) {
-    clearInterval(timerInterval)
-  }
-})
-
-onMounted(() => {
-  // Check local storage for spam timeout
-  const storedTimeout = localStorage.getItem('hireMeTimeoutUntil')
-  if (storedTimeout) {
-    const timeout = parseInt(storedTimeout, 10)
-    if (timeout > Date.now()) {
-      spamTimeoutUntil.value = timeout
-      updateTimer()
-      timerInterval = setInterval(updateTimer, 1000)
-    } else {
-      localStorage.removeItem('hireMeTimeoutUntil')
-    }
-  }
-
-  // Initial setup
-  const tl = gsap.timeline()
-  
-  // Set initial states
-  gsap.set([leftColRef.value, rightColRef.value], {
-    opacity: 0,
-    y: 30
-  })
-
-  // Entrance animation
-  tl.to(leftColRef.value, {
-    opacity: 1,
-    y: 0,
-    duration: 1,
-    ease: "power3.out"
-  })
-  .to(rightColRef.value, {
-    opacity: 1,
-    y: 0,
-    duration: 1,
-    ease: "power3.out"
-  }, "-=0.6")
-  
-  // Input focus animations
-  inputsRef.value.forEach(input => {
-    if (input) {
-      input.addEventListener('focus', () => {
-        gsap.to(input.parentElement, {
-          scale: 1.02,
-          duration: 0.3,
-          ease: "power2.out"
-        })
-      })
-      
-      input.addEventListener('blur', () => {
-        gsap.to(input.parentElement, {
-          scale: 1,
-          duration: 0.3,
-          ease: "power2.out"
-        })
-      })
-    }
-  })
-})
-
-const handleSubmit = async () => {
-  if (isSubmitting.value) return
-  
+function startTimer() { clearInterval(timerInterval); updateTimer(); if (spamTimeoutUntil.value > 0) timerInterval = window.setInterval(updateTimer, 1000) }
+async function resetForm() {
+  formData.name = ''; formData.email = ''; formData.message = ''
+  isSuccess.value = false
+  errorMessage.value = ''
+  await nextTick()
+  if (!disposed) nameInputRef.value?.focus()
+}
+async function handleSubmit() {
+  if (isSubmitting.value || spamTimeoutUntil.value > Date.now()) return
   isSubmitting.value = true
-  
-  // Button loading animation
-  gsap.to(buttonRef.value, {
-    scale: 0.95,
-    duration: 0.2,
-    yoyo: true,
-    repeat: 1
-  })
-  
+  errorMessage.value = ''
+  controller = new AbortController()
   try {
     let apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000/api/hire'
-    if (apiUrl && !apiUrl.endsWith('/api/hire')) {
-      apiUrl = `${apiUrl.replace(/\/$/, '')}/api/hire`
-    }
-    const response = await fetch(apiUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name: formData.name,
-        email: formData.email,
-        message: formData.message
-      })
-    })
-
+    if (!apiUrl.endsWith('/api/hire')) apiUrl = `${apiUrl.replace(/\/$/, '')}/api/hire`
+    const response = await fetch(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: formData.name, email: formData.email, message: formData.message }), signal: controller.signal })
+    if (disposed) return
     if (response.status === 429) {
-      const errorData = await response.json().catch(() => ({}))
-      const retryAfterMs = errorData.retryAfterMs || 300000 // default 5 mins
-      spamTimeoutUntil.value = Date.now() + retryAfterMs
-      localStorage.setItem('hireMeTimeoutUntil', spamTimeoutUntil.value.toString())
-      updateTimer()
-      timerInterval = setInterval(updateTimer, 1000)
-      isSubmitting.value = false
+      const data = await response.json().catch(() => ({}))
+      if (disposed) return
+      const proposed = Number(data.retryAfterMs)
+      spamTimeoutUntil.value = Date.now() + (Number.isFinite(proposed) && proposed > 0 ? proposed : 300000)
+      try { localStorage.setItem('hireMeTimeoutUntil', String(spamTimeoutUntil.value)) } catch { /* Timer still works for this visit. */ }
+      startTimer()
       return
     }
-
-    if (!response.ok) {
-      throw new Error('Network response was not ok')
-    }
+    if (!response.ok) throw new Error('Request failed')
+    isSuccess.value = true
+    await nextTick()
+    if (!disposed) successRef.value?.focus()
   } catch (error) {
-    console.error('Error sending message:', error)
-    alert('Mesaj gönderilirken bir hata oluştu. Lütfen daha sonra tekrar deneyin.')
-    isSubmitting.value = false
-    return
-  }
-  
-  // Success transition
-  const tl = gsap.timeline()
-  
-  tl.to(formRef.value, {
-    opacity: 0,
-    scale: 0.9,
-    duration: 0.4,
-    ease: "power2.in",
-    onComplete: () => {
-      isSuccess.value = true
-      isSubmitting.value = false
-    }
-  })
-  .fromTo(successRef.value, 
-    { 
-      opacity: 0, 
-      scale: 0.8,
-      y: 20
-    },
-    { 
-      opacity: 1, 
-      scale: 1,
-      y: 0,
-      duration: 0.6,
-      ease: "back.out(1.7)"
-    }
-  )
+    if (!disposed && error.name !== 'AbortError') errorMessage.value = t('hireme.error')
+  } finally { if (!disposed) isSubmitting.value = false }
 }
+onMounted(() => {
+  let stored = 0
+  try { stored = Number(localStorage.getItem('hireMeTimeoutUntil')) } catch { /* Optional persistence. */ }
+  if (Number.isFinite(stored) && stored > Date.now()) { spamTimeoutUntil.value = stored; startTimer() }
+  else updateTimer()
+})
+onBeforeUnmount(() => { disposed = true; clearInterval(timerInterval); controller?.abort() })
 </script>
-
 <template>
-  <main class="hireme min-h-screen flex items-start md:items-center justify-center p-6 pt-32 pb-24 md:p-12 overflow-x-hidden relative isolate">
-    <!-- Background Elements -->
-    <div class="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
-      <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-600/20 rounded-full blur-3xl animate-blob"></div>
-      <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl animate-blob animation-delay-2000"></div>
-    </div>
-
-    <div class="max-w-7xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center relative z-10">
-      
-      <!-- Left Column: Context & Info -->
-      <div ref="leftColRef" class="space-y-8 text-center lg:text-left mt-8 md:mt-0">
-        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
-          <span class="relative flex h-3 w-3">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-          </span>
-          <span class="text-sm font-medium text-neutral-300">{{ $t('hireme.open-work') }}</span>
-        </div>
-
-        <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-tight">
-          {{ $t('hireme.headline') }}
-        </h1>
-
-        <div class="flex flex-col lg:flex-row items-center lg:items-start gap-6 pt-4">
-          <div class="flex gap-4">
-            <a :href="$t('social.github')" target="_blank" class="p-3 bg-white/5 rounded-xl hover:bg-white/10 transition-colors border border-white/5 hover:border-white/20 group">
-              <img src="@/assets/brands/github.svg" alt="Github" class="w-6 h-6 opacity-70 group-hover:opacity-100 transition-opacity">
-            </a>
-            <a :href="$t('social.linkedin')" target="_blank" class="p-3 bg-white/5 rounded-xl hover:bg-white/10 transition-colors border border-white/5 hover:border-white/20 group">
-              <img src="@/assets/brands/linkedin.svg" alt="LinkedIn" class="w-6 h-6 opacity-70 group-hover:opacity-100 transition-opacity">
-            </a>
-          </div>
-          
-          <div class="h-px w-20 bg-white/10 lg:hidden"></div>
-          
-          <div class="text-neutral-400">
-            <p class="text-sm uppercase tracking-wider mb-1 text-neutral-500">Email</p>
-            <a href="mailto:erenboluk.dev@gmail.com" class="text-lg hover:text-purple-400 transition-colors">erenboluk.dev@gmail.com</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Right Column: Form -->
-      <div ref="rightColRef" class="relative">
-        <!-- Solid Background Form -->
-        <div class="relative bg-neutral-900/60 backdrop-blur-md border border-neutral-800 rounded-2xl p-8 md:p-10 shadow-2xl">
-          
-          <!-- Success Message -->
-          <div v-if="isSuccess" ref="successRef" class="flex flex-col items-center justify-center text-center py-12 z-20">
-            <div class="w-20 h-20 bg-green-500/20 rounded-full flex items-center justify-center mb-6">
-              <CheckCircleIcon class="w-10 h-10 text-green-500" />
-            </div>
-            <h3 class="text-2xl font-bold text-white mb-2">{{ $t('hireme.success_title') }}</h3>
-            <p class="text-neutral-400">{{ $t('hireme.success_message') }}</p>
-            <button @click="resetForm" class="mt-8 text-purple-400 hover:text-purple-300 font-medium transition-colors">
-              {{ $t('hireme.send_another') }}
-            </button>
-          </div>
-
-          <!-- Form -->
-          <form v-else ref="formRef" @submit.prevent="handleSubmit" class="space-y-6">
-            <div class="space-y-2 group">
-              <label class="text-sm font-medium text-neutral-400 ml-1 transition-colors group-focus-within:text-purple-400">{{ $t('hireme.name') }}</label>
-              <div class="relative transition-transform origin-left">
-                <input 
-                  v-model="formData.name"
-                  ref="el => inputsRef.push(el)"
-                  type="text" 
-                  required
-                  class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder-neutral-600 focus:outline-none focus:border-purple-500/50 focus:bg-white/10 transition-all duration-300"
-                  placeholder="John Doe"
-                >
-              </div>
-            </div>
-
-            <div class="space-y-2 group">
-              <label class="text-sm font-medium text-neutral-400 ml-1 transition-colors group-focus-within:text-purple-400">{{ $t('hireme.email') }}</label>
-              <div class="relative transition-transform origin-left">
-                <input 
-                  v-model="formData.email"
-                  ref="el => inputsRef.push(el)"
-                  type="email" 
-                  required
-                  class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder-neutral-600 focus:outline-none focus:border-purple-500/50 focus:bg-white/10 transition-all duration-300"
-                  placeholder="john@example.com"
-                >
-              </div>
-            </div>
-
-            <div class="space-y-2 group">
-              <label class="text-sm font-medium text-neutral-400 ml-1 transition-colors group-focus-within:text-purple-400">{{ $t('hireme.message') }}</label>
-              <div class="relative transition-transform origin-left">
-                <textarea 
-                  v-model="formData.message"
-                  ref="el => inputsRef.push(el)"
-                  rows="4"
-                  required
-                  class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3.5 text-white placeholder-neutral-600 focus:outline-none focus:border-purple-500/50 focus:bg-white/10 transition-all duration-300 resize-none"
-                  :placeholder="$t('hireme.message_placeholder')"
-                ></textarea>
-              </div>
-            </div>
-
-            <button 
-              ref="buttonRef"
-              type="submit"
-              :disabled="isSubmitting"
-              class="w-full bg-white hover:bg-neutral-300 text-neutral-950 font-semibold py-4 rounded-xl shadow-lg shadow-white/5 transition-all duration-300 transform hover:-translate-y-1 disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:translate-y-0"
-            >
-              <span v-if="!isSubmitting" class="flex items-center justify-center gap-2">
-                {{ $t('hireme.send') }}
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-              </span>
-              <span v-else class="flex items-center justify-center gap-2">
-                <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                {{ $t('hireme.sending') }}
-              </span>
-            </button>
-          </form>
-
-          <!-- Spam Overlay -->
-          <div v-if="spamTimeoutUntil > 0" class="absolute inset-0 flex flex-col items-center justify-center text-center p-8 z-30 bg-neutral-900/80 backdrop-blur-sm rounded-2xl transition-all duration-300">
-            <div class="w-16 h-16 border border-purple-500/30 bg-purple-500/10 rounded-full flex items-center justify-center mb-6 shadow-[0_0_15px_rgba(168,85,247,0.2)]">
-              <svg class="w-8 h-8 text-purple-400 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <h3 class="text-xl font-bold text-white mb-2">{{ $t('hireme.spam_title') }}</h3>
-            <p class="text-neutral-400">
-              {{ $t('hireme.spam_message', { time: spamRemainingFormatted }) }}
-            </p>
-          </div>
-        </div>
+  <main ref="rootRef" class="editorial-page contact-page" aria-labelledby="contact-heading">
+    <div class="contact-layout">
+      <header class="contact-introduction" data-aura-reveal>
+        <p class="editorial-kicker">03 / {{ t('hireme.title') }}</p>
+        <h1 id="contact-heading" class="editorial-title">{{ t('hireme.headline') }}</h1>
+        <p class="contact-availability"><span aria-hidden="true"></span>{{ t('hireme.open-work') }}</p>
+        <div class="contact-address"><span class="editorial-meta">{{ t('hireme.email') }}</span><a class="editorial-text-link" href="mailto:erenboluk.dev@gmail.com">erenboluk.dev@gmail.com<ArrowUpRightIcon aria-hidden="true" /></a></div>
+        <div class="contact-socials"><a :href="t('social.github')" target="_blank" rel="noopener noreferrer" class="editorial-text-link"><img src="@/assets/brands/github.svg" alt="" aria-hidden="true" />GitHub<ArrowUpRightIcon aria-hidden="true" /></a><a :href="t('social.linkedin')" target="_blank" rel="noopener noreferrer" class="editorial-text-link"><img src="@/assets/brands/linkedin.svg" alt="" aria-hidden="true" />LinkedIn<ArrowUpRightIcon aria-hidden="true" /></a></div>
+      </header>
+      <div class="contact-form-frame" data-aura-reveal>
+        <section v-if="isSuccess" ref="successRef" class="contact-success" role="status" tabindex="-1"><CheckCircleIcon aria-hidden="true" /><h2>{{ t('hireme.success_title') }}</h2><p>{{ t('hireme.success_message') }}</p><button type="button" class="aura-button" @click="resetForm">{{ t('hireme.send_another') }}</button></section>
+        <form v-else :aria-busy="isSubmitting" @submit.prevent="handleSubmit">
+          <div v-if="spamTimeoutUntil > 0" class="form-notice" role="status" aria-live="polite"><h2>{{ t('hireme.spam_title') }}</h2><p>{{ t('hireme.spam_message', { time: spamRemainingFormatted }) }}</p></div>
+          <p v-if="errorMessage" class="form-notice form-error" role="alert">{{ errorMessage }}</p>
+          <fieldset :disabled="isSubmitting || spamTimeoutUntil > 0">
+            <legend class="sr-only">{{ t('hireme.title') }}</legend>
+            <div class="form-field"><label for="contact-name">{{ t('hireme.name') }}</label><input id="contact-name" ref="nameInputRef" v-model="formData.name" type="text" name="name" autocomplete="name" placeholder="John Doe" required /></div>
+            <div class="form-field"><label for="contact-email">{{ t('hireme.email') }}</label><input id="contact-email" v-model="formData.email" type="email" name="email" autocomplete="email" placeholder="john@example.com" required /></div>
+            <div class="form-field"><label for="contact-message">{{ t('hireme.message') }}</label><textarea id="contact-message" v-model="formData.message" name="message" rows="5" :placeholder="t('hireme.message_placeholder')" required></textarea></div>
+            <button class="aura-button aura-button-primary contact-submit" type="submit" :disabled="isSubmitting || spamTimeoutUntil > 0"><span>{{ isSubmitting ? t('hireme.sending') : t('hireme.send') }}</span><ArrowUpRightIcon class="size-4" aria-hidden="true" /></button>
+          </fieldset>
+        </form>
       </div>
     </div>
   </main>
 </template>
-
 <style scoped>
-.animate-blob {
-  animation: blob 7s infinite;
-}
-
-.animation-delay-2000 {
-  animation-delay: 2s;
-}
-
-@keyframes blob {
-  0% { transform: translate(0px, 0px) scale(1); }
-  33% { transform: translate(30px, -50px) scale(1.1); }
-  66% { transform: translate(-20px, 20px) scale(0.9); }
-  100% { transform: translate(0px, 0px) scale(1); }
-}
+.contact-layout { display: grid; gap: 40px; padding-block: 56px 48px; align-items: start; }
+.contact-introduction .editorial-title { max-width: 14ch; font-size: clamp(2.75rem, 5vw, 4.5rem); line-height: 1.08; }
+.contact-availability { display: flex; align-items: center; gap: 10px; margin-top: 32px; color: var(--aura-muted); font-size: 13px; }
+.contact-availability > span { width: 5px; height: 5px; border-radius: 50%; background: var(--aura-accent); }
+.contact-address { display: grid; gap: 4px; border-top: 1px solid var(--aura-divider); margin-top: 40px; padding-top: 24px; }
+.contact-address a { overflow-wrap: anywhere; }
+.contact-socials { display: flex; gap: 24px; flex-wrap: wrap; margin-top: 12px; }
+.contact-socials img { width: 16px; height: 16px; filter: brightness(0) invert(1); }
+.contact-form-frame { border: 1px solid var(--aura-divider); background: var(--aura-surface); border-radius: 8px; padding: 32px; min-width: 0; }
+fieldset { min-width: 0; border: 0; padding: 0; margin: 0; }
+.form-field + .form-field { margin-top: 24px; }
+.form-field label { display: block; margin-bottom: 10px; font-size: 13px; color: var(--aura-text); }
+.form-field input, .form-field textarea { display: block; width: 100%; min-height: 48px; padding: 12px 14px; border: 1px solid var(--aura-border); border-radius: 6px; background: var(--aura-canvas); color: var(--aura-text); font-size: 16px; line-height: 1.6; }
+.form-field textarea { resize: vertical; min-height: 160px; }
+.form-field input::placeholder, .form-field textarea::placeholder { color: var(--aura-muted); opacity: 1; }
+.form-field input:focus-visible, .form-field textarea:focus-visible { border-color: var(--aura-accent); }
+.contact-submit { width: 100%; justify-content: space-between; margin-top: 28px; }
+.form-notice { border-left: 2px solid var(--aura-accent); padding: 4px 0 4px 16px; margin-bottom: 24px; color: var(--aura-muted); font-size: 14px; line-height: 1.7; }
+.form-notice h2 { font-size: 16px; color: var(--aura-text); font-weight: 500; margin-bottom: 8px; }
+.form-error { border-color: #fda4af; color: #fecdd3; }
+.contact-success { min-height: 360px; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 20px; }
+.contact-success > svg { width: 32px; height: 32px; color: var(--aura-accent); }
+.contact-success h2 { font-size: 32px; font-weight: 500; line-height: 1.15; letter-spacing: -.04em; }
+.contact-success p { color: var(--aura-muted); font-size: 15px; line-height: 1.8; }
+.contact-success .aura-button { margin-top: 8px; }
+@media (min-width: 1024px) { .contact-layout { grid-template-columns: 1fr 1fr; gap: clamp(48px, 7vw, 112px); } }
+@media (max-width: 767px) { .contact-layout { padding-block: 38px 24px; } .contact-form-frame { padding: 24px 20px; } }
 </style>

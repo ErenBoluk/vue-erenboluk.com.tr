@@ -1,0 +1,50 @@
+[
+  {
+    "name": "explicit Turkish deep route wins over saved English preference",
+    "status": "pass"
+  },
+  {
+    "name": "mobile drawer is named, closed links unfocusable, Escape returns focus",
+    "status": "pass"
+  },
+  {
+    "name": "CV dialog has named semantics, keyboard dismissal and actual PDFs on deep routes",
+    "status": "pass"
+  },
+  {
+    "name": "Home hire action retains Turkish route",
+    "status": "pass"
+  },
+  {
+    "name": "clipboard rejection never announces false success",
+    "status": "pass"
+  },
+  {
+    "name": "contact labels name fields and mocked failure preserves retry",
+    "status": "pass"
+  },
+  {
+    "name": "portfolio detail dialog has focus semantics and Escape returns to trigger",
+    "status": "pass"
+  },
+  {
+    "name": "route navigation starts the persistent scroll region at the top",
+    "status": "pass"
+  },
+  {
+    "name": "global cursor respects reduced motion initially and when changed live",
+    "status": "pass"
+  },
+  {
+    "name": "mocked contact success keeps payload, duplicate guard and reset",
+    "status": "pass"
+  },
+  {
+    "name": "mocked 429 persists cooldown across refresh then expires",
+    "status": "pass"
+  },
+  {
+    "name": "selecting a CV returns focus to its opener during a delayed request",
+    "status": "pass"
+  }
+]

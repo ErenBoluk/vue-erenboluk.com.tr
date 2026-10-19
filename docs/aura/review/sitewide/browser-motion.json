@@ -1,0 +1,6 @@
+[
+  {
+    "name": "global cursor respects reduced motion initially and when changed live",
+    "status": "pass"
+  }
+]

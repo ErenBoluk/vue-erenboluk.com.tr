@@ -1,0 +1,5 @@
+# Codex CLI 0.163.0: roles are discovered from .codex/agents/*.toml.
+# Inherit model, reasoning, permissions and connected services from the parent.
+[agents]
+enabled = true
+max_concurrent_threads_per_session = 3

@@ -1,0 +1,8 @@
+{
+  "environment": "Headless Chromium desktop, one local sample; not physical-device/FPS certification",
+  "pointerLayoutEvents": 1,
+  "pointerStyleRecalculations": 86,
+  "idleSampleMs": 500,
+  "idleLayoutEvents": 0,
+  "idleScriptMs": 0
+}

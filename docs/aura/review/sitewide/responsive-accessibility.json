@@ -1,0 +1,338 @@
+[
+  {
+    "name": "en-home-320",
+    "bodyOverflow": false,
+    "lang": "en",
+    "heading": 1,
+    "scrollRoot": true,
+    "invisibleText": 0,
+    "errors": [],
+    "pass": true
+  },
+  {
+    "name": "en-about-320",
+    "bodyOverflow": false,
+    "lang": "en",
+    "heading": 1,
+    "scrollRoot": true,
+    "invisibleText": 0,
+    "errors": [],
+    "pass": true
+  },
+  {
+    "name": "en-portfolio-320",
+    "bodyOverflow": false,
+    "lang": "en",
+    "heading": 1,
+    "scrollRoot": true,
+    "invisibleText": 0,
+    "errors": [],
+    "pass": true
+  },
+  {
+    "name": "en-hireme-320",
+    "bodyOverflow": false,
+    "lang": "en",
+    "heading": 1,
+    "scrollRoot": true,
+    "invisibleText": 0,
+    "errors": [],
+    "pass": true
+  },
+  {
+    "name": "tr-home-320",
+    "bodyOverflow": false,
+    "lang": "tr",
+    "heading": 1,
+    "scrollRoot": true,
+    "invisibleText": 0,
+    "errors": [],
+    "pass": true
+  },
+  {
+    "name": "tr-about-320",
+    "bodyOverflow": false,
+    "lang": "tr",
+    "heading": 1,
+    "scrollRoot": true,
+    "invisibleText": 0,
+    "errors": [],
+    "pass": true
+  },
+  {
+    "name": "tr-portfolio-320",
+    "bodyOverflow": false,
+    "lang": "tr",
+    "heading": 1,
+    "scrollRoot": true,
+    "invisibleText": 0,
+    "errors": [],
+    "pass": true
+  },
+  {
+    "name": "tr-hireme-320",
+    "bodyOverflow": false,
+    "lang": "tr",
+    "heading": 1,
+    "scrollRoot": true,
+    "invisibleText": 0,
+    "errors": [],
+    "pass": true
+  },
+  {
+    "name": "en-home-390",
+    "bodyOverflow": false,
+    "lang": "en",
+    "heading": 1,
+    "scrollRoot": true,
+    "invisibleText": 0,
+    "errors": [],
+    "violations": [],
+    "pass": true
+  },
+  {
+    "name": "en-about-390",
+    "bodyOverflow": false,
+    "lang": "en",
+    "heading": 1,
+    "scrollRoot": true,
+    "invisibleText": 0,
+    "errors": [],
+    "violations": [],
+    "pass": true
+  },
+  {
+    "name": "en-portfolio-390",
+    "bodyOverflow": false,
+    "lang": "en",
+    "heading": 1,
+    "scrollRoot": true,
+    "invisibleText": 0,
+    "errors": [],
+    "violations": [],
+    "pass": true
+  },
+  {
+    "name": "en-hireme-390",
+    "bodyOverflow": false,
+    "lang": "en",
+    "heading": 1,
+    "scrollRoot": true,
+    "invisibleText": 0,
+    "errors": [],
+    "violations": [],
+    "pass": true
+  },
+  {
+    "name": "tr-home-390",
+    "bodyOverflow": false,
+    "lang": "tr",
+    "heading": 1,
+    "scrollRoot": true,
+    "invisibleText": 0,
+    "errors": [],
+    "violations": [],
+    "pass": true
+  },
+  {
+    "name": "tr-about-390",
+    "bodyOverflow": false,
+    "lang": "tr",
+    "heading": 1,
+    "scrollRoot": true,
+    "invisibleText": 0,
+    "errors": [],
+    "violations": [],
+    "pass": true
+  },
+  {
+    "name": "tr-portfolio-390",
+    "bodyOverflow": false,
+    "lang": "tr",
+    "heading": 1,
+    "scrollRoot": true,
+    "invisibleText": 0,
+    "errors": [],
+    "violations": [],
+    "pass": true
+  },
+  {
+    "name": "tr-hireme-390",
+    "bodyOverflow": false,
+    "lang": "tr",
+    "heading": 1,
+    "scrollRoot": true,
+    "invisibleText": 0,
+    "errors": [],
+    "violations": [],
+    "pass": true
+  },
+  {
+    "name": "en-home-768",
+    "bodyOverflow": false,
+    "lang": "en",
+    "heading": 1,
+    "scrollRoot": true,
+    "invisibleText": 0,
+    "errors": [],
+    "pass": true
+  },
+  {
+    "name": "en-about-768",
+    "bodyOverflow": false,
+    "lang": "en",
+    "heading": 1,
+    "scrollRoot": true,
+    "invisibleText": 0,
+    "errors": [],
+    "pass": true
+  },
+  {
+    "name": "en-portfolio-768",
+    "bodyOverflow": false,
+    "lang": "en",
+    "heading": 1,
+    "scrollRoot": true,
+    "invisibleText": 0,
+    "errors": [],
+    "pass": true
+  },
+  {
+    "name": "en-hireme-768",
+    "bodyOverflow": false,
+    "lang": "en",
+    "heading": 1,
+    "scrollRoot": true,
+    "invisibleText": 0,
+    "errors": [],
+    "pass": true
+  },
+  {
+    "name": "tr-home-768",
+    "bodyOverflow": false,
+    "lang": "tr",
+    "heading": 1,
+    "scrollRoot": true,
+    "invisibleText": 0,
+    "errors": [],
+    "pass": true
+  },
+  {
+    "name": "tr-about-768",
+    "bodyOverflow": false,
+    "lang": "tr",
+    "heading": 1,
+    "scrollRoot": true,
+    "invisibleText": 0,
+    "errors": [],
+    "pass": true
+  },
+  {
+    "name": "tr-portfolio-768",
+    "bodyOverflow": false,
+    "lang": "tr",
+    "heading": 1,
+    "scrollRoot": true,
+    "invisibleText": 0,
+    "errors": [],
+    "pass": true
+  },
+  {
+    "name": "tr-hireme-768",
+    "bodyOverflow": false,
+    "lang": "tr",
+    "heading": 1,
+    "scrollRoot": true,
+    "invisibleText": 0,
+    "errors": [],
+    "pass": true
+  },
+  {
+    "name": "en-home-1440",
+    "bodyOverflow": false,
+    "lang": "en",
+    "heading": 1,
+    "scrollRoot": true,
+    "invisibleText": 0,
+    "errors": [],
+    "violations": [],
+    "pass": true
+  },
+  {
+    "name": "en-about-1440",
+    "bodyOverflow": false,
+    "lang": "en",
+    "heading": 1,
+    "scrollRoot": true,
+    "invisibleText": 0,
+    "errors": [],
+    "violations": [],
+    "pass": true
+  },
+  {
+    "name": "en-portfolio-1440",
+    "bodyOverflow": false,
+    "lang": "en",
+    "heading": 1,
+    "scrollRoot": true,
+    "invisibleText": 0,
+    "errors": [],
+    "violations": [],
+    "pass": true
+  },
+  {
+    "name": "en-hireme-1440",
+    "bodyOverflow": false,
+    "lang": "en",
+    "heading": 1,
+    "scrollRoot": true,
+    "invisibleText": 0,
+    "errors": [],
+    "violations": [],
+    "pass": true
+  },
+  {
+    "name": "tr-home-1440",
+    "bodyOverflow": false,
+    "lang": "tr",
+    "heading": 1,
+    "scrollRoot": true,
+    "invisibleText": 0,
+    "errors": [],
+    "violations": [],
+    "pass": true
+  },
+  {
+    "name": "tr-about-1440",
+    "bodyOverflow": false,
+    "lang": "tr",
+    "heading": 1,
+    "scrollRoot": true,
+    "invisibleText": 0,
+    "errors": [],
+    "violations": [],
+    "pass": true
+  },
+  {
+    "name": "tr-portfolio-1440",
+    "bodyOverflow": false,
+    "lang": "tr",
+    "heading": 1,
+    "scrollRoot": true,
+    "invisibleText": 0,
+    "errors": [],
+    "violations": [],
+    "pass": true
+  },
+  {
+    "name": "tr-hireme-1440",
+    "bodyOverflow": false,
+    "lang": "tr",
+    "heading": 1,
+    "scrollRoot": true,
+    "invisibleText": 0,
+    "errors": [],
+    "violations": [],
+    "pass": true
+  }
+]

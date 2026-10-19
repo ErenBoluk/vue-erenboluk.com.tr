@@ -1,1 +1,13 @@
 @import "tailwindcss";
+
+@theme inline {
+  --color-main: var(--aura-canvas);
+  --color-secondary: var(--aura-surface);
+  --color-aura-canvas: var(--aura-canvas);
+  --color-aura-surface: var(--aura-surface);
+  --color-aura-text: var(--aura-text);
+  --color-aura-muted: var(--aura-muted);
+  --color-aura-accent: var(--aura-accent);
+  --color-aura-border: var(--aura-border);
+  --color-aura-divider: var(--aura-divider);
+}

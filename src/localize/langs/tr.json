@@ -21,7 +21,10 @@
         "home": "Ana Sayfa",
         "about": "Hakkımda",
         "portfolio": "Portföyüm",
-        "hireme": "Benimle Çalış"
+        "hireme": "Benimle Çalış",
+        "open-menu": "Gezinmeyi aç",
+        "close-menu": "Gezinmeyi kapat",
+        "navigation": "Ana gezinme"
     },
     "home": {
         "about-text-1": "API ve veritabanı konularında uzman bir backend geliştiricisiyim.",
@@ -30,7 +33,11 @@
         "copy-email": "E-postayı Kopyala",
         "copied": "Kopyalandı!",
         "email_copied": "E-posta adresi kopyalandı!",
-        "hireme": "Benimle Çalış"
+        "hireme": "Benimle Çalış",
+        "copy-error": "E-posta adresi kopyalanamadı. Lütfen {email} adresini kullanın.",
+        "section-about": "Özgeçmiş, kariyer ve yetkinlikler",
+        "section-portfolio": "Projeler, kategoriler ve detaylar",
+        "section-contact": "İletişim ve iş birliği"
     },
     "about": {
         "title": "Hakkımda",
@@ -88,7 +95,8 @@
         "success_title": "Mesaj Gönderildi!",
         "success_message": "En kısa sürede size dönüş yapacağım.",
         "spam_title": "Lütfen Bekleyin",
-        "spam_message": "Yeni bir mesaj göndermek için {time} beklemelisiniz."
+        "spam_message": "Yeni bir mesaj göndermek için {time} beklemelisiniz.",
+        "error": "Mesajınız gönderilemedi. Lütfen tekrar deneyin."
     },
     "general": {
         "download-cv": "CV İndir",
@@ -98,7 +106,8 @@
         "cv-modal-title": "Dil Seçiniz",
         "download-tr": "Türkçe CV İndir",
         "download-en": "İngilizce CV İndir",
-        "cancel": "İptal"
+        "cancel": "İptal",
+        "close-dialog": "İletişim kutusunu kapat"
     },
     "social": {
         "linkedin": "https://www.linkedin.com/in/erenboluk/",
@@ -228,6 +237,8 @@
                     "Redis caching, Docker konteynerizasyonu ve Railway üzerinden entegre kesintisiz CI/CD (Push Notification) süreçleri"
                 ]
             }
-        ]
+        ],
+        "previous": "Önceki proje",
+        "next": "Sonraki proje"
     }
 }
