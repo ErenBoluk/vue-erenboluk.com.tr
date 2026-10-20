@@ -88,7 +88,7 @@ async function pageAt(route, opts={}) {
   }
   if(group==='motion'||group==='all') {
     await test('global cursor respects reduced motion initially and when changed live',async()=>{
-      const {page,context}=await pageAt('/en',{reducedMotion:'reduce'});try{
+      const {page,context}=await pageAt('/en/about',{reducedMotion:'reduce'});try{
         await page.mouse.move(600,400);await page.waitForTimeout(220);
         const visibleFollower=()=>page.locator('[data-aura-cursor],.cursor-dot,.cursor-outline').evaluateAll(els=>els.some(el=>{const s=getComputedStyle(el);return s.display!=='none'&&s.visibility!=='hidden'&&Number(s.opacity)>.01&&el.getClientRects().length>0}));
         assert.equal(await visibleFollower(),false,'reduced-motion users must not get a follower');

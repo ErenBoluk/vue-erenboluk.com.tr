@@ -1,4 +1,5 @@
 <script setup>
+import ProgressiveImage from '@/components/ProgressiveImage.vue'
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useEditorialMotion } from '@/composables/useEditorialMotion'
@@ -116,7 +117,7 @@ useEditorialMotion(rootRef)
         <div class="about-details"><span class="availability"><i aria-hidden="true"></i>{{ t('about.status') }}</span><span><MapPinIcon aria-hidden="true" />{{ t('about.location') }}</span></div>
         <div class="aura-actions about-actions"><RouterLink class="aura-button aura-button-primary" :to="{ name: 'hireme', params: { lang: locale } }">{{ t('about.contact_me') }}<ArrowRightIcon class="size-4" aria-hidden="true" /></RouterLink><DownloadCvBtn variant="glass" /></div>
       </div>
-      <figure class="about-portrait"><img src="https://erenboluk-com-tr.b-cdn.net/erenbolukcomtr/assets/me-min.jpg" :alt="t('about.alt-profile')" width="640" height="640" decoding="async" /><figcaption>Eren Bölük / {{ t('about.location') }}</figcaption></figure>
+      <figure class="about-portrait"><ProgressiveImage src="https://erenboluk-com-tr.b-cdn.net/erenbolukcomtr/assets/me-min.jpg" :alt="t('about.alt-profile')" :width="640" :height="640" aspect-ratio="1 / 1.12" /><figcaption>Eren Bölük / {{ t('about.location') }}</figcaption></figure>
     </header>
     <section class="about-stats" :aria-label="t('about.title')" data-aura-reveal>
       <div v-for="(stat, index) in statsData" :key="stat.label"><span class="editorial-index">0{{ index + 1 }}</span><strong>{{ stat.value }}</strong><p>{{ stat.label }}</p></div>
@@ -139,7 +140,7 @@ useEditorialMotion(rootRef)
 .availability i { width: 5px; height: 5px; border-radius: 50%; background: var(--aura-accent); }
 .about-actions { margin-top: 28px; }
 .about-portrait { width: min(260px, 100%); border: 1px solid var(--aura-divider); padding: 12px; border-radius: 8px; margin: 0; }
-.about-portrait img { display: block; width: 100%; height: auto; aspect-ratio: 1 / 1.12; object-fit: cover; border-radius: 3px; filter: grayscale(30%); }
+.about-portrait .progressive-image { display: block; width: 100%; height: auto; aspect-ratio: 1 / 1.12; object-fit: cover; border-radius: 3px; filter: grayscale(30%); }
 .about-portrait figcaption { padding-top: 12px; font-size: 10px; text-transform: uppercase; letter-spacing: .05em; color: var(--aura-muted); }
 .about-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; padding-block: 4px 48px; border-bottom: 1px solid var(--aura-divider); }
 .about-stats strong { display: block; font-size: clamp(1.5rem, 2.5vw, 2rem); font-weight: 500; letter-spacing: -.04em; line-height: 1.3; margin-block: 16px 8px; }

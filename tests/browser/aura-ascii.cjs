@@ -1,0 +1,52 @@
+﻿const { chromium } = require('playwright-core')
+const assert = require('node:assert/strict')
+const fs = require('node:fs')
+const base = process.env.AURA_BASE_URL || 'http://localhost:5174'
+const out = process.env.AURA_REPORT_DIR || 'docs/aura/review/ascii'
+fs.mkdirSync(out,{recursive:true})
+;(async()=>{
+ const browser = await chromium.launch({executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe',headless:true})
+ try {
+  const page=await browser.newPage({viewport:{width:1440,height:1000},deviceScaleFactor:2})
+  const errors=[];page.on('pageerror',e=>errors.push(e.message))
+  await page.goto(base+'/tr',{waitUntil:'domcontentloaded'});await page.locator('.hero-name').waitFor();await page.waitForTimeout(900)
+  const geometry=()=>page.evaluate(()=>Object.fromEntries(['.graphite-hero','.hero-layout','.hero-name','.hero-portrait-stage','.hero-route-strip'].map(s=>{const r=document.querySelector(s).getBoundingClientRect();return[s,{x:r.x,y:r.y,width:r.width,height:r.height}]})))
+  if(process.argv.includes('--baseline')){fs.writeFileSync(out+'/layout-before.json',JSON.stringify(await geometry(),null,2));await page.screenshot({path:out+'/before.png'})}
+  assert.equal(await page.locator('canvas[data-ascii-overlay]').count(),1,'Home mounts one ASCII canvas')
+  const canvas=page.locator('canvas[data-ascii-overlay]')
+  const pixels=()=>canvas.evaluate(c=>{const d=c.getContext('2d').getImageData(0,0,c.width,c.height).data;let count=0;for(let i=3;i<d.length;i+=4)if(d[i])count++;return count})
+  assert.equal(await pixels(),0,'initial transparent')
+  assert.equal(await canvas.evaluate(c=>getComputedStyle(c).pointerEvents),'none')
+  assert.equal(await canvas.getAttribute('aria-hidden'),'true')
+  const previous=JSON.parse(fs.readFileSync(out+'/layout-before.json','utf8'));assert.deepEqual(await geometry(),previous,'layout identical')
+  const heading=await page.locator('.hero-name').boundingBox()
+  await page.mouse.move(heading.x+heading.width-180,heading.y+heading.height*.5)
+  await page.mouse.move(heading.x+heading.width-110,heading.y+heading.height*.5,{steps:16})
+  await page.waitForTimeout(100)
+  assert.ok(await canvas.evaluate((c,h)=>{const r=c.getBoundingClientRect(),dpr=c.width/r.width;const d=c.getContext('2d').getImageData((h.x+h.width-190-r.x)*dpr,(h.y+h.height*.5-25-r.y)*dpr,100*dpr,50*dpr).data;let n=0;for(let i=3;i<d.length;i+=4)if(d[i])n++;return n},heading)>20,'ASCII remains visible in the blank space beside the title')
+  await page.waitForFunction(()=>document.querySelector('[data-ascii-overlay]').dataset.asciiState==='idle',{},{timeout:20000})
+  const r=await canvas.boundingBox();const y=r.y+22
+  await page.mouse.move(r.x+25,y)
+  for(let i=0;i<24;i++){await page.mouse.move(r.x+25+i*28,y);await page.waitForTimeout(16)}
+  await page.waitForTimeout(120);assert.ok(await pixels()>30,'hover renders glyphs')
+  await page.screenshot({path:out+'/hover-desktop.png'})
+  await page.waitForFunction(()=>document.querySelector('[data-ascii-overlay]').dataset.asciiState==='idle',{},{timeout:20000})
+  assert.equal(await pixels(),0,'idle fully transparent')
+  await page.mouse.click(r.x+r.width*.52,y)
+  await page.waitForTimeout(160);assert.ok(await pixels()>20,'click ring visible')
+  await page.screenshot({path:out+'/click-desktop.png'})
+  await page.emulateMedia({reducedMotion:'reduce'});await page.waitForTimeout(100);assert.equal(await pixels(),0,'live reduced motion clears')
+  await page.mouse.move(r.x+150,y);await page.mouse.click(r.x+200,y);await page.waitForTimeout(100);assert.equal(await pixels(),0)
+  await page.emulateMedia({reducedMotion:'no-preference'});await page.waitForTimeout(100)
+  await page.mouse.move(r.x+100,y);await page.mouse.down();await page.mouse.move(r.x+600,y,{steps:18});await page.mouse.up();await page.waitForTimeout(100);assert.ok(await pixels()>30,'drag visible')
+  const hire=page.locator('#hire-me-button');await hire.click();await page.waitForURL(/\/tr\/hireme$/);await canvas.waitFor({state:'detached'});assert.equal(await canvas.count(),0,'unmounted off Home')
+  for(let i=0;i<3;i++){await page.goto(base+'/tr');await canvas.waitFor();await page.goto(base+'/tr/about');await page.locator('h1').waitFor()}
+  await page.goto(base+'/tr');await canvas.waitFor();assert.equal(await canvas.count(),1)
+  assert.deepEqual(errors,[])
+  const mobile=await browser.newPage({viewport:{width:390,height:844},isMobile:true,hasTouch:true,reducedMotion:'reduce'})
+  await mobile.goto(base+'/tr');await mobile.locator('[data-ascii-overlay]').waitFor();await mobile.screenshot({path:out+'/mobile-reduced.png'})
+  assert.equal(await mobile.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false)
+  assert.equal(await mobile.locator('[data-ascii-overlay]').evaluate(c=>c.getContext('2d').getImageData(0,0,c.width,c.height).data.some((v,i)=>i%4===3&&v>0)),false)
+  console.log('PASS transparency, unchanged layout, hover, idle, click, drag, reduced motion, links, remount, mobile and runtime errors')
+ } finally {await browser.close()}
+})().catch(e=>{console.error(e);process.exitCode=1})

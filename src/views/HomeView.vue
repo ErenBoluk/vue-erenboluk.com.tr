@@ -1,10 +1,12 @@
 <script setup>
+import ProgressiveImage from '@/components/ProgressiveImage.vue'
 import { onMounted, onBeforeUnmount, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import { ArrowUpRightIcon, DocumentDuplicateIcon, CheckIcon } from '@heroicons/vue/24/outline'
 import { gsap } from 'gsap'
 import { useHead } from '@unhead/vue'
 import { useI18n } from 'vue-i18n'
+import AsciiHoverBackground from '@/components/AsciiHoverBackground.vue'
 
 const { t, locale } = useI18n()
 const rootRef = ref(null)
@@ -119,50 +121,70 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <main ref="rootRef" class="graphite-hero" aria-labelledby="home-title">
-    <div class="hero-layout">
-      <div class="hero-copy">
-        <p class="hero-kicker" data-hero-enter>Eren Bölük · Web Developer</p>
-        <h1 id="home-title" class="hero-name" data-hero-enter>Eren <span>Bölük<span class="hero-period" aria-hidden="true">.</span></span></h1><p class="hero-role" data-hero-enter>Web Developer</p>
-        <div class="hero-introduction" data-hero-enter>
-          <p>{{ t('home.about-text-1') }}</p>
-          <p>{{ t('home.about-text-2') }}</p>
+  <div class="home-page-wrapper">
+    <AsciiHoverBackground
+      full-width
+      :font-size="15"
+      :fluid="{ hoverRadiusPx: 24, densityDissipation: 1.4 }"
+      :safe-area="{ enabled: true, selector: '.hero-name, .hero-kicker, .hero-role, .hero-introduction, .hero-actions .aura-button, .hero-feedback, .hero-portrait-frame, .hero-route-strip a', textSelector: '.hero-name, .hero-kicker, .hero-role, .hero-introduction, .hero-feedback, .hero-route-strip a', fadeSize: 10 }"
+    />
+    <main ref="rootRef" class="graphite-hero" aria-labelledby="home-title">
+      <div class="hero-layout">
+        <div class="hero-copy">
+          <p class="hero-kicker" data-hero-enter>Eren Bölük · Web Developer</p>
+          <h1 id="home-title" class="hero-name" data-hero-enter>Eren <span>Bölük<span class="hero-period" aria-hidden="true">.</span></span></h1><p class="hero-role" data-hero-enter>Web Developer</p>
+          <div class="hero-introduction" data-hero-enter>
+            <p>{{ t('home.about-text-1') }}</p>
+            <p>{{ t('home.about-text-2') }}</p>
+          </div>
+          <div class="hero-actions aura-actions ascii-safe-area">
+            <RouterLink id="hire-me-button" class="aura-button aura-button-primary" :to="{ name: 'hireme', params: { lang: locale } }">
+              {{ t('home.hireme') }}<ArrowUpRightIcon class="size-5" aria-hidden="true" />
+            </RouterLink>
+            <button id="copy-email-button" type="button" class="aura-button hero-copy-button" :aria-busy="isCopying" @click="copyEmail">
+              <CheckIcon v-if="emailCopied" class="size-5" aria-hidden="true" />
+              <DocumentDuplicateIcon v-else class="size-5" aria-hidden="true" />
+              <span>{{ emailCopied ? t('home.copied') : t('home.copy-email') }}</span>
+            </button>
+          </div>
+          <div class="hero-feedback" role="status" aria-live="polite" aria-atomic="true">
+            <p v-if="emailCopied">{{ t('home.email_copied') }}</p>
+            <p v-else-if="copyFailed">{{ t('home.copy-error', { email: 'erenboluk.dev@gmail.com' }) }}</p>
+          </div>
         </div>
-        <div class="hero-actions aura-actions">
-          <RouterLink id="hire-me-button" class="aura-button aura-button-primary" :to="{ name: 'hireme', params: { lang: locale } }">
-            {{ t('home.hireme') }}<ArrowUpRightIcon class="size-5" aria-hidden="true" />
-          </RouterLink>
-          <button id="copy-email-button" type="button" class="aura-button hero-copy-button" :aria-busy="isCopying" @click="copyEmail">
-            <CheckIcon v-if="emailCopied" class="size-5" aria-hidden="true" />
-            <DocumentDuplicateIcon v-else class="size-5" aria-hidden="true" />
-            <span>{{ emailCopied ? t('home.copied') : t('home.copy-email') }}</span>
-          </button>
-        </div>
-        <div class="hero-feedback" role="status" aria-live="polite" aria-atomic="true">
-          <p v-if="emailCopied">{{ t('home.email_copied') }}</p>
-          <p v-else-if="copyFailed">{{ t('home.copy-error', { email: 'erenboluk.dev@gmail.com' }) }}</p>
+        <div ref="portraitStageRef" class="hero-portrait-stage">
+          <div class="hero-portrait-entrance" data-hero-enter>
+            <figure ref="portraitRef" class="hero-portrait-frame">
+              <ProgressiveImage src="https://erenboluk-com-tr.b-cdn.net/erenbolukcomtr/assets/me-min.jpg" :alt="t('home.alt-profile')" :width="640" :height="640" aspect-ratio="1 / 1.12" eager fetchpriority="high" />
+              <figcaption aria-hidden="true">Eren Bölük / Web Developer</figcaption>
+            </figure>
+          </div>
         </div>
       </div>
-      <div ref="portraitStageRef" class="hero-portrait-stage">
-        <div class="hero-portrait-entrance" data-hero-enter>
-          <figure ref="portraitRef" class="hero-portrait-frame">
-            <img src="https://erenboluk-com-tr.b-cdn.net/erenbolukcomtr/assets/me-min.jpg" :alt="t('home.alt-profile')" width="640" height="640" fetchpriority="high" decoding="async" />
-            <figcaption aria-hidden="true">Eren Bölük / Web Developer</figcaption>
-          </figure>
-        </div>
-      </div>
-    </div>
-    <nav class="hero-route-strip" :aria-label="t('sidebar.navigation')">
-      <RouterLink :to="{ name: 'about', params: { lang: locale } }"><span>{{ t('sidebar.about') }}<ArrowUpRightIcon aria-hidden="true" /></span><small>{{ t('home.section-about') }}</small></RouterLink>
-      <RouterLink :to="{ name: 'portfolio', params: { lang: locale } }"><span>{{ t('sidebar.portfolio') }}<ArrowUpRightIcon aria-hidden="true" /></span><small>{{ t('home.section-portfolio') }}</small></RouterLink>
-      <RouterLink :to="{ name: 'hireme', params: { lang: locale } }"><span>{{ t('sidebar.hireme') }}<ArrowUpRightIcon aria-hidden="true" /></span><small>{{ t('home.section-contact') }}</small></RouterLink>
-    </nav>
-  </main>
+      <nav class="hero-route-strip" :aria-label="t('sidebar.navigation')">
+        <RouterLink :to="{ name: 'about', params: { lang: locale } }"><span>{{ t('sidebar.about') }}<ArrowUpRightIcon aria-hidden="true" /></span><small>{{ t('home.section-about') }}</small></RouterLink>
+        <RouterLink :to="{ name: 'portfolio', params: { lang: locale } }"><span>{{ t('sidebar.portfolio') }}<ArrowUpRightIcon aria-hidden="true" /></span><small>{{ t('home.section-portfolio') }}</small></RouterLink>
+        <RouterLink :to="{ name: 'hireme', params: { lang: locale } }"><span>{{ t('sidebar.hireme') }}<ArrowUpRightIcon aria-hidden="true" /></span><small>{{ t('home.section-contact') }}</small></RouterLink>
+      </nav>
+    </main>
+  </div>
 </template>
 
 <style scoped>
-.graphite-hero { color: var(--aura-text); isolation: isolate; }
-.hero-layout { display: grid; align-items: center; gap: 40px; padding-block: 38px 48px; }
+.home-page-wrapper {
+  position: relative;
+  width: 100%;
+}
+.graphite-hero {
+  position: relative;
+  z-index: 1;
+  min-height: calc(100vh - var(--aura-header-space, 88px) - 48px);
+  padding: clamp(24px, 3.5vw, 44px);
+  color: var(--aura-text);
+  isolation: isolate;
+  background: transparent;
+}
+.hero-layout { position: relative; z-index: 1; display: grid; align-items: center; gap: 40px; padding-block: 38px 48px; }
 .hero-copy { min-width: 0; }
 .hero-kicker { margin: 0 0 28px; color: var(--aura-accent); font-size: 11px; font-weight: 500; letter-spacing: .17em; text-transform: uppercase; }
 .hero-name { margin: 0 0 28px; font-size: clamp(3rem, 10vw, 3.625rem); font-weight: 600; line-height: .98; letter-spacing: -.065em; }
@@ -178,9 +200,9 @@ onBeforeUnmount(() => {
 .hero-portrait-stage { position: relative; width: 100%; max-width: 220px; justify-self: start; }
 .hero-portrait-stage::before { content: ''; position: absolute; inset: -30px; z-index: -1; border-radius: 50%; background: radial-gradient(ellipse, rgb(196 181 253 / .06), transparent 68%); pointer-events: none; }
 .hero-portrait-frame { margin: 0; padding: 13px; background: var(--aura-canvas); border: 1px solid rgb(244 244 245 / .16); border-radius: 8px; }
-.hero-portrait-frame img { display: block; width: 100%; height: auto; aspect-ratio: 1 / 1.12; object-fit: cover; border-radius: 3px; filter: grayscale(30%); }
+.hero-portrait-frame .progressive-image { display: block; width: 100%; height: auto; aspect-ratio: 1 / 1.12; object-fit: cover; border-radius: 3px; filter: grayscale(30%); }
 figcaption { margin-top: 12px; color: var(--aura-muted); font-size: 10px; line-height: 1.5; letter-spacing: .06em; text-transform: uppercase; }
-.hero-route-strip { display: grid; gap: 0; border-top: 1px solid var(--aura-divider); }
+.hero-route-strip { position: relative; z-index: 1; display: grid; gap: 0; border-top: 1px solid var(--aura-divider); }
 .hero-route-strip a { display: block; padding-block: 20px; text-decoration: none; border-bottom: 1px solid var(--aura-divider); }
 .hero-route-strip a > span { display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 500; }
 .hero-route-strip svg { width: 14px; height: 14px; color: var(--aura-muted); transition: transform 180ms ease, color 180ms ease; }

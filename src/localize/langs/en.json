@@ -240,5 +240,9 @@
     ],
     "previous": "Previous project",
     "next": "Next project"
+  },
+  "loading": {
+    "page": "Loading page",
+    "imageError": "Image unavailable"
   }
 }

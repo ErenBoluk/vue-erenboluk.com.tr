@@ -1,0 +1,22 @@
+﻿const {chromium}=require('playwright-core'),assert=require('node:assert/strict'),fs=require('fs');const base=process.env.AURA_BASE_URL||'http://127.0.0.1:5176';const dir='docs/aura/review/loading';fs.mkdirSync(dir,{recursive:true});const svg='<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640"><rect width="640" height="640" fill="#303038"/></svg>'
+;(async()=>{const b=await chromium.launch({executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe'});try{
+ const page=await b.newPage({viewport:{width:1440,height:1000}});let release;const gate=new Promise(r=>release=r)
+ await page.route('**/me-min.jpg',async route=>{await gate;await route.fulfill({status:200,contentType:'image/svg+xml',body:svg})})
+ await page.goto(base+'/tr',{waitUntil:'domcontentloaded'});await page.locator('.hero-name').waitFor();await page.waitForTimeout(700)
+ const img=page.locator('.hero-portrait-frame img'),image=page.locator('.hero-portrait-frame .progressive-image')
+ const box=await img.boundingBox();if(process.argv.includes('--baseline'))fs.writeFileSync(dir+'/hero-before.json',JSON.stringify(box))
+ assert.equal(await image.count(),1,'portrait has progressive placeholder')
+ assert.equal(await image.getAttribute('data-image-state'),'loading')
+ assert.equal(await img.getAttribute('fetchpriority'),'high');assert.equal(await img.getAttribute('loading'),'eager')
+ const before=await image.boundingBox();await page.screenshot({path:dir+'/image-pending.png'});release();await page.waitForFunction(()=>document.querySelector('.hero-portrait-frame .progressive-image').dataset.imageState==='loaded');assert.deepEqual(await image.boundingBox(),before)
+ const baseline=JSON.parse(fs.readFileSync(dir+'/hero-before.json','utf8'));assert.deepEqual(await image.boundingBox(),baseline,'same portrait layout')
+ let finishChunk;const chunkGate=new Promise(r=>finishChunk=r);let intercepted=false
+ await page.route(/\/(src\/views\/PortfolioView\.vue|assets\/PortfolioView-[^/]+\.js)(\?|$)/,async route=>{intercepted=true;await chunkGate;await route.continue()})
+ await page.getByRole('link',{name:'Portf\u00f6y\u00fcm',exact:true}).first().click();await page.waitForTimeout(260)
+ assert.ok(intercepted,'real route chunk delayed');const loader=page.locator('[data-route-loader]');assert.equal(await loader.isVisible(),true);assert.equal(await page.locator('.hero-name').isVisible(),true,'existing content stays visible');assert.equal(await loader.evaluate(e=>getComputedStyle(e).pointerEvents),'none')
+ await page.screenshot({path:dir+'/route-pending.png'});finishChunk();await page.waitForURL(/\/tr\/portfolio$/);await page.locator('#portfolio-heading').waitFor();await loader.waitFor({state:'hidden'})
+ const last=page.locator('.project-card').last().locator('img');assert.equal(await last.getAttribute('src'),null,'far offscreen project is not requested')
+ await last.scrollIntoViewIfNeeded();await page.waitForFunction(()=>document.querySelector('.project-card:last-child img').hasAttribute('src'))
+ await page.emulateMedia({reducedMotion:'reduce'});assert.equal(await page.locator('.progressive-image .image-sheen').first().evaluate(e=>getComputedStyle(e).animationName),'none')
+ console.log('PASS delayed images, eager hero, preserved layout, real route loading, unobstructed content, offscreen lazy requests and reduced motion')
+}finally{await b.close()}})().catch(e=>{console.error(e);process.exitCode=1})

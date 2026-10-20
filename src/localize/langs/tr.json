@@ -240,5 +240,9 @@
         ],
         "previous": "Önceki proje",
         "next": "Sonraki proje"
+    },
+    "loading": {
+        "page": "Sayfa yükleniyor",
+        "imageError": "Görsel yüklenemedi"
     }
 }

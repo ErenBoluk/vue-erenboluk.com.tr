@@ -4,6 +4,7 @@ import { ArrowUpRightIcon, CheckCircleIcon } from '@heroicons/vue/24/outline'
 import { useHead } from '@unhead/vue'
 import { useI18n } from 'vue-i18n'
 import { useEditorialMotion } from '@/composables/useEditorialMotion'
+import ContactFormAtmosphere from '@/components/ContactFormAtmosphere.vue'
 const { t } = useI18n()
 useHead({
   title: () => t('seo.hireme.title'),
@@ -95,6 +96,7 @@ onBeforeUnmount(() => { disposed = true; clearInterval(timerInterval); controlle
         <div class="contact-socials"><a :href="t('social.github')" target="_blank" rel="noopener noreferrer" class="editorial-text-link"><img src="@/assets/brands/github.svg" alt="" aria-hidden="true" />GitHub<ArrowUpRightIcon aria-hidden="true" /></a><a :href="t('social.linkedin')" target="_blank" rel="noopener noreferrer" class="editorial-text-link"><img src="@/assets/brands/linkedin.svg" alt="" aria-hidden="true" />LinkedIn<ArrowUpRightIcon aria-hidden="true" /></a></div>
       </header>
       <div class="contact-form-frame" data-aura-reveal>
+        <ContactFormAtmosphere />
         <section v-if="isSuccess" ref="successRef" class="contact-success" role="status" tabindex="-1"><CheckCircleIcon aria-hidden="true" /><h2>{{ t('hireme.success_title') }}</h2><p>{{ t('hireme.success_message') }}</p><button type="button" class="aura-button" @click="resetForm">{{ t('hireme.send_another') }}</button></section>
         <form v-else :aria-busy="isSubmitting" @submit.prevent="handleSubmit">
           <div v-if="spamTimeoutUntil > 0" class="form-notice" role="status" aria-live="polite"><h2>{{ t('hireme.spam_title') }}</h2><p>{{ t('hireme.spam_message', { time: spamRemainingFormatted }) }}</p></div>
@@ -120,7 +122,7 @@ onBeforeUnmount(() => { disposed = true; clearInterval(timerInterval); controlle
 .contact-address a { overflow-wrap: anywhere; }
 .contact-socials { display: flex; gap: 24px; flex-wrap: wrap; margin-top: 12px; }
 .contact-socials img { width: 16px; height: 16px; filter: brightness(0) invert(1); }
-.contact-form-frame { border: 1px solid var(--aura-divider); background: var(--aura-surface); border-radius: 8px; padding: 32px; min-width: 0; }
+.contact-form-frame { position: relative; isolation: isolate; border: 1px solid var(--aura-divider); background: var(--aura-surface); border-radius: 8px; padding: 32px; min-width: 0; }
 fieldset { min-width: 0; border: 0; padding: 0; margin: 0; }
 .form-field + .form-field { margin-top: 24px; }
 .form-field label { display: block; margin-bottom: 10px; font-size: 13px; color: var(--aura-text); }

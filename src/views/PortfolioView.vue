@@ -1,4 +1,5 @@
 <script setup>
+import ProgressiveImage from '@/components/ProgressiveImage.vue'
 import { trapDialogFocus } from '@/utils/dialogFocus'
 import { ref, computed, onMounted, onBeforeUnmount, watch, nextTick, useId } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -195,7 +196,7 @@ onBeforeUnmount(() => { disposed = true; projectDialog.value?.close(); resizeObs
     </div>
     <div ref="scrollContainerRef" class="project-collection" :class="{ 'project-showcase': viewMode === 'showcase' }" @scroll.passive="onScroll">
       <article v-for="(project, index) in filteredProjects" :key="project.id" class="project-card" data-aura-reveal>
-        <div class="project-image"><img :src="project.img" :alt="project.title" width="640" height="400" loading="lazy" decoding="async" /></div>
+        <div class="project-image"><ProgressiveImage :src="project.img" :alt="project.title" :width="640" :height="400" /></div>
         <div class="project-copy">
           <div class="project-topline"><span class="editorial-index">{{ String(index + 1).padStart(2, '0') }}</span><span class="editorial-label">{{ t(`portfolio.filters.${project.category}`) }}</span><component :is="project.icon" aria-hidden="true" /></div>
           <h2>{{ project.title }}</h2><p class="project-description">{{ project.desc }}</p>
@@ -208,7 +209,7 @@ onBeforeUnmount(() => { disposed = true; projectDialog.value?.close(); resizeObs
     <div v-if="viewMode === 'showcase'" class="showcase-progress" role="progressbar" :aria-label="t('portfolio.view_modes.showcase')" aria-valuemin="0" aria-valuemax="100" :aria-valuenow="scrollProgress"><span :style="{ transform: `scaleX(${scrollProgress / 100})` }"></span></div>
     <Teleport to="body"><dialog ref="projectDialog" class="project-dialog" :aria-labelledby="dialogTitle" @keydown="trapDialogFocus" @cancel.prevent="closeModal" @click="event => { if (event.target === projectDialog) closeModal() }"><article v-if="activeModalProject">
       <header class="dialog-heading"><span class="editorial-kicker">{{ t('portfolio.modal.title') }}</span><button type="button" class="aura-button icon-button" :aria-label="t('portfolio.modal.close')" autofocus @click="closeModal"><XMarkIcon aria-hidden="true" /></button></header>
-      <img class="dialog-image" :src="activeModalProject.img" :alt="activeModalProject.title" width="640" height="400" />
+      <ProgressiveImage class="dialog-image" :src="activeModalProject.img" :alt="activeModalProject.title" :width="640" :height="400" fit="contain" eager />
       <div class="dialog-copy"><h2 :id="dialogTitle">{{ activeModalProject.title }}</h2><p>{{ activeModalProject.desc }}</p><h3>{{ t('portfolio.modal.tech_stack') }}</h3><div class="editorial-tags"><span v-for="tag in activeModalProject.tags" :key="tag">{{ tag }}</span></div><h3 v-if="activeModalProject.highlights.length">{{ t('portfolio.modal.highlights') }}</h3><ul class="project-highlights"><li v-for="highlight in activeModalProject.highlights" :key="highlight">{{ highlight }}</li></ul><a v-if="activeModalProject.url" class="aura-button aura-button-primary" :href="activeModalProject.url" target="_blank" rel="noopener noreferrer">{{ t('portfolio.visit') }}<ArrowUpRightIcon class="size-4" aria-hidden="true" /></a><p v-else class="editorial-meta">{{ t('portfolio.internal_tool') }}</p></div>
     </article></dialog></Teleport>
   </main>
@@ -230,7 +231,7 @@ onBeforeUnmount(() => { disposed = true; projectDialog.value?.close(); resizeObs
 .icon-button svg { width: 20px; height: 20px; }
 .project-card { display: grid; align-items: start; gap: 28px; padding-block: 36px; border-top: 1px solid var(--aura-divider); min-width: 0; }
 .project-image { background: var(--aura-surface); padding: 8px; border: 1px solid var(--aura-divider); border-radius: 8px; overflow: hidden; }
-.project-image img { display: block; width: 100%; height: auto; aspect-ratio: 1.6; object-fit: cover; border-radius: 3px; }
+.project-image .progressive-image { display: block; width: 100%; height: auto; aspect-ratio: 1.6; object-fit: cover; border-radius: 3px; }
 .project-copy { min-width: 0; }
 .project-topline { display: flex; align-items: center; gap: 20px; margin-bottom: 16px; }
 .project-topline > svg { width: 17px; height: 17px; color: var(--aura-muted); margin-left: auto; }

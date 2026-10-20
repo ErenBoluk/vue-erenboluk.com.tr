@@ -1,0 +1,22 @@
+[
+  {
+    "width": 390,
+    "route": "/tr",
+    "violations": 0
+  },
+  {
+    "width": 390,
+    "route": "/tr/portfolio",
+    "violations": 0
+  },
+  {
+    "width": 1440,
+    "route": "/tr",
+    "violations": 0
+  },
+  {
+    "width": 1440,
+    "route": "/tr/portfolio",
+    "violations": 0
+  }
+]

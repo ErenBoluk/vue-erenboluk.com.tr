@@ -6,6 +6,7 @@ import { useRoute } from 'vue-router'
 import { RouterView } from 'vue-router'
 import SideMenu from '@/components/SideMenu.vue'
 import Cursor from '@/components/Cursor.vue'
+import RouteLoadingBar from '@/components/RouteLoadingBar.vue'
 
 
 const { locale } = useI18n()
@@ -57,7 +58,8 @@ onMounted(() => {
 
 <template>
   <div class="aura-shell aura-editorial">
-    <Cursor />
+    <RouteLoadingBar />
+    <Cursor v-if="route.name !== 'home'" />
     <SideMenu />
     <div ref="scrollRef" class="aura-scroll" data-aura-scroll>
       <div class="aura-content">

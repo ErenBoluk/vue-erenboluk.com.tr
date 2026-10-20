@@ -1,0 +1,32 @@
+{
+  ".graphite-hero": {
+    "x": 64,
+    "y": 88,
+    "width": 1312,
+    "height": 864
+  },
+  ".hero-layout": {
+    "x": 108,
+    "y": 132,
+    "width": 1224,
+    "height": 642.609375
+  },
+  ".hero-name": {
+    "x": 108,
+    "y": 242.140625,
+    "width": 646.65625,
+    "height": 172.46875
+  },
+  ".hero-portrait-stage": {
+    "x": 903.3125,
+    "y": 255.078125,
+    "width": 340,
+    "height": 404.4375
+  },
+  ".hero-route-strip": {
+    "x": 108,
+    "y": 774.609375,
+    "width": 1224,
+    "height": 86.28125
+  }
+}
