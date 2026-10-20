@@ -5,14 +5,14 @@
   "type": "module",
   "scripts": {
     "start": "bun run index.ts",
-    "dev": "bun run --hot index.ts"
+    "dev": "bun run --hot index.ts",
+    "test": "bun test ./test",
+    "test:node": "node --test test/security.test.ts test/hire-service.test.ts"
   },
   "dependencies": {
-    "hono": "^4.1.0",
-    "nodemailer": "^6.9.13"
+    "hono": "^4.1.0"
   },
   "devDependencies": {
-    "@types/bun": "latest",
-    "@types/nodemailer": "^6.4.14"
+    "@types/bun": "latest"
   }
 }

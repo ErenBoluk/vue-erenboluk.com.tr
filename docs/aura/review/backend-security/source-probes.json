@@ -1,0 +1,60 @@
+{
+  "scope": "Source-level mocked probes, not live server/integration security tests",
+  "realEmails": 0,
+  "findings": [
+    {
+      "id": "cors-suffix",
+      "observed": "Unrelated suffix-matching origin is allowlisted"
+    },
+    {
+      "id": "rate-limit-key",
+      "sameHeader": [
+        200,
+        200,
+        429
+      ],
+      "changedHeader": [
+        200,
+        200,
+        200
+      ],
+      "caveat": "Live exploit depends on proxy header normalization/trust, not tested"
+    },
+    {
+      "id": "missing-ip-shared-bucket",
+      "statuses": [
+        200,
+        200,
+        429
+      ],
+      "observed": "All requests without XFF share unknown_ip"
+    },
+    {
+      "id": "input-schema",
+      "observed": "Object name, array reply_to and whitespace message forwarded to mocked provider; real provider acceptance not asserted"
+    },
+    {
+      "id": "input-size",
+      "observed": "200KB message reaches provider payload; transport/runtime body limits not tested"
+    },
+    {
+      "id": "error-disclosure",
+      "observed": "Provider error details returned to caller; malformed JSON treated as 500"
+    },
+    {
+      "id": "invalid-limit-config",
+      "statuses": [
+        200,
+        200,
+        200,
+        200
+      ],
+      "observed": "Non-numeric RATE_LIMIT_MAX fails open"
+    },
+    {
+      "id": "expired-buckets",
+      "observed": "Expired unrelated rate-limit entries remain in map",
+      "retainedEntries": 4
+    }
+  ]
+}

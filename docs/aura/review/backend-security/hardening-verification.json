@@ -1,0 +1,28 @@
+{
+  "date": "2026-10-19",
+  "backendTests": {
+    "runtime": "Node 26.7.0",
+    "passed": 21,
+    "failed": 0
+  },
+  "browserContract": {
+    "passed": 3,
+    "failed": 0,
+    "provider": "mock"
+  },
+  "staticBundle": {
+    "passed": true,
+    "externals": [
+      "hono",
+      "bun"
+    ],
+    "isTypecheck": false
+  },
+  "realEmails": 0,
+  "realProviderRequests": 0,
+  "topology": "User-confirmed single instance, no Redis",
+  "nativeBunHonoTested": false,
+  "frozenBunInstallTested": false,
+  "railwayEdgeTested": false,
+  "deployed": false
+}
